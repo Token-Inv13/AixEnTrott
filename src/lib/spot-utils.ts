@@ -17,11 +17,11 @@ export function formatBudget(budget: Spot['budget']) {
 export function formatRechargeStatus(status: Spot['rechargeStatus']) {
   switch (status) {
     case 'confirmed':
-      return 'Confirmée';
+      return 'Recharge confirmée';
     case 'nearby':
-      return 'Possible à proximité';
+      return 'Recharge possible';
     case 'verify':
-      return 'À vérifier';
+      return 'Recharge à vérifier';
     case 'none':
       return 'Aucune connue';
   }
@@ -30,15 +30,28 @@ export function formatRechargeStatus(status: Spot['rechargeStatus']) {
 export function formatCompatibility(point: ChargingPoint['compatibility']) {
   switch (point) {
     case 'confirmed-220v':
-      return '220V confirmé';
+      return 'Compatible 220V confirmée';
     case 'possible-220v':
-      return '220V possible';
+      return 'Prise 220V possible, à vérifier';
     case 'car-only':
-      return 'Voiture uniquement';
+      return 'Borne voiture uniquement';
+    case 'private':
+      return 'Accès privé / abonnement';
+    case 'verify':
+      return 'À vérifier avant départ';
+  }
+}
+
+export function formatAccess(access: ChargingPoint['access']) {
+  switch (access) {
+    case 'public':
+      return 'Public';
     case 'private':
       return 'Privé';
-    case 'verify':
-      return 'À vérifier';
+    case 'subscription':
+      return 'Abonnement';
+    case 'unknown':
+      return 'Inconnu';
   }
 }
 
@@ -85,4 +98,3 @@ export function categoryLabel(category: Spot['category']) {
       return 'Journée';
   }
 }
-

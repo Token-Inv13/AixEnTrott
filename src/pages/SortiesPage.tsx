@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { SpotCard } from '../components/SpotCard';
 import { Pill, SectionTitle } from '../components/Badges';
 import { spots, type Spot } from '../data/spots';
@@ -29,6 +29,19 @@ const groupLabels: Record<keyof typeof filterGroups, string> = {
   recharge: 'Recharge',
 };
 
+const valueLabels: Record<string, string> = {
+  '0€': '0 €',
+  '<5€': '< 5 €',
+  '<10€': '< 10 €',
+  weekend: 'week-end',
+  soir: 'soir',
+  confirmed: 'Recharge confirmée',
+  nearby: 'Recharge possible',
+  verify: 'Recharge à vérifier',
+  none: 'Aucune connue',
+  journee: 'Journée',
+};
+
 function matchesFilters(spot: Spot, filters: FilterState) {
   return (
     (filters.distance === 'all' || spot.distanceLabel === filters.distance) &&
@@ -52,7 +65,7 @@ function ChipButton({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+      className={`rounded-full px-3 py-2 text-xs font-semibold transition sm:px-4 sm:py-2 sm:text-sm ${
         active ? 'bg-slate-950 text-white shadow-soft' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-sky-50'
       }`}
     >
@@ -75,13 +88,11 @@ export function SortiesPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <SectionTitle
-        description="Catalogue filtrable des sorties. Toutes les distances sont indicatives et les statuts de recharge restent prudents par défaut."
-      >
+      <SectionTitle description="Catalogue filtrable des sorties. Toutes les distances sont indicatives et les statuts de recharge restent prudents par défaut.">
         Sorties autour d’Aix
       </SectionTitle>
 
-      <section className="mt-8 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
+      <section className="mt-8 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
         <div className="grid gap-5">
           {Object.entries(filterGroups).map(([group, values]) => (
             <div key={group} className="space-y-3">
@@ -104,7 +115,7 @@ export function SortiesPage() {
                 {values.map((value) => (
                   <ChipButton
                     key={value}
-                    label={value}
+                    label={group === 'recharge' ? valueLabels[value] : group === 'moment' && value === 'journee' ? 'journée' : value}
                     active={filters[group as keyof FilterState] === value}
                     onClick={() => setFilters((current) => ({ ...current, [group]: value }))}
                   />
@@ -115,13 +126,13 @@ export function SortiesPage() {
         </div>
       </section>
 
-      <div className="mt-5 flex items-center justify-between gap-4">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-slate-600">
           {filtered.length} sortie{filtered.length > 1 ? 's' : ''} trouvée{filtered.length > 1 ? 's' : ''}
         </p>
         <div className="flex flex-wrap gap-2">
           {Object.entries(filters).map(([key, value]) =>
-            value !== 'all' ? <Pill key={key}>{key}: {value}</Pill> : null,
+            value !== 'all' ? <Pill key={key}>{groupLabels[key as keyof typeof filterGroups]}: {valueLabels[value] ?? value}</Pill> : null,
           )}
         </div>
       </div>

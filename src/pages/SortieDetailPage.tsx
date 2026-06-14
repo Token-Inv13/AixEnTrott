@@ -25,7 +25,7 @@ export function SortieDetailPage() {
           <p className="mt-3 text-base leading-7 text-slate-600">{spot.description}</p>
 
           <div className="mt-6 flex flex-wrap gap-2">
-            <Pill tone="sky">{spot.distanceLabel}</Pill>
+            <Pill tone="sky">Distance indicative {spot.distanceLabel}</Pill>
             <Pill tone="emerald">{formatBudget(spot.budget)}</Pill>
             <Pill>{spot.duration}</Pill>
             <Pill>{areaLabel(spot.area)}</Pill>
@@ -36,7 +36,7 @@ export function SortieDetailPage() {
 
           <dl className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-slate-50 p-4">
-              <dt className="text-sm text-slate-500">Autonomie recommandée</dt>
+              <dt className="text-sm text-slate-500">Autonomie estimée</dt>
               <dd className="mt-2 text-sm font-semibold text-slate-950">{autonomyRecommendation(spot.distanceKmFromAix)}</dd>
             </div>
             <div className="rounded-2xl bg-slate-50 p-4">
@@ -89,4 +89,3 @@ export function SortieDetailPage() {
     </div>
   );
 }
-

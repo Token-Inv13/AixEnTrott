@@ -22,7 +22,17 @@ export function ConseilsPage() {
           </article>
         ))}
       </section>
+
+      <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <h2 className="text-lg font-semibold text-slate-950">À ne pas faire</h2>
+        <ul className="mt-4 grid gap-3 text-sm leading-6 text-slate-600">
+          <li>Partir avec une batterie faible.</li>
+          <li>Compter sur une borne voiture sans vérifier la prise.</li>
+          <li>Laisser la trottinette seule en recharge.</li>
+          <li>Sous-estimer les côtes et le vent.</li>
+          <li>Rouler dans les massifs fermés en été.</li>
+        </ul>
+      </section>
     </div>
   );
 }
-

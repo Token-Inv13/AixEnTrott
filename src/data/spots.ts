@@ -15,7 +15,7 @@ export type Spot = {
   rechargeStatus: 'none' | 'nearby' | 'confirmed' | 'verify';
 };
 
-// Coordinates are approximate and should be verified before publication.
+// TODO: verify coordinates
 export const spots: Spot[] = [
   {
     id: 'promenade-de-la-torse',

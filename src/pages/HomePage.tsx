@@ -19,14 +19,12 @@ export function HomePage() {
       <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
           <SectionKicker>trott-out-aix</SectionKicker>
-          <SectionTitle
-            description="Un mini-site statique pour choisir rapidement une sortie en trottinette électrique autour d’Aix-en-Provence, avec cartes, filtres et recharge."
-          >
+          <SectionTitle description="Un mini-site statique pour choisir rapidement une sortie en trottinette électrique autour d’Aix-en-Provence, avec cartes, filtres et recharge.">
             Prépare ta sortie en trottinette autour d’Aix-en-Provence
           </SectionTitle>
           <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-            Les contenus du guide ont été structurés par distance, budget, ambiance et solution de recharge pour
-            te faire gagner du temps, sans masquer les contraintes réelles d’autonomie.
+            Les contenus du guide ont été structurés par distance, budget, ambiance et solution de recharge pour te
+            faire gagner du temps, sans masquer les contraintes réelles d’autonomie.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             {quickActions.map((action) => (
@@ -116,6 +114,26 @@ export function HomePage() {
         ))}
       </section>
 
+      <section className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <SectionKicker>Comment utiliser le site ?</SectionKicker>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">En 4 étapes</h2>
+        <ol className="mt-5 grid gap-3 md:grid-cols-2">
+          {[
+            'Choisis ton temps disponible',
+            'Filtre par distance ou ambiance',
+            'Vérifie l’autonomie et la recharge',
+            'Pars avec batterie pleine, eau, casque et antivol',
+          ].map((step, index) => (
+            <li key={step} className="rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+              <span className="mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-950 text-xs font-semibold text-white">
+                {index + 1}
+              </span>
+              {step}
+            </li>
+          ))}
+        </ol>
+      </section>
+
       <section className="mt-10 grid gap-6 lg:grid-cols-[1fr_1fr]">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
           <SectionKicker>Top départ</SectionKicker>
@@ -131,7 +149,7 @@ export function HomePage() {
                   <div>
                     <p className="font-semibold text-slate-950">{spot.name}</p>
                     <p className="mt-1 text-sm text-slate-500">
-                      {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
+                      Distance indicative {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
                     </p>
                   </div>
                   <Pill>{formatRechargeStatus(spot.rechargeStatus)}</Pill>
@@ -154,4 +172,3 @@ export function HomePage() {
     </div>
   );
 }
-

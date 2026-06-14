@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
 import type { Spot } from '../data/spots';
-import { areaLabel, autonomyRecommendation, categoryLabel, formatBudget, formatRechargeStatus } from '../lib/spot-utils';
+import {
+  areaLabel,
+  autonomyRecommendation,
+  categoryLabel,
+  formatBudget,
+  formatRechargeStatus,
+} from '../lib/spot-utils';
 import { Pill } from './Badges';
 
 export function SpotCard({ spot }: { spot: Spot }) {
@@ -10,7 +16,7 @@ export function SpotCard({ spot }: { spot: Spot }) {
         <div>
           <h3 className="text-lg font-semibold text-slate-950">{spot.name}</h3>
           <p className="mt-1 text-sm text-slate-500">
-            {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
+            Distance indicative {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
           </p>
         </div>
         <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>
@@ -28,7 +34,7 @@ export function SpotCard({ spot }: { spot: Spot }) {
           <dd className="mt-1 font-semibold text-slate-950">{categoryLabel(spot.category)}</dd>
         </div>
         <div className="rounded-2xl bg-slate-50 p-3">
-          <dt className="text-slate-500">Autonomie</dt>
+          <dt className="text-slate-500">Autonomie estimée</dt>
           <dd className="mt-1 font-semibold text-slate-950">{autonomyRecommendation(spot.distanceKmFromAix)}</dd>
         </div>
         <div className="rounded-2xl bg-slate-50 p-3">
@@ -53,4 +59,3 @@ export function SpotCard({ spot }: { spot: Spot }) {
     </article>
   );
 }
-

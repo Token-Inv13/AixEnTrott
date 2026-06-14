@@ -4,7 +4,7 @@ import { CircleMarker, MapContainer, Marker, Popup, TileLayer, useMap } from 're
 import L, { type LatLngExpression } from 'leaflet';
 import type { ChargingPoint } from '../data/chargingPoints';
 import type { Spot } from '../data/spots';
-import { categoryLabel, formatBudget, formatCompatibility } from '../lib/spot-utils';
+import { categoryLabel, formatBudget, formatCompatibility, formatRechargeStatus } from '../lib/spot-utils';
 
 function makeIcon(color: string) {
   return L.divIcon({
@@ -59,17 +59,12 @@ export function MapView({
     if (showCharging) {
       chargingPoints.forEach((point) => coords.push([point.latitude, point.longitude]));
     }
-    return coords.length ? coords : ([ [43.5297, 5.4474] ] as LatLngExpression[]);
+    return coords.length ? coords : ([[43.5297, 5.4474]] as LatLngExpression[]);
   }, [spots, chargingPoints, showSpots, showCharging]);
 
   return (
     <div className={`overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-soft ${height}`}>
-      <MapContainer
-        center={[43.5297, 5.4474]}
-        zoom={10}
-        className="h-full w-full"
-        scrollWheelZoom={false}
-      >
+      <MapContainer center={[43.5297, 5.4474]} zoom={10} className="h-full w-full" scrollWheelZoom={false}>
         <FitBounds points={points} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -79,11 +74,15 @@ export function MapView({
           ? spots.map((spot) => (
               <Marker key={spot.id} position={[spot.latitude, spot.longitude]} icon={makeIcon('#2563eb')}>
                 <Popup>
-                  <div className="max-w-[16rem]">
+                  <div className="max-w-[13rem]">
                     <h3 className="text-sm font-semibold text-slate-950">{spot.name}</h3>
+                    <p className="mt-1 text-xs text-slate-500">Type: Sortie</p>
+                    <p className="mt-1 text-xs text-slate-500">Distance indicative: {spot.distanceLabel}</p>
+                    <p className="mt-1 text-xs text-slate-500">Budget: {formatBudget(spot.budget)}</p>
                     <p className="mt-1 text-xs text-slate-500">
-                      {categoryLabel(spot.category)} · {spot.distanceLabel} · {formatBudget(spot.budget)}
+                      Statut recharge: {formatRechargeStatus(spot.rechargeStatus)}
                     </p>
+                    <p className="mt-1 text-xs text-slate-500">Type: {categoryLabel(spot.category)}</p>
                     <Link className="mt-3 inline-flex text-xs font-semibold text-sky" to={`/sorties/${spot.id}`}>
                       Voir la fiche
                     </Link>
@@ -96,20 +95,23 @@ export function MapView({
           ? chargingPoints.map((point) => (
               <Marker key={point.id} position={[point.latitude, point.longitude]} icon={makeIcon('#0f766e')}>
                 <Popup>
-                  <div className="max-w-[16rem]">
+                  <div className="max-w-[13rem]">
                     <h3 className="text-sm font-semibold text-slate-950">{point.name}</h3>
+                    <p className="mt-1 text-xs text-slate-500">Type: Recharge</p>
+                    <p className="mt-1 text-xs text-slate-500">Statut recharge: {formatCompatibility(point.compatibility)}</p>
                     <p className="mt-1 text-xs text-slate-500">
-                      {point.city} · {formatCompatibility(point.compatibility)}
+                      {point.city} · {point.address}
                     </p>
-                    <Link className="mt-3 inline-flex text-xs font-semibold text-sky" to="/recharge">
-                      Voir le guide recharge
-                    </Link>
                   </div>
                 </Popup>
               </Marker>
             ))
           : null}
-        <CircleMarker center={[43.5297, 5.4474]} radius={28} pathOptions={{ color: '#94a3b8', fillColor: '#e2e8f0', fillOpacity: 0.3 }} />
+        <CircleMarker
+          center={[43.5297, 5.4474]}
+          radius={28}
+          pathOptions={{ color: '#94a3b8', fillColor: '#e2e8f0', fillOpacity: 0.3 }}
+        />
       </MapContainer>
     </div>
   );

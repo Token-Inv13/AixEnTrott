@@ -10,7 +10,7 @@ export type ChargingPoint = {
   notes: string;
 };
 
-// Coordinates are approximate and should be verified before publication.
+// TODO: verify coordinates
 export const chargingPoints: ChargingPoint[] = [
   {
     id: 'bag-mobile-marseille-saint-charles',
