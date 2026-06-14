@@ -42,6 +42,8 @@ const valueLabels: Record<string, string> = {
   journee: 'Journée',
 };
 
+const autonomyOptions = [20, 30, 40, 60, 80] as const;
+
 function matchesFilters(spot: Spot, filters: FilterState) {
   return (
     (filters.distance === 'all' || spot.distanceLabel === filters.distance) &&
@@ -83,6 +85,7 @@ export function SortiesPage() {
     mood: searchParams.get('mood') ?? 'all',
     recharge: searchParams.get('recharge') ?? 'all',
   });
+  const [autonomyKm, setAutonomyKm] = useState<number | null>(40);
 
   const filtered = useMemo(() => spots.filter((spot) => matchesFilters(spot, filters)), [filters]);
 
@@ -91,6 +94,42 @@ export function SortiesPage() {
       <SectionTitle description="Catalogue filtrable des sorties. Toutes les distances sont indicatives et les statuts de recharge restent prudents par défaut.">
         Sorties autour d’Aix
       </SectionTitle>
+
+      <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-slate-950">Mon autonomie</p>
+            <p className="text-sm leading-6 text-slate-600">Affiche un badge simple sur chaque carte sans masquer les sorties longues.</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {autonomyOptions.map((value) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setAutonomyKm(value)}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  autonomyKm === value
+                    ? 'bg-slate-950 text-white shadow-soft'
+                    : 'bg-slate-50 text-slate-600 ring-1 ring-slate-200 hover:bg-sky-50'
+                }`}
+              >
+                {value} km
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setAutonomyKm(null)}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                autonomyKm == null
+                  ? 'bg-slate-950 text-white shadow-soft'
+                  : 'bg-slate-50 text-slate-600 ring-1 ring-slate-200 hover:bg-sky-50'
+              }`}
+            >
+              Aucun
+            </button>
+          </div>
+        </div>
+      </section>
 
       <section className="mt-8 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
         <div className="grid gap-5">
@@ -140,7 +179,7 @@ export function SortiesPage() {
       {filtered.length ? (
         <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((spot) => (
-            <SpotCard key={spot.id} spot={spot} />
+            <SpotCard key={spot.id} spot={spot} autonomyKm={autonomyKm ?? undefined} />
           ))}
         </section>
       ) : (

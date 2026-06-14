@@ -3,6 +3,7 @@ import { MapView } from '../components/MapView';
 import { Pill, SectionKicker } from '../components/Badges';
 import { spots } from '../data/spots';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
+import { estimateRequiredAutonomyKm, estimateRoundTripKm, getPlannerShortWarning } from '../lib/planner';
 import {
   areaLabel,
   autonomyRecommendation,
@@ -18,6 +19,16 @@ import {
 export function SortieDetailPage() {
   const { id } = useParams();
   const spot = spots.find((item) => item.id === id);
+  const roundTripKm = estimateRoundTripKm(spot ?? spots[0]);
+  const requiredAutonomyKm = estimateRequiredAutonomyKm(spot ?? spots[0]);
+  const planAdvice =
+    !spot || spot.distanceKmFromAix > 30
+      ? 'Prévoir retour alternatif'
+      : spot.rechargeStatus === 'verify' || spot.rechargeStatus === 'none'
+        ? 'Recharge à vérifier'
+        : spot.distanceKmFromAix > 7
+          ? 'Prévoir marge'
+          : 'Sortie simple';
 
   if (!spot) {
     return <Navigate to="/sorties" replace />;
@@ -58,7 +69,7 @@ export function SortieDetailPage() {
                 rel="noreferrer"
                 className="inline-flex items-center justify-center rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky"
               >
-                Ouvrir dans Google Maps
+                Ouvrir destination
               </a>
               <a
                 href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude)}
@@ -73,6 +84,48 @@ export function SortieDetailPage() {
           <p className="mt-3 text-xs leading-5 text-slate-500">
             L’itinéraire vélo Google Maps est indicatif. Vérifie toujours la sécurité du trajet et les aménagements disponibles.
           </p>
+
+          <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
+            <p className="text-sm font-semibold text-slate-950">Planification rapide</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Cette estimation reste indicative et applique une marge de sécurité. À vérifier avant départ, surtout sur les longues sorties.
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm text-slate-500">Distance aller indicative</p>
+                <p className="mt-2 text-sm font-semibold text-slate-950">{spot.distanceKmFromAix.toFixed(1)} km</p>
+              </div>
+              <div className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm text-slate-500">Distance aller-retour indicative</p>
+                <p className="mt-2 text-sm font-semibold text-slate-950">{roundTripKm.toFixed(1)} km</p>
+              </div>
+              <div className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm text-slate-500">Autonomie recommandée</p>
+                <p className="mt-2 text-sm font-semibold text-slate-950">{requiredAutonomyKm.toFixed(1)} km avec marge</p>
+              </div>
+              <div className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm text-slate-500">Recharge connue</p>
+                <p className="mt-2 text-sm font-semibold text-slate-950">
+                  {spot.rechargeStatus === 'confirmed'
+                    ? 'Oui'
+                    : spot.rechargeStatus === 'nearby'
+                      ? 'Partielle'
+                      : spot.rechargeStatus === 'verify'
+                        ? 'À vérifier'
+                        : 'Non'}
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 rounded-2xl bg-slate-50 p-4">
+              <p className="text-sm text-slate-500">Conseil</p>
+              <p className="mt-2 text-sm font-semibold text-slate-950">{planAdvice}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {spot.distanceKmFromAix > 30
+                  ? 'Sortie longue : prévoir train, voiture, recharge ou retour alternatif.'
+                  : getPlannerShortWarning(spot)}
+              </p>
+            </div>
+          </div>
 
           <dl className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-slate-50 p-4">

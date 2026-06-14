@@ -43,6 +43,18 @@ export function HomePage() {
               </Link>
             ))}
           </div>
+          <div className="mt-5 rounded-3xl border border-sky-100 bg-sky-50/70 p-4">
+            <p className="text-sm font-semibold text-slate-950">Préparer ma sortie selon mon autonomie</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Compare rapidement ton autonomie, le type de sortie et les solutions de recharge avant de partir.
+            </p>
+            <Link
+              to="/planner"
+              className="mt-4 inline-flex rounded-full bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky"
+            >
+              Ouvrir le planner
+            </Link>
+          </div>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             {distanceBands.map((band) => (
               <div key={band} className="rounded-2xl bg-slate-50 p-4">

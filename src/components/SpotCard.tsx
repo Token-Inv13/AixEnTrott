@@ -10,9 +10,13 @@ import {
   formatRouteType,
   formatRechargeStatus,
 } from '../lib/spot-utils';
+import { getAutonomyVerdict, getPlannerShortWarning } from '../lib/planner';
 import { Pill } from './Badges';
 
-export function SpotCard({ spot }: { spot: Spot }) {
+export function SpotCard({ spot, autonomyKm }: { spot: Spot; autonomyKm?: number | null }) {
+  const verdict = autonomyKm == null ? null : getAutonomyVerdict(spot, autonomyKm);
+  const longTripWarning = getPlannerShortWarning(spot);
+
   return (
     <article className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -26,9 +30,26 @@ export function SpotCard({ spot }: { spot: Spot }) {
             {spot.cyclingInfrastructure.label.toLowerCase()} · {destinationShortLabel(spot.address)}
           </p>
         </div>
-        <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>
-          {formatRechargeStatus(spot.rechargeStatus)}
-        </Pill>
+        <div className="flex flex-wrap justify-end gap-2">
+          <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>
+            {formatRechargeStatus(spot.rechargeStatus)}
+          </Pill>
+          {verdict ? (
+            <Pill
+              tone={
+                verdict.status === 'compatible'
+                  ? 'emerald'
+                  : verdict.status === 'limit'
+                    ? 'sky'
+                    : verdict.status === 'prepared'
+                      ? 'amber'
+                      : 'rose'
+              }
+            >
+              {verdict.label}
+            </Pill>
+          ) : null}
+        </div>
       </div>
       <p className="mt-4 text-sm leading-6 text-slate-600">{spot.description}</p>
       <dl className="mt-5 grid grid-cols-2 gap-3 text-sm">
@@ -54,6 +75,8 @@ export function SpotCard({ spot }: { spot: Spot }) {
           <Pill key={mood}>{mood}</Pill>
         ))}
       </div>
+      {verdict ? <p className="mt-4 text-sm leading-6 text-slate-600">{verdict.detail}</p> : null}
+      {spot.distanceKmFromAix > 30 ? <p className="mt-3 text-sm font-semibold text-rose-700">{longTripWarning}</p> : null}
       <div className="mt-5 flex items-center justify-between gap-3">
         <span className="text-sm text-slate-500">{spot.tips[0]}</span>
         <Link
