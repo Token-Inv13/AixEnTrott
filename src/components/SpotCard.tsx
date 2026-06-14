@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import type { Spot } from '../data/spots';
 import {
+  destinationShortLabel,
   areaLabel,
   autonomyRecommendation,
   categoryLabel,
   formatBudget,
+  formatDifficulty,
+  formatRouteType,
   formatRechargeStatus,
 } from '../lib/spot-utils';
 import { Pill } from './Badges';
@@ -17,6 +20,10 @@ export function SpotCard({ spot }: { spot: Spot }) {
           <h3 className="text-lg font-semibold text-slate-950">{spot.name}</h3>
           <p className="mt-1 text-sm text-slate-500">
             Distance indicative {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
+          </p>
+          <p className="mt-1 text-xs text-slate-500">
+            {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()} ·{' '}
+            {spot.cyclingInfrastructure.label.toLowerCase()} · {destinationShortLabel(spot.address)}
           </p>
         </div>
         <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>

@@ -1,4 +1,4 @@
-export type Spot = {
+﻿export type Spot = {
   id: string;
   name: string;
   category: 'soir' | 'weekend' | 'journee';
@@ -13,10 +13,41 @@ export type Spot = {
   latitude: number;
   longitude: number;
   rechargeStatus: 'none' | 'nearby' | 'confirmed' | 'verify';
+  address: string;
+  googleMapsUrl: string;
+  routeNotes: string;
+  cyclingInfrastructure: {
+    status: 'good' | 'partial' | 'limited' | 'unknown';
+    label: string;
+    notes: string;
+  };
+  roadSafety: {
+    level: 'easy' | 'moderate' | 'caution' | 'unknown';
+    notes: string;
+  };
+  parkingAdvice: string;
+  bestTime: string;
+  isSimpleRide: boolean;
+  difficulty: 'facile' | 'intermédiaire' | 'préparée';
+  routeType: 'urbain' | 'nature' | 'village' | 'littoral' | 'mixte';
 };
 
+type SpotInput = Omit<
+  Spot,
+  | 'address'
+  | 'googleMapsUrl'
+  | 'routeNotes'
+  | 'cyclingInfrastructure'
+  | 'roadSafety'
+  | 'parkingAdvice'
+  | 'bestTime'
+  | 'isSimpleRide'
+  | 'difficulty'
+  | 'routeType'
+>;
+
 // TODO: verify coordinates
-export const spots: Spot[] = [
+const rawSpots: SpotInput[] = [
   {
     id: 'promenade-de-la-torse',
     name: 'Promenade de la Torse',
@@ -476,7 +507,664 @@ export const spots: Spot[] = [
     longitude: 5.3086,
     rechargeStatus: 'verify',
   },
+  {
+    id: 'eguilles',
+    name: 'Éguilles',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 11.4,
+    distanceLabel: '7–15 km',
+    budget: '0€',
+    duration: '1 h à 2 h',
+    moods: ['village', 'nature'],
+    description:
+      'Boucle simple vers un village perché à l’ouest d’Aix, utile pour une sortie courte avec un peu de respiration.',
+    tips: ['Privilégie une heure calme.', 'Le retour est plus agréable avant la nuit.'],
+    latitude: 43.5719,
+    longitude: 5.3552,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'ventabren',
+    name: 'Ventabren',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 16.8,
+    distanceLabel: '15–30 km',
+    budget: '0€',
+    duration: '1 h 30 à 3 h',
+    moods: ['village', 'nature', 'patrimoine'],
+    description:
+      'Sortie de colline pratique pour changer d’ambiance, avec un village lisible et un trajet à garder indicatif.',
+    tips: ['Prévois une marge batterie.', 'L’arrivée au village se fait mieux tôt.'],
+    latitude: 43.5527,
+    longitude: 5.2938,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'coudoux',
+    name: 'Coudoux',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 22.4,
+    distanceLabel: '15–30 km',
+    budget: '0€',
+    duration: '2 h à 4 h',
+    moods: ['village', 'nature'],
+    description:
+      'Destination de liaison simple pour une boucle un peu plus longue, avec un trajet prudent à planifier en aller-retour.',
+    tips: ['À privilégier par météo stable.', 'Reste sur un trajet lisible.'],
+    latitude: 43.5581,
+    longitude: 5.2449,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'rognes',
+    name: 'Rognes',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 23.6,
+    distanceLabel: '15–30 km',
+    budget: '<5€',
+    duration: '2 h à 4 h',
+    moods: ['village', 'patrimoine', 'nature'],
+    description:
+      'Village du nord-ouest aixois, intéressant pour une sortie plus structurée avec pause et retour planifié.',
+    tips: ['Meilleur avec départ matinal.', 'Les portions ouvertes demandent de la prudence au vent.'],
+    latitude: 43.6568,
+    longitude: 5.3464,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'saint-cannat',
+    name: 'Saint-Cannat',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 18.2,
+    distanceLabel: '15–30 km',
+    budget: '<5€',
+    duration: '1 h 30 à 3 h',
+    moods: ['village', 'patrimoine'],
+    description:
+      'Boucle de village très lisible pour rouler sans se compliquer la vie, avec un retour à garder confortable.',
+    tips: ['Bonne option en milieu de journée.', 'Reste attentif aux traversées de route.'],
+    latitude: 43.6207,
+    longitude: 5.3075,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'pertuis',
+    name: 'Pertuis',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 29.4,
+    distanceLabel: '15–30 km',
+    budget: '<10€',
+    duration: '2 h 30 à 5 h',
+    moods: ['village', 'patrimoine'],
+    description:
+      'Porte du Luberon pour une journée simple, avec un trajet plus long à garder sous contrôle et une pause à prévoir.',
+    tips: ['L’itinéraire doit rester prudent.', 'Prévois de l’eau et du temps.'],
+    latitude: 43.6947,
+    longitude: 5.5014,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'meyreuil',
+    name: 'Meyreuil',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 10.9,
+    distanceLabel: '7–15 km',
+    budget: '0€',
+    duration: '1 h à 2 h',
+    moods: ['nature', 'village'],
+    description:
+      'Boucle courte à l’est d’Aix, utile pour sortir de la ville sans viser une logistique compliquée.',
+    tips: ['Bien pour une sortie en lumière douce.', 'La circulation locale peut compter.'],
+    latitude: 43.4878,
+    longitude: 5.5118,
+    rechargeStatus: 'none',
+  },
+  {
+    id: 'gardanne',
+    name: 'Gardanne',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 16.3,
+    distanceLabel: '15–30 km',
+    budget: '0€',
+    duration: '1 h 30 à 3 h',
+    moods: ['village', 'nature'],
+    description:
+      'Sortie de liaison assez simple, intéressante si tu veux une ville de transition avant une boucle plus large.',
+    tips: ['Prends en compte les axes circulés.', 'Le centre se prête bien à une pause courte.'],
+    latitude: 43.4529,
+    longitude: 5.4708,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'fuveau',
+    name: 'Fuveau',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 20.8,
+    distanceLabel: '15–30 km',
+    budget: '<5€',
+    duration: '2 h à 4 h',
+    moods: ['village', 'nature'],
+    description:
+      'Village pratique pour une sortie un peu plus éloignée mais encore raisonnable en autonomie si le retour est prévu.',
+    tips: ['Vérifie le vent avant de partir.', 'Idéal pour une boucle de demi-journée.'],
+    latitude: 43.4518,
+    longitude: 5.5631,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'trets',
+    name: 'Trets',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 27.8,
+    distanceLabel: '15–30 km',
+    budget: '<5€',
+    duration: '2 h 30 à 5 h',
+    moods: ['village', 'patrimoine', 'nature'],
+    description:
+      'Destination de fond de vallée à traiter comme une vraie sortie de journée, avec retour réfléchi avant de partir.',
+    tips: ['Pars tôt si tu veux éviter la chaleur.', 'Le relief peut allonger le trajet.'],
+    latitude: 43.4461,
+    longitude: 5.6958,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'cabries-calas',
+    name: 'Cabriès / Calas',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 14.1,
+    distanceLabel: '7–15 km',
+    budget: '0€',
+    duration: '1 h 30 à 3 h',
+    moods: ['village', 'nature'],
+    description:
+      'Sortie de transition entre ville et périphérie, utile pour rouler sans viser un grand dénivelé ni une longue logistique.',
+    tips: ['Pratique pour une boucle courte.', 'Garde un oeil sur les carrefours.'],
+    latitude: 43.4542,
+    longitude: 5.3677,
+    rechargeStatus: 'nearby',
+  },
+  {
+    id: 'simiane-collongue',
+    name: 'Simiane-Collongue',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 13.6,
+    distanceLabel: '7–15 km',
+    budget: '0€',
+    duration: '1 h 30 à 3 h',
+    moods: ['village', 'nature'],
+    description:
+      'Village pratique pour une demi-journée tranquille, avec un parcours à garder simple et une pause facile.',
+    tips: ['Arrive avec une batterie confortable.', 'Bonne option si tu veux un itinéraire lisible.'],
+    latitude: 43.4306,
+    longitude: 5.4311,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'vitrolles-arbois',
+    name: 'Vitrolles / Plateau de l’Arbois',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 24.9,
+    distanceLabel: '15–30 km',
+    budget: '0€',
+    duration: '2 h 30 à 5 h',
+    moods: ['nature'],
+    description:
+      'Zone ouverte à la frontière entre ville, franges industrielles et espaces naturels, à réserver à une sortie bien préparée.',
+    tips: ['Vérifie les accès avant de partir.', 'Le vent peut être plus présent sur le plateau.'],
+    latitude: 43.4892,
+    longitude: 5.2504,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'saint-chamas-etang-de-berre',
+    name: 'Étang de Berre / Saint-Chamas',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 38.5,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '3 h à 6 h',
+    moods: ['nature', 'village', 'mer'],
+    description:
+      'Sortie plus lointaine autour de l’étang, avec de l’espace et une ambiance de promenade à traiter comme une vraie journée.',
+    tips: ['Prévois une marge de retour.', 'Le bord de l’eau peut être venteux.'],
+    latitude: 43.5427,
+    longitude: 5.0401,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'la-fare-les-oliviers',
+    name: 'La Fare-les-Oliviers',
+    category: 'weekend',
+    area: 'provence',
+    distanceKmFromAix: 27.1,
+    distanceLabel: '15–30 km',
+    budget: '0€',
+    duration: '2 h à 4 h',
+    moods: ['village', 'nature'],
+    description:
+      'Boucle intermédiaire facile à comprendre, adaptée à une sortie simple si tu gardes un retour prudent.',
+    tips: ['Mieux par temps stable.', 'Le stationnement doit rester simple et légal.'],
+    latitude: 43.5508,
+    longitude: 5.2136,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'la-barben',
+    name: 'La Barben',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 34.1,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '2 h 30 à 5 h',
+    moods: ['nature', 'patrimoine', 'village'],
+    description:
+      'Destination de journée avec ambiance de campagne et de patrimoine, à garder comme sortie préparée plutôt que spontanée.',
+    tips: ['Départ tôt conseillé.', 'Prends une marge batterie pour le retour.'],
+    latitude: 43.6257,
+    longitude: 5.2012,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'lourmarin',
+    name: 'Lourmarin',
+    category: 'journee',
+    area: 'luberon',
+    distanceKmFromAix: 37.8,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '3 h à 6 h',
+    moods: ['village', 'patrimoine', 'nature'],
+    description:
+      'Village du Luberon très agréable, mais à considérer comme une vraie escapade avec retour planifié et pause sur place.',
+    tips: ['Idéal en début de journée.', 'Le retour ne doit pas être improvisé.'],
+    latitude: 43.7659,
+    longitude: 5.3648,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'mallemort',
+    name: 'Mallemort',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 36.9,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '3 h à 6 h',
+    moods: ['village', 'nature'],
+    description:
+      'Sortie plus longue vers la vallée de la Durance, utile si tu veux une journée calme avec peu de complexité touristique.',
+    tips: ['Vérifie le vent et la chaleur.', 'Bonne option si tu aimes les sorties linéaires.'],
+    latitude: 43.7304,
+    longitude: 5.1812,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'miramas-le-vieux',
+    name: 'Miramas-le-Vieux',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 41.7,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '3 h à 6 h',
+    moods: ['village', 'patrimoine', 'nature'],
+    description:
+      'Vieux village perché intéressant pour une journée plus longue, avec un trajet à préparer et à garder prudent.',
+    tips: ['Prévois une pause en chemin.', 'Le relief mérite d’être pris au sérieux.'],
+    latitude: 43.5894,
+    longitude: 5.0029,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'martigues',
+    name: 'Martigues',
+    category: 'journee',
+    area: 'cote-bleue',
+    distanceKmFromAix: 53.8,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '4 h à 7 h',
+    moods: ['mer', 'patrimoine', 'village'],
+    description:
+      'Ville d’eau et de port à envisager comme une vraie journée littorale, avec un retour clairement anticipé.',
+    tips: ['Bonne sortie par temps doux.', 'Le bord de mer peut être exposé au vent.'],
+    latitude: 43.4075,
+    longitude: 5.0556,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'niolon',
+    name: 'Niolon',
+    category: 'journee',
+    area: 'cote-bleue',
+    distanceKmFromAix: 55.9,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '4 h à 7 h',
+    moods: ['mer', 'nature'],
+    description:
+      'Petit secteur littoral à réserver à une sortie préparée, avec de belles vues mais une logistique à surveiller.',
+    tips: ['Le train peut simplifier le retour.', 'Prévois un stationnement très simple.'],
+    latitude: 43.3198,
+    longitude: 5.2407,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'ensues-la-redonne',
+    name: 'Ensuès-la-Redonne',
+    category: 'journee',
+    area: 'cote-bleue',
+    distanceKmFromAix: 57.3,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '4 h à 7 h',
+    moods: ['mer', 'nature', 'village'],
+    description:
+      'Village littoral pratique pour une sortie de bord de mer, avec un trajet à garder indicatif et les vents à anticiper.',
+    tips: ['Partir tôt reste la meilleure option.', 'Le stationnement côtier peut être limité.'],
+    latitude: 43.3319,
+    longitude: 5.1926,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'carry-le-rouet',
+    name: 'Carry-le-Rouet',
+    category: 'journee',
+    area: 'cote-bleue',
+    distanceKmFromAix: 66.4,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '4 h à 7 h',
+    moods: ['mer', 'village'],
+    description:
+      'Bord de mer, balade littorale et ambiance de fin de journée sur la Côte Bleue: un vrai changement d’air.',
+    tips: ['Bonne option pour un coucher de soleil.', 'À combiner avec train ou retour motorisé.'],
+    latitude: 43.3311,
+    longitude: 5.1531,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'sausset-les-pins',
+    name: 'Sausset-les-Pins',
+    category: 'journee',
+    area: 'cote-bleue',
+    distanceKmFromAix: 69.1,
+    distanceLabel: '+30 km',
+    budget: '<10€',
+    duration: '4 h à 7 h',
+    moods: ['mer', 'village'],
+    description:
+      'Sortie littorale simple à lire, utile si tu veux mêler mer, petites rues et marche sans entrer dans une grosse logistique.',
+    tips: ['Très bien avec un départ tôt.', 'Prends en compte le vent côtier.'],
+    latitude: 43.3315,
+    longitude: 5.1046,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'la-ciotat',
+    name: 'La Ciotat',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 61.8,
+    distanceLabel: '+30 km',
+    budget: 'variable',
+    duration: '4 h à 7 h',
+    moods: ['mer', 'patrimoine', 'nature'],
+    description:
+      'Sortie méditerranéenne plus ambitieuse, intéressante pour le bord de mer mais à aborder comme une vraie journée.',
+    tips: ['Le littoral impose de la marge.', 'Le retour doit être anticipé.'],
+    latitude: 43.1731,
+    longitude: 5.6028,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'le-tholonet-lac-zola',
+    name: 'Le Tholonet / Lac Zola',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 7.8,
+    distanceLabel: '7–15 km',
+    budget: '0€',
+    duration: '1 h 30 à 3 h',
+    moods: ['nature', 'calme', 'patrimoine'],
+    description:
+      'Boucle très intéressante pour un week-end doux, avec un itinéraire à garder indicatif autour du canal et du lac.',
+    tips: ['Départ matinal conseillé.', 'Vérifie les portions partagées avec les voitures.'],
+    latitude: 43.5169,
+    longitude: 5.5258,
+    rechargeStatus: 'none',
+  },
+  {
+    id: 'palette-route-cezanne',
+    name: 'Palette / route Cézanne',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 6.5,
+    distanceLabel: '3–7 km',
+    budget: '0€',
+    duration: '1 h à 2 h',
+    moods: ['nature', 'patrimoine', 'calme'],
+    description:
+      'Sortie courte et symbolique vers le versant de Cézanne, à garder comme itinéraire indicatif avec portions partagées.',
+    tips: ['Reste prudent dans les secteurs routiers.', 'Idéal en lumière douce.'],
+    latitude: 43.529,
+    longitude: 5.5142,
+    rechargeStatus: 'nearby',
+  },
+  {
+    id: 'parc-de-la-duranne',
+    name: 'Parc de la Duranne',
+    category: 'soir',
+    area: 'aix',
+    distanceKmFromAix: 9.6,
+    distanceLabel: '7–15 km',
+    budget: '0€',
+    duration: '45 min à 1 h 30',
+    moods: ['calme', 'nature'],
+    description:
+      'Secteur simple à rejoindre pour une balade courte en périphérie, utile quand tu veux une sortie facile à lire.',
+    tips: ['Bon choix en fin d’après-midi.', 'Surveille les liaisons entre quartiers.'],
+    latitude: 43.5085,
+    longitude: 5.3564,
+    rechargeStatus: 'nearby',
+  },
+  {
+    id: 'domaine-de-saint-pons',
+    name: 'Domaine de Saint-Pons',
+    category: 'weekend',
+    area: 'pays-aix',
+    distanceKmFromAix: 14.8,
+    distanceLabel: '7–15 km',
+    budget: '0€',
+    duration: '1 h 30 à 3 h',
+    moods: ['nature', 'calme', 'patrimoine'],
+    description:
+      'Domaine naturel agréable pour une sortie paisible, avec un trajet indicatif à vérifier selon les accès du jour.',
+    tips: ['Prends une marge batterie.', 'Le stationnement doit rester simple.'],
+    latitude: 43.4426,
+    longitude: 5.6031,
+    rechargeStatus: 'verify',
+  },
+  {
+    id: 'plan-deau-plantain-peyrolles',
+    name: 'Plan d’eau de Plantain / Peyrolles',
+    category: 'journee',
+    area: 'provence',
+    distanceKmFromAix: 24.7,
+    distanceLabel: '15–30 km',
+    budget: '0€',
+    duration: '2 h 30 à 5 h',
+    moods: ['nature', 'calme'],
+    description:
+      'Sortie au bord de l’eau à garder pour une journée préparée, avec une autonomie et un retour à surveiller de près.',
+    tips: ['Départ tôt conseillé.', 'Bonne option quand tu veux une pause nature claire.'],
+    latitude: 43.6618,
+    longitude: 5.6157,
+    rechargeStatus: 'verify',
+  },
 ];
+
+const destinationLabels: Record<Spot['area'], string> = {
+  aix: 'Aix-en-Provence',
+  'pays-aix': 'Pays d’Aix',
+  provence: 'Provence',
+  marseille: 'Marseille',
+  luberon: 'Luberon',
+  'cote-bleue': 'Côte Bleue',
+};
+
+function routeTypeForSpot(spot: SpotInput): Spot['routeType'] {
+  if (spot.area === 'aix' || spot.area === 'marseille') return 'urbain';
+  if (spot.area === 'cote-bleue') return 'littoral';
+  if (spot.area === 'luberon') return 'village';
+  if (spot.distanceKmFromAix <= 12) return 'mixte';
+  if (spot.category === 'journee') return 'nature';
+  return 'mixte';
+}
+
+function difficultyForDistance(distanceKmFromAix: number): Spot['difficulty'] {
+  if (distanceKmFromAix <= 7) return 'facile';
+  if (distanceKmFromAix <= 20) return 'intermédiaire';
+  return 'préparée';
+}
+
+function cyclingInfrastructureForRouteType(routeType: Spot['routeType']) {
+  switch (routeType) {
+    case 'urbain':
+    case 'littoral':
+      return {
+        status: 'partial' as const,
+        label: 'Pistes partielles',
+        notes: 'Présence d’aménagements ponctuels ou partiels selon les secteurs; itinéraire indicatif uniquement.',
+      };
+    case 'village':
+      return {
+        status: 'limited' as const,
+        label: 'Aménagements limités',
+        notes: 'Peu d’aménagements continus garantis; vérifie le trajet avant de partir.',
+      };
+    case 'nature':
+    case 'mixte':
+      return {
+        status: 'unknown' as const,
+        label: 'À vérifier',
+        notes: 'Aucune continuité d’aménagement à supposer sans vérification locale.',
+      };
+  }
+}
+
+function roadSafetyForRouteType(routeType: Spot['routeType']) {
+  switch (routeType) {
+    case 'urbain':
+      return {
+        level: 'moderate' as const,
+        notes: 'Trajet principalement urbain avec intersections et portions partagées; reste prudent aux carrefours.',
+      };
+    case 'littoral':
+      return {
+        level: 'caution' as const,
+        notes: 'Vent et exposition côtière peuvent peser; garde une marge et évite les heures chargées.',
+      };
+    case 'village':
+      return {
+        level: 'caution' as const,
+        notes: 'Rues de village et traversées locales: privilégie un roulage calme et un stationnement simple.',
+      };
+    case 'nature':
+      return {
+        level: 'caution' as const,
+        notes: 'Secteur plus ouvert ou naturel, avec revêtement et traversées à vérifier avant le départ.',
+      };
+    case 'mixte':
+      return {
+        level: 'unknown' as const,
+        notes: 'Trajet mixte: certaines portions sont plus tranquilles, d’autres peuvent être partagées avec les voitures.',
+      };
+  }
+}
+
+function bestTimeForSpot(spot: SpotInput) {
+  if (spot.distanceKmFromAix > 30) {
+    return 'Départ tôt, retour planifié avant la nuit';
+  }
+  if (spot.category === 'soir') {
+    return 'Fin d’après-midi / début de soirée';
+  }
+  if (spot.rechargeStatus === 'verify') {
+    return 'Matin avec marge de contrôle sur place';
+  }
+  if (spot.category === 'weekend') {
+    return 'Matin ou fin d’après-midi';
+  }
+  return 'Matin';
+}
+
+function parkingAdviceForRouteType(routeType: Spot['routeType']) {
+  switch (routeType) {
+    case 'urbain':
+      return 'Choisis un stationnement court, légal et visible, puis garde la trottinette avec toi si tu t’arrêtes longtemps.';
+    case 'littoral':
+      return 'Anticipe le stationnement, surtout le week-end et près du front de mer.';
+    case 'village':
+      return 'Vise un parking périphérique simple et garde une solution de cadenas légère.';
+    case 'nature':
+      return 'Stationne au départ d’une boucle claire et évite les zones isolées pour les pauses longues.';
+    case 'mixte':
+      return 'Repère un parking de repli et privilégie un arrêt simple à surveiller.';
+  }
+}
+
+function routeNotesForRouteType(routeType: Spot['routeType']) {
+  switch (routeType) {
+    case 'urbain':
+      return 'Itinéraire indicatif en milieu urbain, à vérifier sur place pour les traversées, pistes éventuelles et zones piétonnes.';
+    case 'littoral':
+      return 'Itinéraire indicatif sur secteur côtier, avec vent, stationnement et portions discontinues à vérifier.';
+    case 'village':
+      return 'Itinéraire indicatif vers un village, avec quelques traversées locales et un stationnement à choisir avec prudence.';
+    case 'nature':
+      return 'Itinéraire indicatif en secteur plus naturel ou ouvert, à vérifier pour le revêtement et les accès.';
+    case 'mixte':
+      return 'Itinéraire indicatif mixte, avec portions variées à confirmer avant de partir.';
+  }
+}
+
+function enrichSpot(spot: SpotInput): Spot {
+  const routeType = routeTypeForSpot(spot);
+  const cyclingInfrastructure = cyclingInfrastructureForRouteType(routeType);
+  const roadSafety = roadSafetyForRouteType(routeType);
+
+  return {
+    ...spot,
+    address: `${spot.name}, ${destinationLabels[spot.area]}`,
+    googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${spot.latitude},${spot.longitude}`,
+    routeNotes: routeNotesForRouteType(routeType),
+    cyclingInfrastructure,
+    roadSafety,
+    parkingAdvice: parkingAdviceForRouteType(routeType),
+    bestTime: bestTimeForSpot(spot),
+    isSimpleRide: spot.distanceKmFromAix <= 7,
+    difficulty: difficultyForDistance(spot.distanceKmFromAix),
+    routeType,
+  };
+}
+
+export const spots: Spot[] = rawSpots.map((spot) => enrichSpot(spot));
 
 export const distanceBands = ['0–3 km', '3–7 km', '7–15 km', '15–30 km', '+30 km'] as const;
 export const budgets = ['0€', '<5€', '<10€', 'variable'] as const;

@@ -1,5 +1,6 @@
 import type { ChargingPoint } from '../data/chargingPoints';
 import type { Spot } from '../data/spots';
+import { buildGoogleMapsBikeDirectionsUrl, buildGoogleMapsSearchUrl } from './maps';
 
 export function formatBudget(budget: Spot['budget']) {
   switch (budget) {
@@ -40,6 +41,81 @@ export function formatCompatibility(point: ChargingPoint['compatibility']) {
     case 'verify':
       return 'À vérifier avant départ';
   }
+}
+
+export function formatCyclingInfrastructureStatus(status: Spot['cyclingInfrastructure']['status']) {
+  switch (status) {
+    case 'good':
+      return 'Bon';
+    case 'partial':
+      return 'Partiel';
+    case 'limited':
+      return 'Limité';
+    case 'unknown':
+      return 'À vérifier';
+  }
+}
+
+export function formatRoadSafetyLevel(level: Spot['roadSafety']['level']) {
+  switch (level) {
+    case 'easy':
+      return 'Facile';
+    case 'moderate':
+      return 'Modéré';
+    case 'caution':
+      return 'Prudence';
+    case 'unknown':
+      return 'À vérifier';
+  }
+}
+
+export function formatDifficulty(difficulty: Spot['difficulty']) {
+  switch (difficulty) {
+    case 'facile':
+      return 'Facile';
+    case 'intermédiaire':
+      return 'Intermédiaire';
+    case 'préparée':
+      return 'Préparée';
+  }
+}
+
+export function formatRouteType(routeType: Spot['routeType']) {
+  switch (routeType) {
+    case 'urbain':
+      return 'Urbain';
+    case 'nature':
+      return 'Nature';
+    case 'village':
+      return 'Village';
+    case 'littoral':
+      return 'Littoral';
+    case 'mixte':
+      return 'Mixte';
+  }
+}
+
+export function destinationShortLabel(address: string) {
+  const parts = address
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (parts.length) {
+    return parts[parts.length - 1];
+  }
+  const slashParts = address.split('/').map((part) => part.trim()).filter(Boolean);
+  if (slashParts.length) {
+    return slashParts[slashParts.length - 1];
+  }
+  return address;
+}
+
+export function mapsSearchUrl(latitude: number, longitude: number) {
+  return buildGoogleMapsSearchUrl(latitude, longitude);
+}
+
+export function mapsBikeDirectionsUrl(latitude: number, longitude: number) {
+  return buildGoogleMapsBikeDirectionsUrl(latitude, longitude);
 }
 
 export function formatAccess(access: ChargingPoint['access']) {

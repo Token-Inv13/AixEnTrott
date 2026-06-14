@@ -2,7 +2,18 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { MapView } from '../components/MapView';
 import { Pill, SectionKicker } from '../components/Badges';
 import { spots } from '../data/spots';
-import { areaLabel, autonomyRecommendation, formatBudget, formatRechargeStatus } from '../lib/spot-utils';
+import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
+import {
+  areaLabel,
+  autonomyRecommendation,
+  destinationShortLabel,
+  formatBudget,
+  formatCyclingInfrastructureStatus,
+  formatDifficulty,
+  formatRechargeStatus,
+  formatRoadSafetyLevel,
+  formatRouteType,
+} from '../lib/spot-utils';
 
 export function SortieDetailPage() {
   const { id } = useParams();
@@ -34,6 +45,35 @@ export function SortieDetailPage() {
             </Pill>
           </div>
 
+          <div className="mt-6 grid gap-3 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2">
+            <div>
+              <p className="text-sm font-semibold text-slate-950">Adresse / point de destination</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{spot.address}</p>
+              <p className="mt-1 text-xs text-slate-500">Repère court: {destinationShortLabel(spot.address)}</p>
+            </div>
+            <div className="flex flex-wrap gap-2 sm:justify-end sm:items-start">
+              <a
+                href={spot.googleMapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky"
+              >
+                Ouvrir dans Google Maps
+              </a>
+              <a
+                href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude)}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-sky px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky/90"
+              >
+                Itinéraire vélo Google Maps
+              </a>
+            </div>
+          </div>
+          <p className="mt-3 text-xs leading-5 text-slate-500">
+            L’itinéraire vélo Google Maps est indicatif. Vérifie toujours la sécurité du trajet et les aménagements disponibles.
+          </p>
+
           <dl className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-slate-50 p-4">
               <dt className="text-sm text-slate-500">Autonomie estimée</dt>
@@ -51,7 +91,50 @@ export function SortieDetailPage() {
               <dt className="text-sm text-slate-500">Budget</dt>
               <dd className="mt-2 text-sm font-semibold text-slate-950">{formatBudget(spot.budget)}</dd>
             </div>
+            <div className="rounded-2xl bg-slate-50 p-4">
+              <dt className="text-sm text-slate-500">Difficulté</dt>
+              <dd className="mt-2 text-sm font-semibold text-slate-950">
+                {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()}
+              </dd>
+            </div>
           </dl>
+
+          <div className="mt-6 grid gap-4 rounded-[1.5rem] border border-slate-200 bg-white p-5">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <p className="text-sm font-semibold text-slate-950">Pistes cyclables / sécurité</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{spot.cyclingInfrastructure.label}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{spot.cyclingInfrastructure.notes}</p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-950">Niveau de prudence</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {formatRoadSafetyLevel(spot.roadSafety.level)}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{spot.roadSafety.notes}</p>
+              </div>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <p className="text-sm font-semibold text-slate-950">Conseil de stationnement</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{spot.parkingAdvice}</p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-950">Meilleur moment</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{spot.bestTime}</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-950">Itinéraire indicatif</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{spot.routeNotes}</p>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-950">Sortie simple</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {spot.isSimpleRide ? 'Oui, dans une logique de sortie simple.' : 'Non, à traiter comme une sortie préparée.'}
+              </p>
+            </div>
+          </div>
 
           <div className="mt-6">
             <h2 className="text-lg font-semibold text-slate-950">Conseils pratiques</h2>
