@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SectionKicker, SectionTitle, Pill } from '../components/Badges';
+import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
 import {
   getPlannerRecommendations,
@@ -33,7 +34,20 @@ export function PlannerPage() {
     [autonomyKm, tripType, primaryMood, prudence],
   );
 
-  const recommendations = useMemo(() => getPlannerRecommendations(spots, preferences, 8), [preferences]);
+  const routeDistances = useRouteDistances(spots);
+  const routeDistanceById = useMemo(
+    () =>
+      Object.fromEntries(Object.entries(routeDistances).map(([id, value]) => [id, value.distanceKm])) as Record<
+        string,
+        number
+      >,
+    [routeDistances],
+  );
+
+  const recommendations = useMemo(
+    () => getPlannerRecommendations(spots, preferences, 8, routeDistanceById),
+    [preferences, routeDistanceById],
+  );
   const chosenTrip = getTripTypeLabel(tripType);
   const chosenMood = getMoodLabel(primaryMood);
   const chosenPrudence = getPrudenceLabel(prudence);
@@ -184,8 +198,14 @@ export function PlannerPage() {
                   ))}
                 </ul>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <Pill>Distance indicative {spot.distanceLabel}</Pill>
+                  <Pill>
+                    {routeDistances[spot.id]?.source === 'google-routes' ? 'Distance calculée' : 'Distance indicative'}{' '}
+                    {(routeDistances[spot.id]?.distanceKm ?? spot.distanceKmFromAix).toFixed(1)} km
+                  </Pill>
                   <Pill>{spot.duration}</Pill>
+                  {routeDistances[spot.id]?.durationLabel ? (
+                    <Pill tone="sky">Durée vélo estimée: {routeDistances[spot.id]?.durationLabel}</Pill>
+                  ) : null}
                   <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>
                     {spot.rechargeStatus === 'confirmed'
                       ? 'Recharge confirmée'
@@ -197,7 +217,11 @@ export function PlannerPage() {
                   </Pill>
                 </div>
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-sm text-slate-500">{spot.isSimpleRide ? 'Sortie simple' : 'Prévoir une marge'}</p>
+                  <p className="text-sm text-slate-500">
+                    {routeDistances[spot.id]?.source === 'google-routes'
+                      ? 'Calcul basé sur Google Routes'
+                      : 'Calcul basé sur distance indicative'}
+                  </p>
                   <Link
                     to={`/sorties/${spot.id}`}
                     className="inline-flex rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky"

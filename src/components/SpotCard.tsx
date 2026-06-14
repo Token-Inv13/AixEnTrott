@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
 import type { Spot } from '../data/spots';
+import { buildGoogleMapsDirectionsUrl } from '../lib/google-maps-config';
+import { getAutonomyVerdict, getPlannerShortWarning } from '../lib/planner';
+import { type RouteDistanceDisplay } from '../lib/route-distance-types';
 import {
   destinationShortLabel,
   areaLabel,
@@ -7,15 +10,25 @@ import {
   categoryLabel,
   formatBudget,
   formatDifficulty,
-  formatRouteType,
   formatRechargeStatus,
+  formatRouteType,
 } from '../lib/spot-utils';
-import { getAutonomyVerdict, getPlannerShortWarning } from '../lib/planner';
 import { Pill } from './Badges';
 
-export function SpotCard({ spot, autonomyKm }: { spot: Spot; autonomyKm?: number | null }) {
+export function SpotCard({
+  spot,
+  autonomyKm,
+  routeDistance,
+}: {
+  spot: Spot;
+  autonomyKm?: number | null;
+  routeDistance?: RouteDistanceDisplay | null;
+}) {
   const verdict = autonomyKm == null ? null : getAutonomyVerdict(spot, autonomyKm);
   const longTripWarning = getPlannerShortWarning(spot);
+  const distanceLabel = routeDistance?.label ?? 'Distance indicative';
+  const distanceValue = routeDistance?.distanceKm ?? spot.distanceKmFromAix;
+  const durationLabel = routeDistance?.durationLabel;
 
   return (
     <article className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
@@ -23,8 +36,9 @@ export function SpotCard({ spot, autonomyKm }: { spot: Spot; autonomyKm?: number
         <div>
           <h3 className="text-lg font-semibold text-slate-950">{spot.name}</h3>
           <p className="mt-1 text-sm text-slate-500">
-            Distance indicative {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
+            {distanceLabel} {distanceValue.toFixed(1)} km · {spot.duration} · {areaLabel(spot.area)}
           </p>
+          {durationLabel ? <p className="mt-1 text-xs font-medium text-sky">Durée vélo estimée : {durationLabel}</p> : null}
           <p className="mt-1 text-xs text-slate-500">
             {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()} ·{' '}
             {spot.cyclingInfrastructure.label.toLowerCase()} · {destinationShortLabel(spot.address)}
@@ -34,6 +48,11 @@ export function SpotCard({ spot, autonomyKm }: { spot: Spot; autonomyKm?: number
           <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>
             {formatRechargeStatus(spot.rechargeStatus)}
           </Pill>
+          {routeDistance ? (
+            <Pill tone={routeDistance.source === 'google-routes' ? 'emerald' : 'amber'}>
+              {routeDistance.source === 'google-routes' ? 'Calcul basé sur Google Routes' : 'Calcul basé sur distance indicative'}
+            </Pill>
+          ) : null}
           {verdict ? (
             <Pill
               tone={
@@ -63,7 +82,7 @@ export function SpotCard({ spot, autonomyKm }: { spot: Spot; autonomyKm?: number
         </div>
         <div className="rounded-2xl bg-slate-50 p-3">
           <dt className="text-slate-500">Autonomie estimée</dt>
-          <dd className="mt-1 font-semibold text-slate-950">{autonomyRecommendation(spot.distanceKmFromAix)}</dd>
+          <dd className="mt-1 font-semibold text-slate-950">{autonomyRecommendation(distanceValue)}</dd>
         </div>
         <div className="rounded-2xl bg-slate-50 p-3">
           <dt className="text-slate-500">Ambiance</dt>
@@ -86,6 +105,18 @@ export function SpotCard({ spot, autonomyKm }: { spot: Spot; autonomyKm?: number
           Voir la fiche
         </Link>
       </div>
+      <p className="mt-3 text-xs text-slate-500">
+        Les itinéraires vélo Google Maps sont indicatifs et peuvent ne pas refléter toutes les pistes cyclables ou zones
+        adaptées aux trottinettes.
+      </p>
+      <a
+        href={buildGoogleMapsDirectionsUrl(spot.latitude, spot.longitude)}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-3 inline-flex text-xs font-semibold text-sky"
+      >
+        Itinéraire Google Maps
+      </a>
     </article>
   );
 }

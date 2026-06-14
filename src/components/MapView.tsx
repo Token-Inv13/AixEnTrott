@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { CircleMarker, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { CircleMarker, MapContainer, Marker, Popup, Polyline, TileLayer, useMap } from 'react-leaflet';
 import L, { type LatLngExpression } from 'leaflet';
 import type { ChargingPoint } from '../data/chargingPoints';
 import type { Spot } from '../data/spots';
@@ -13,6 +13,9 @@ import {
   formatRechargeStatus,
   formatRouteType,
 } from '../lib/spot-utils';
+import { buildGoogleMapsDirectionsUrl } from '../lib/google-maps-config';
+import { decodePolyline } from '../lib/polyline';
+import type { RouteDistanceDisplay } from '../lib/route-distance-types';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
 
 function makeIcon(color: string) {
@@ -52,12 +55,16 @@ export function MapView({
   chargingPoints,
   showSpots = true,
   showCharging = true,
+  routePolyline,
+  routeDistanceBySpotId = {},
   height = 'h-[26rem]',
 }: {
   spots: Spot[];
   chargingPoints: ChargingPoint[];
   showSpots?: boolean;
   showCharging?: boolean;
+  routePolyline?: string | null;
+  routeDistanceBySpotId?: Record<string, RouteDistanceDisplay | undefined>;
   height?: string;
 }) {
   const points = useMemo(() => {
@@ -79,6 +86,12 @@ export function MapView({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        {routePolyline ? (
+          <Polyline
+            positions={decodePolyline(routePolyline).map((point) => [point.lat, point.lng])}
+            pathOptions={{ color: '#0f172a', weight: 4, opacity: 0.85 }}
+          />
+        ) : null}
         {showSpots
           ? spots.map((spot) => (
               <Marker key={spot.id} position={[spot.latitude, spot.longitude]} icon={makeIcon('#2563eb')}>
@@ -86,7 +99,15 @@ export function MapView({
                   <div className="max-w-[15rem]">
                     <h3 className="text-sm font-semibold text-slate-950">{spot.name}</h3>
                     <p className="mt-1 text-xs text-slate-500">Type: Sortie</p>
-                    <p className="mt-1 text-xs text-slate-500">Distance indicative: {spot.distanceLabel}</p>
+                    <p className="mt-1 text-xs text-slate-500">
+                      {routeDistanceBySpotId[spot.id]?.source === 'google-routes' ? 'Distance calculée' : 'Distance indicative'}:{' '}
+                      {(routeDistanceBySpotId[spot.id]?.distanceKm ?? spot.distanceKmFromAix).toFixed(1)} km
+                    </p>
+                    {routeDistanceBySpotId[spot.id]?.durationLabel ? (
+                      <p className="mt-1 text-xs text-slate-500">
+                        Durée vélo estimée: {routeDistanceBySpotId[spot.id]?.durationLabel}
+                      </p>
+                    ) : null}
                     <p className="mt-1 text-xs text-slate-500">Budget: {formatBudget(spot.budget)}</p>
                     <p className="mt-1 text-xs text-slate-500">
                       Statut recharge: {formatRechargeStatus(spot.rechargeStatus)}
@@ -96,8 +117,10 @@ export function MapView({
                     <p className="mt-1 text-xs text-slate-500">
                       Difficulté: {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()}
                     </p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      Pistes: {spot.cyclingInfrastructure.label}
+                    <p className="mt-1 text-xs text-slate-500">Pistes: {spot.cyclingInfrastructure.label}</p>
+                    <p className="mt-2 text-[11px] leading-5 text-slate-400">
+                      Les itinéraires vélo Google Maps sont indicatifs et peuvent ne pas refléter toutes les pistes
+                      cyclables ou zones adaptées aux trottinettes.
                     </p>
                     <a
                       className="mt-3 inline-flex text-xs font-semibold text-sky"
@@ -111,6 +134,14 @@ export function MapView({
                       <Link className="inline-flex text-xs font-semibold text-sky" to={`/sorties/${spot.id}`}>
                         Voir la fiche
                       </Link>
+                      <a
+                        className="inline-flex text-xs font-semibold text-sky"
+                        href={buildGoogleMapsDirectionsUrl(spot.latitude, spot.longitude)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Ouvrir destination
+                      </a>
                     </div>
                   </div>
                 </Popup>

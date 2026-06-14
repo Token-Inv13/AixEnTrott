@@ -54,9 +54,9 @@ export function estimateRequiredAutonomyKm(spot: Spot) {
   return estimateRoundTripKm(spot) * 1.2;
 }
 
-export function getAutonomyVerdict(spot: Spot, autonomyKm: number): AutonomyVerdict {
-  const roundTrip = estimateRoundTripKm(spot);
-  const required = estimateRequiredAutonomyKm(spot);
+export function getAutonomyVerdictForDistance(distanceKmFromAix: number, autonomyKm: number): AutonomyVerdict {
+  const roundTrip = distanceKmFromAix * 2;
+  const required = roundTrip * 1.2;
 
   if (autonomyKm >= required) {
     return {
@@ -89,6 +89,10 @@ export function getAutonomyVerdict(spot: Spot, autonomyKm: number): AutonomyVerd
   };
 }
 
+export function getAutonomyVerdict(spot: Spot, autonomyKm: number): AutonomyVerdict {
+  return getAutonomyVerdictForDistance(spot.distanceKmFromAix, autonomyKm);
+}
+
 export function getTripTypeLabel(tripType: PlannerTripType) {
   return tripTypeOptions.find((item) => item.value === tripType)?.label ?? 'Sortie';
 }
@@ -101,10 +105,10 @@ export function getPrudenceLabel(prudence: PlannerPrudence) {
   return prudenceOptions.find((item) => item.value === prudence)?.label ?? prudence;
 }
 
-function matchesTripType(spot: Spot, tripType: PlannerTripType) {
+function matchesTripType(spot: Spot, tripType: PlannerTripType, distanceKmFromAix: number) {
   switch (tripType) {
     case 'quick':
-      return spot.distanceKmFromAix <= 7 && (spot.category === 'soir' || spot.category === 'weekend');
+      return distanceKmFromAix <= 7 && (spot.category === 'soir' || spot.category === 'weekend');
     case 'evening':
       return spot.category === 'soir';
     case 'weekend':
@@ -132,11 +136,14 @@ function matchesPrudence(spot: Spot, prudence: PlannerPrudence) {
   }
 }
 
-export function scoreSpotForPlanner(spot: Spot, preferences: PlannerPreferences) {
+export function scoreSpotForPlanner(spot: Spot, preferences: PlannerPreferences, effectiveDistanceKm?: number) {
   const reasons: string[] = [];
   let score = 0;
+  const distanceKmFromAix = effectiveDistanceKm ?? spot.distanceKmFromAix;
+  const roundTripKm = distanceKmFromAix * 2;
+  const requiredAutonomyKm = roundTripKm * 1.2;
 
-  if (matchesTripType(spot, preferences.tripType)) {
+  if (matchesTripType(spot, preferences.tripType, distanceKmFromAix)) {
     score += 35;
     reasons.push(`Format compatible avec "${getTripTypeLabel(preferences.tripType).toLowerCase()}".`);
   } else {
@@ -157,7 +164,7 @@ export function scoreSpotForPlanner(spot: Spot, preferences: PlannerPreferences)
     score -= 20;
   }
 
-  const verdict = getAutonomyVerdict(spot, preferences.autonomyKm);
+  const verdict = getAutonomyVerdictForDistance(distanceKmFromAix, preferences.autonomyKm);
   switch (verdict.status) {
     case 'compatible':
       score += 25;
@@ -177,9 +184,13 @@ export function scoreSpotForPlanner(spot: Spot, preferences: PlannerPreferences)
       break;
   }
 
-  if (spot.distanceKmFromAix > 30) {
+  if (distanceKmFromAix > 30) {
     score -= 10;
     reasons.push('Sortie longue: prévoir train, voiture, recharge ou retour alternatif.');
+  }
+
+  if (preferences.autonomyKm >= requiredAutonomyKm) {
+    score += 2;
   }
 
   if (spot.rechargeStatus === 'confirmed') {
@@ -195,10 +206,16 @@ export function scoreSpotForPlanner(spot: Spot, preferences: PlannerPreferences)
   return { score, verdict, reasons };
 }
 
-export function getPlannerRecommendations(spots: Spot[], preferences: PlannerPreferences, limit = 8): PlannerRecommendation[] {
+export function getPlannerRecommendations(
+  spots: Spot[],
+  preferences: PlannerPreferences,
+  limit = 8,
+  routeDistanceById?: Record<string, number>,
+): PlannerRecommendation[] {
   return spots
     .map((spot) => {
-      const { score, verdict, reasons } = scoreSpotForPlanner(spot, preferences);
+      const effectiveDistance = routeDistanceById?.[spot.id];
+      const { score, verdict, reasons } = scoreSpotForPlanner(spot, preferences, effectiveDistance);
       return { spot, score, verdict, reasons };
     })
     .sort((a, b) => b.score - a.score || a.spot.distanceKmFromAix - b.spot.distanceKmFromAix)

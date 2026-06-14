@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SpotCard } from '../components/SpotCard';
 import { Pill, SectionTitle } from '../components/Badges';
+import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots, type Spot } from '../data/spots';
 import { formatRechargeStatus } from '../lib/spot-utils';
 
@@ -88,6 +89,7 @@ export function SortiesPage() {
   const [autonomyKm, setAutonomyKm] = useState<number | null>(40);
 
   const filtered = useMemo(() => spots.filter((spot) => matchesFilters(spot, filters)), [filters]);
+  const routeDistances = useRouteDistances(filtered);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -179,7 +181,12 @@ export function SortiesPage() {
       {filtered.length ? (
         <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((spot) => (
-            <SpotCard key={spot.id} spot={spot} autonomyKm={autonomyKm ?? undefined} />
+            <SpotCard
+              key={spot.id}
+              spot={spot}
+              autonomyKm={autonomyKm ?? undefined}
+              routeDistance={routeDistances[spot.id]}
+            />
           ))}
         </section>
       ) : (

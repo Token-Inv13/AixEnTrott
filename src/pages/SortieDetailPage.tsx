@@ -2,9 +2,10 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { MapView } from '../components/MapView';
 import { Pill, SectionKicker } from '../components/Badges';
 import { buildReportIssueMailto } from '../config/site';
+import { useRouteDistance } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
-import { estimateRequiredAutonomyKm, estimateRoundTripKm, getPlannerShortWarning } from '../lib/planner';
+import { getPlannerShortWarning } from '../lib/planner';
 import {
   areaLabel,
   autonomyRecommendation,
@@ -19,24 +20,27 @@ import {
 export function SortieDetailPage() {
   const { id } = useParams();
   const spot = spots.find((item) => item.id === id);
-  const roundTripKm = estimateRoundTripKm(spot ?? spots[0]);
-  const requiredAutonomyKm = estimateRequiredAutonomyKm(spot ?? spots[0]);
-  const planAdvice =
-    !spot || spot.distanceKmFromAix > 30
-      ? 'Prévoir retour alternatif'
-      : spot.rechargeStatus === 'verify' || spot.rechargeStatus === 'none'
-        ? 'Recharge à vérifier'
-        : spot.distanceKmFromAix > 7
-          ? 'Prévoir marge'
-          : 'Sortie simple';
-  const reportMailto = buildReportIssueMailto(
-    spot?.name ?? 'Sortie',
-    typeof window !== 'undefined' ? window.location.href : `https://trott-out-aix.vercel.app/sorties/${spot?.id ?? ''}`,
-  );
+  const routeDistance = useRouteDistance(spot);
 
   if (!spot) {
     return <Navigate to="/sorties" replace />;
   }
+
+  const distanceKm = routeDistance?.distanceKm ?? spot.distanceKmFromAix;
+  const roundTripKm = distanceKm * 2;
+  const requiredAutonomyKm = roundTripKm * 1.2;
+  const planAdvice =
+    distanceKm > 30
+      ? 'Prévoir retour alternatif'
+      : spot.rechargeStatus === 'verify' || spot.rechargeStatus === 'none'
+        ? 'Recharge à vérifier'
+        : distanceKm > 7
+          ? 'Prévoir marge'
+          : 'Sortie simple';
+  const reportMailto = buildReportIssueMailto(
+    spot.name,
+    typeof window !== 'undefined' ? window.location.href : `https://trott-out-aix.vercel.app/sorties/${spot.id}`,
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -51,13 +55,16 @@ export function SortieDetailPage() {
           <p className="mt-3 text-base leading-7 text-slate-600">{spot.description}</p>
 
           <div className="mt-6 flex flex-wrap gap-2">
-            <Pill tone="sky">Distance indicative {spot.distanceLabel}</Pill>
+            <Pill tone={routeDistance?.source === 'google-routes' ? 'emerald' : 'sky'}>
+              {routeDistance?.source === 'google-routes' ? 'Distance calculée' : 'Distance indicative'} {distanceKm.toFixed(1)} km
+            </Pill>
             <Pill tone="emerald">{formatBudget(spot.budget)}</Pill>
             <Pill>{spot.duration}</Pill>
             <Pill>{areaLabel(spot.area)}</Pill>
             <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>
               {formatRechargeStatus(spot.rechargeStatus)}
             </Pill>
+            {routeDistance?.durationLabel ? <Pill tone="sky">Durée vélo estimée {routeDistance.durationLabel}</Pill> : null}
           </div>
 
           <div className="mt-6 grid gap-3 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2">
@@ -102,8 +109,10 @@ export function SortieDetailPage() {
             </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl bg-slate-50 p-4">
-                <p className="text-sm text-slate-500">Distance aller indicative</p>
-                <p className="mt-2 text-sm font-semibold text-slate-950">{spot.distanceKmFromAix.toFixed(1)} km</p>
+                <p className="text-sm text-slate-500">
+                  {routeDistance?.source === 'google-routes' ? 'Distance aller calculée' : 'Distance aller indicative'}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-slate-950">{distanceKm.toFixed(1)} km</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-4">
                 <p className="text-sm text-slate-500">Distance aller-retour indicative</p>
@@ -130,7 +139,7 @@ export function SortieDetailPage() {
               <p className="text-sm text-slate-500">Conseil</p>
               <p className="mt-2 text-sm font-semibold text-slate-950">{planAdvice}</p>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                {spot.distanceKmFromAix > 30
+                {distanceKm > 30
                   ? 'Sortie longue : prévoir train, voiture, recharge ou retour alternatif.'
                   : getPlannerShortWarning(spot)}
               </p>
@@ -158,7 +167,7 @@ export function SortieDetailPage() {
           <dl className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-slate-50 p-4">
               <dt className="text-sm text-slate-500">Autonomie estimée</dt>
-              <dd className="mt-2 text-sm font-semibold text-slate-950">{autonomyRecommendation(spot.distanceKmFromAix)}</dd>
+              <dd className="mt-2 text-sm font-semibold text-slate-950">{autonomyRecommendation(distanceKm)}</dd>
             </div>
             <div className="rounded-2xl bg-slate-50 p-4">
               <dt className="text-sm text-slate-500">Ambiance</dt>
@@ -166,7 +175,7 @@ export function SortieDetailPage() {
             </div>
             <div className="rounded-2xl bg-slate-50 p-4">
               <dt className="text-sm text-slate-500">Distance indicative</dt>
-              <dd className="mt-2 text-sm font-semibold text-slate-950">{spot.distanceKmFromAix} km depuis Aix</dd>
+              <dd className="mt-2 text-sm font-semibold text-slate-950">{distanceKm} km depuis Aix</dd>
             </div>
             <div className="rounded-2xl bg-slate-50 p-4">
               <dt className="text-sm text-slate-500">Budget</dt>
@@ -189,9 +198,7 @@ export function SortieDetailPage() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-slate-950">Niveau de prudence</p>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  {formatRoadSafetyLevel(spot.roadSafety.level)}
-                </p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{formatRoadSafetyLevel(spot.roadSafety.level)}</p>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{spot.roadSafety.notes}</p>
               </div>
             </div>
@@ -233,7 +240,7 @@ export function SortieDetailPage() {
           <div className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft">
             <p className="text-sm font-semibold text-slate-950">Carte centrée sur le lieu</p>
             <div className="mt-4">
-              <MapView spots={[spot]} chargingPoints={[]} showCharging={false} height="h-[24rem]" />
+              <MapView spots={[spot]} chargingPoints={[]} showCharging={false} routePolyline={routeDistance?.encodedPolyline} height="h-[24rem]" />
             </div>
           </div>
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
