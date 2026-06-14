@@ -1,13 +1,25 @@
 import { SectionTitle } from '../components/Badges';
 import { ChargingPointCard } from '../components/ChargingPointCard';
+import { buildReportIssueMailto } from '../config/site';
 import { chargingPoints } from '../data/chargingPoints';
 
 export function RechargePage() {
+  const reportMailto = buildReportIssueMailto('Recharge', 'https://trott-out-aix.vercel.app/recharge');
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <SectionTitle description="Cette page sépare clairement les prises 220V réellement utiles pour trottinette des bornes voiture et des solutions privées.">
         Recharge
       </SectionTitle>
+
+      <div className="mt-5 flex flex-wrap gap-3">
+        <a
+          href={reportMailto}
+          className="inline-flex rounded-full bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky"
+        >
+          Signaler une erreur
+        </a>
+      </div>
 
       <section className="mt-6 grid gap-4 lg:grid-cols-[0.75fr_1.25fr]">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const navItems = [
   { to: '/', label: 'Accueil' },
@@ -18,6 +18,15 @@ function linkClass({ isActive }: { isActive: boolean }) {
 }
 
 export function Layout({ children }: { children: ReactNode }) {
+  const footerLinks = [
+    { to: '/', label: 'Accueil' },
+    { to: '/sorties', label: 'Sorties' },
+    { to: '/carte', label: 'Carte' },
+    { to: '/recharge', label: 'Recharge' },
+    { to: '/conseils', label: 'Conseils' },
+    { to: '/a-propos', label: 'À propos' },
+  ];
+
   return (
     <div className="app-shell min-h-screen">
       <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur">
@@ -51,11 +60,17 @@ export function Layout({ children }: { children: ReactNode }) {
       </header>
       <main>{children}</main>
       <footer className="border-t border-slate-200/70 bg-white/75">
-        <div className="mx-auto max-w-7xl px-4 py-8 text-sm text-slate-500 sm:px-6 lg:px-8">
-          <p>
-            Site statique sans backend. Les distances sont indicatives et les points de recharge doivent être
-            vérifiés avant départ.
-          </p>
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <div className="grid gap-4 border-t border-slate-200/60 pt-6 text-sm text-slate-500 md:grid-cols-[1fr_auto] md:items-end">
+            <p>Site indépendant. Distances, autonomie, pistes cyclables et recharges à vérifier avant départ.</p>
+            <nav className="flex flex-wrap gap-x-4 gap-y-2">
+              {footerLinks.map((item) => (
+                <Link key={item.to} to={item.to} className="font-medium text-slate-600 transition hover:text-slate-950">
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
         </div>
       </footer>
     </div>

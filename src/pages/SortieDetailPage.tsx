@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { MapView } from '../components/MapView';
 import { Pill, SectionKicker } from '../components/Badges';
+import { buildReportIssueMailto } from '../config/site';
 import { spots } from '../data/spots';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
 import { estimateRequiredAutonomyKm, estimateRoundTripKm, getPlannerShortWarning } from '../lib/planner';
@@ -9,7 +10,6 @@ import {
   autonomyRecommendation,
   destinationShortLabel,
   formatBudget,
-  formatCyclingInfrastructureStatus,
   formatDifficulty,
   formatRechargeStatus,
   formatRoadSafetyLevel,
@@ -29,6 +29,10 @@ export function SortieDetailPage() {
         : spot.distanceKmFromAix > 7
           ? 'Prévoir marge'
           : 'Sortie simple';
+  const reportMailto = buildReportIssueMailto(
+    spot?.name ?? 'Sortie',
+    typeof window !== 'undefined' ? window.location.href : `https://trott-out-aix.vercel.app/sorties/${spot?.id ?? ''}`,
+  );
 
   if (!spot) {
     return <Navigate to="/sorties" replace />;
@@ -79,6 +83,12 @@ export function SortieDetailPage() {
               >
                 Itinéraire vélo Google Maps
               </a>
+              <a
+                href={reportMailto}
+                className="inline-flex items-center justify-center rounded-full bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 ring-1 ring-amber-200 transition hover:bg-amber-100"
+              >
+                Signaler une erreur
+              </a>
             </div>
           </div>
           <p className="mt-3 text-xs leading-5 text-slate-500">
@@ -124,6 +134,24 @@ export function SortieDetailPage() {
                   ? 'Sortie longue : prévoir train, voiture, recharge ou retour alternatif.'
                   : getPlannerShortWarning(spot)}
               </p>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
+            <p className="text-sm font-semibold text-slate-950">Fiabilité des infos</p>
+            <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
+              <li>Coordonnées : indicatives / à vérifier.</li>
+              <li>Distance : indicative.</li>
+              <li>Pistes cyclables : indicatives.</li>
+              <li>Recharge : à vérifier avant départ.</li>
+            </ul>
+            <div className="mt-4">
+              <a
+                href={reportMailto}
+                className="inline-flex rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky"
+              >
+                Signaler une erreur
+              </a>
             </div>
           </div>
 
