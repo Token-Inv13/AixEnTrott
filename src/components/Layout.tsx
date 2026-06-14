@@ -1,0 +1,62 @@
+import type { ReactNode } from 'react';
+import { NavLink, Link } from 'react-router-dom';
+
+const navItems = [
+  { to: '/', label: 'Accueil' },
+  { to: '/sorties', label: 'Sorties' },
+  { to: '/carte', label: 'Carte' },
+  { to: '/recharge', label: 'Recharge' },
+  { to: '/conseils', label: 'Conseils' },
+];
+
+function linkClass({ isActive }: { isActive: boolean }) {
+  return [
+    'rounded-full px-4 py-2 text-sm font-medium transition',
+    isActive ? 'bg-sky text-white shadow-soft' : 'text-slate-600 hover:bg-white hover:text-slate-950',
+  ].join(' ');
+}
+
+export function Layout({ children }: { children: ReactNode }) {
+  return (
+    <div className="app-shell min-h-screen">
+      <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+          <Link to="/" className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-sky to-emerald-500 text-sm font-bold text-white shadow-soft">
+              TA
+            </span>
+            <span className="leading-tight">
+              <span className="block text-sm font-semibold tracking-wide text-slate-950">trott-out-aix</span>
+              <span className="block text-xs text-slate-500">Sorties en trottinette autour d’Aix</span>
+            </span>
+          </Link>
+          <nav className="hidden items-center gap-1 rounded-full border border-slate-200 bg-slate-50 p-1 md:flex">
+            {navItems.map((item) => (
+              <NavLink key={item.to} to={item.to} className={linkClass}>
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+        <div className="border-t border-slate-100 bg-white/80 px-4 py-2 md:hidden">
+          <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto pb-1">
+            {navItems.map((item) => (
+              <NavLink key={item.to} to={item.to} className={linkClass}>
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
+        </div>
+      </header>
+      <main>{children}</main>
+      <footer className="border-t border-slate-200/70 bg-white/75">
+        <div className="mx-auto max-w-7xl px-4 py-8 text-sm text-slate-500 sm:px-6 lg:px-8">
+          <p>
+            Site statique sans backend. Les distances sont indicatives et les points de recharge doivent être
+            vérifiés avant départ.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
