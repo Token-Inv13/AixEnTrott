@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://trott-out-aix.vercel.app/sitemap.xml
+Sitemap: https://aixentrott.fr/sitemap.xml

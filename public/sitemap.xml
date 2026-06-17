@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://trott-out-aix.vercel.app/</loc></url>
-  <url><loc>https://trott-out-aix.vercel.app/planner</loc></url>
-  <url><loc>https://trott-out-aix.vercel.app/sorties</loc></url>
-  <url><loc>https://trott-out-aix.vercel.app/carte</loc></url>
-  <url><loc>https://trott-out-aix.vercel.app/recharge</loc></url>
-  <url><loc>https://trott-out-aix.vercel.app/conseils</loc></url>
-  <url><loc>https://trott-out-aix.vercel.app/a-propos</loc></url>
+  <url><loc>https://aixentrott.fr/</loc></url>
+  <url><loc>https://aixentrott.fr/planner</loc></url>
+  <url><loc>https://aixentrott.fr/sorties</loc></url>
+  <url><loc>https://aixentrott.fr/carte</loc></url>
+  <url><loc>https://aixentrott.fr/recharge</loc></url>
+  <url><loc>https://aixentrott.fr/conseils</loc></url>
+  <url><loc>https://aixentrott.fr/a-propos</loc></url>
 </urlset>

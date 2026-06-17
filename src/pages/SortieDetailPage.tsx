@@ -42,7 +42,7 @@ export function SortieDetailPage() {
           : 'Sortie simple';
   const reportMailto = buildReportIssueMailto(
     spot.name,
-    typeof window !== 'undefined' ? window.location.href : `https://trott-out-aix.vercel.app/sorties/${spot.id}`,
+    typeof window !== 'undefined' ? window.location.href : `https://aixentrott.fr/sorties/${spot.id}`,
   );
 
   return (

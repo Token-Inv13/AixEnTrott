@@ -4,7 +4,7 @@ import { buildReportIssueMailto } from '../config/site';
 import { chargingPoints } from '../data/chargingPoints';
 
 export function RechargePage() {
-  const reportMailto = buildReportIssueMailto('Recharge', 'https://trott-out-aix.vercel.app/recharge');
+  const reportMailto = buildReportIssueMailto('Recharge', 'https://aixentrott.fr/recharge');
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
