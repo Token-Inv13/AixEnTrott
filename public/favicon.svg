@@ -1,12 +1,12 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="g" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#2563EB"/>
-      <stop offset="1" stop-color="#10B981"/>
+    <linearGradient id="iconGradient" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB" />
+      <stop offset="1" stop-color="#10B981" />
     </linearGradient>
   </defs>
-  <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#g)"/>
-  <path d="M22 38C22 30.268 28.268 24 36 24H40C44.4183 24 48 27.5817 48 32V34C48 38.4183 44.4183 42 40 42H28" stroke="white" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="26" cy="46" r="4" fill="white"/>
-  <circle cx="42" cy="46" r="4" fill="white"/>
+  <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#iconGradient)" />
+  <path d="M18 36C18 27.7157 24.7157 21 33 21H39C43.9706 21 48 25.0294 48 30V31.5C48 36.4706 43.9706 40.5 39 40.5H24" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <circle cx="25" cy="45.5" r="4" fill="white" />
+  <circle cx="41.5" cy="45.5" r="4" fill="white" />
 </svg>

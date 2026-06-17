@@ -32,9 +32,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-sky to-emerald-500 text-sm font-bold text-white shadow-soft">
-              AeT
-            </span>
+            <img src="/logo-mark.svg" alt="Aix en trott" className="h-10 w-10 rounded-2xl shadow-soft" />
             <span className="leading-tight">
               <span className="block text-sm font-semibold tracking-wide text-slate-950">Aix en trott</span>
               <span className="block text-xs text-slate-500">Sorties en trottinette autour d'Aix</span>

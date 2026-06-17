@@ -1,10 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" rx="48" fill="#F8FAFC"/>
-  <circle cx="184" cy="140" r="88" fill="#38BDF8"/>
-  <circle cx="184" cy="140" r="54" fill="#0F172A" fill-opacity="0.08"/>
-  <text x="316" y="212" fill="#0F172A" font-family="Arial, sans-serif" font-size="72" font-weight="700">Aix en trott</text>
-  <text x="316" y="286" fill="#334155" font-family="Arial, sans-serif" font-size="34">Sorties en trottinette autour d’Aix-en-Provence</text>
-  <text x="316" y="346" fill="#475569" font-family="Arial, sans-serif" font-size="26">Planification, autonomie, recharge et conseils pratiques</text>
-  <rect x="316" y="404" width="236" height="64" rx="32" fill="#0F172A"/>
-  <text x="368" y="447" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="24" font-weight="700">Aix en trott</text>
+  <defs>
+    <linearGradient id="bgGlow" x1="160" y1="80" x2="1020" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DBEAFE" />
+      <stop offset="1" stop-color="#D1FAE5" />
+    </linearGradient>
+    <linearGradient id="markGradient" x1="96" y1="92" x2="264" y2="280" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB" />
+      <stop offset="1" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" rx="48" fill="#F8FAFC" />
+  <rect x="56" y="56" width="1088" height="518" rx="40" fill="url(#bgGlow)" fill-opacity="0.6" />
+  <rect x="92" y="92" width="176" height="176" rx="48" fill="url(#markGradient)" />
+  <path d="M134 190C134 164.595 154.595 144 180 144H198C212.912 144 225 156.088 225 171V174C225 188.912 212.912 201 198 201H150" stroke="white" stroke-width="12" stroke-linecap="round" />
+  <circle cx="151" cy="220" r="11" fill="white" />
+  <circle cx="201" cy="220" r="11" fill="white" />
+  <text x="320" y="205" fill="#0F172A" font-family="Manrope, Arial, sans-serif" font-size="76" font-weight="800">Aix en trott</text>
+  <text x="320" y="274" fill="#334155" font-family="Manrope, Arial, sans-serif" font-size="34">Sorties en trottinette autour d’Aix-en-Provence</text>
+  <text x="320" y="332" fill="#475569" font-family="Manrope, Arial, sans-serif" font-size="28">Carte, autonomie, recharge et conseils pratiques</text>
+  <rect x="320" y="394" width="286" height="64" rx="32" fill="#0F172A" />
+  <text x="377" y="436" fill="#FFFFFF" font-family="Manrope, Arial, sans-serif" font-size="24" font-weight="700">aixentrott.fr</text>
 </svg>
