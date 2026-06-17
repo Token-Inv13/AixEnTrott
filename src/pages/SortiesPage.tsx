@@ -4,7 +4,6 @@ import { SpotCard } from '../components/SpotCard';
 import { Pill, SectionTitle } from '../components/Badges';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots, type Spot } from '../data/spots';
-import { formatRechargeStatus } from '../lib/spot-utils';
 import { useRouteOrigin } from '../context/route-origin-context';
 
 type FilterState = {
@@ -37,11 +36,11 @@ const valueLabels: Record<string, string> = {
   '<10€': '< 10 €',
   weekend: 'week-end',
   soir: 'soir',
-  confirmed: 'Recharge confirmée',
+  confirmed: 'Recharge confirmee',
   nearby: 'Recharge possible',
-  verify: 'Recharge à vérifier',
+  verify: 'Recharge a verifier',
   none: 'Aucune connue',
-  journee: 'Journée',
+  journee: 'Journee',
 };
 
 const autonomyOptions = [20, 30, 40, 60, 80] as const;
@@ -95,21 +94,19 @@ export function SortiesPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <SectionTitle description="Catalogue filtrable des sorties. Toutes les distances sont indicatives et les statuts de recharge restent prudents par défaut.">
-        Sorties autour d’Aix
+      <SectionTitle description="Filtre les sorties par distance, ambiance, budget et recharge.">
+        Sorties autour d'Aix
       </SectionTitle>
 
       <div className="mt-5 rounded-[1.5rem] border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-600 shadow-soft">
-        {origin.source === 'user-location'
-          ? 'Distances calculées depuis votre position.'
-          : 'Distances calculées depuis Aix-en-Provence.'}
+        {origin.source === 'user-location' ? 'Trajets estimes depuis votre position.' : "Distances indicatives depuis Aix-en-Provence."}
       </div>
 
       <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-slate-950">Mon autonomie</p>
-            <p className="text-sm leading-6 text-slate-600">Affiche un badge simple sur chaque carte sans masquer les sorties longues.</p>
+            <p className="text-sm leading-6 text-slate-600">Ajoute un badge simple sans masquer les sorties longues.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             {autonomyOptions.map((value) => (
@@ -152,7 +149,7 @@ export function SortiesPage() {
                   className="text-sm font-medium text-sky"
                   onClick={() => setFilters((current) => ({ ...current, [group]: 'all' }))}
                 >
-                  Réinitialiser
+                  Reinitialiser
                 </button>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -164,7 +161,7 @@ export function SortiesPage() {
                 {values.map((value) => (
                   <ChipButton
                     key={value}
-                    label={group === 'recharge' ? valueLabels[value] : group === 'moment' && value === 'journee' ? 'journée' : value}
+                    label={group === 'recharge' ? valueLabels[value] : group === 'moment' && value === 'journee' ? 'journee' : value}
                     active={filters[group as keyof FilterState] === value}
                     onClick={() => setFilters((current) => ({ ...current, [group]: value }))}
                   />
@@ -177,7 +174,7 @@ export function SortiesPage() {
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-slate-600">
-          {filtered.length} sortie{filtered.length > 1 ? 's' : ''} trouvée{filtered.length > 1 ? 's' : ''}
+          {filtered.length} sortie{filtered.length > 1 ? 's' : ''} trouvee{filtered.length > 1 ? 's' : ''}
         </p>
         <div className="flex flex-wrap gap-2">
           {Object.entries(filters).map(([key, value]) =>
@@ -200,13 +197,13 @@ export function SortiesPage() {
       ) : (
         <section className="mt-6 rounded-[2rem] border border-dashed border-slate-300 bg-white p-10 text-center shadow-soft">
           <h2 className="text-xl font-semibold text-slate-950">Aucune sortie ne correspond</h2>
-          <p className="mt-3 text-slate-600">Essaie d’assouplir un filtre pour faire réapparaître des idées.</p>
+          <p className="mt-3 text-slate-600">Assouplis un filtre pour faire revenir des idees.</p>
           <button
             type="button"
             className="mt-6 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white"
             onClick={() => setFilters({ distance: 'all', budget: 'all', moment: 'all', mood: 'all', recharge: 'all' })}
           >
-            Réinitialiser tous les filtres
+            Reinitialiser tous les filtres
           </button>
         </section>
       )}

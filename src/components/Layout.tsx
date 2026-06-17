@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 const navItems = [
   { to: '/', label: 'Accueil' },
-  { to: '/planner', label: 'Préparer' },
+  { to: '/planner', label: 'Preparer' },
   { to: '/sorties', label: 'Sorties' },
   { to: '/carte', label: 'Carte' },
   { to: '/recharge', label: 'Recharge' },
@@ -24,7 +24,7 @@ export function Layout({ children }: { children: ReactNode }) {
     { to: '/carte', label: 'Carte' },
     { to: '/recharge', label: 'Recharge' },
     { to: '/conseils', label: 'Conseils' },
-    { to: '/a-propos', label: 'À propos' },
+    { to: '/a-propos', label: 'A propos' },
   ];
 
   return (
@@ -37,7 +37,7 @@ export function Layout({ children }: { children: ReactNode }) {
             </span>
             <span className="leading-tight">
               <span className="block text-sm font-semibold tracking-wide text-slate-950">Aix en trott</span>
-              <span className="block text-xs text-slate-500">Sorties en trottinette autour d’Aix</span>
+              <span className="block text-xs text-slate-500">Sorties en trottinette autour d'Aix</span>
             </span>
           </Link>
           <nav className="hidden items-center gap-1 rounded-full border border-slate-200 bg-slate-50 p-1 md:flex">
@@ -62,7 +62,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <footer className="border-t border-slate-200/70 bg-white/75">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid gap-4 border-t border-slate-200/60 pt-6 text-sm text-slate-500 md:grid-cols-[1fr_auto] md:items-end">
-            <p>Site indépendant. Distances, autonomie, pistes cyclables et recharges à vérifier avant départ.</p>
+            <p>Site independant. Distances, autonomie, pistes cyclables et recharge a verifier avant depart.</p>
             <nav className="flex flex-wrap gap-x-4 gap-y-2">
               {footerLinks.map((item) => (
                 <Link key={item.to} to={item.to} className="font-medium text-slate-600 transition hover:text-slate-950">

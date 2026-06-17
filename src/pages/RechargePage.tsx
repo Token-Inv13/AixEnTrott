@@ -8,7 +8,7 @@ export function RechargePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <SectionTitle description="Cette page sépare clairement les prises 220V réellement utiles pour trottinette des bornes voiture et des solutions privées.">
+      <SectionTitle description="Les points listes distinguent clairement 220V, borne voiture, acces prive et points a verifier.">
         Recharge
       </SectionTitle>
 
@@ -26,24 +26,24 @@ export function RechargePage() {
           <h2 className="text-lg font-semibold text-slate-950">Statuts clairs</h2>
           <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
             <li>
-              <strong>Compatible 220V confirmée</strong> : la recharge trottinette est explicitement compatible.
+              <strong>Compatible 220V confirmee</strong> : prise annoncee comme compatible trottinette.
             </li>
             <li>
-              <strong>Prise 220V possible, à vérifier</strong> : présence probable, mais vérification sur place indispensable.
+              <strong>Prise 220V possible, a verifier</strong> : a confirmer sur place.
             </li>
             <li>
-              <strong>Borne voiture uniquement</strong> : non compatible directement sans prise 220V ou Schuko confirmée.
+              <strong>Borne voiture uniquement</strong> : ne pas compter dessus sans prise 220V ou Schuko confirmee.
             </li>
             <li>
-              <strong>Accès privé / abonnement</strong> : solution non grand public ou sur abonnement.
+              <strong>Acces prive / abonnement</strong> : solution reservee ou payante.
             </li>
             <li>
-              <strong>À vérifier avant départ</strong> : rien ne doit être supposé sans confirmation.
+              <strong>A verifier avant depart</strong> : ne rien supposer sans confirmation.
             </li>
           </ul>
           <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
-            Chargemap, PlugShare et Google Maps recensent surtout des bornes pour véhicules électriques. Pour une
-            trottinette, vérifiez toujours la présence d’une prise 220V ou Schuko et emportez votre chargeur.
+            Chargemap, PlugShare et Google Maps recensent surtout des bornes voiture. Pour une trottinette, verifie la
+            prise 220V ou Schuko et emporte ton chargeur.
           </div>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
@@ -60,15 +60,15 @@ export function RechargePage() {
             {[
               {
                 name: 'Chargemap',
-                text: 'Très utile pour repérer une prise 220V, mais la compatibilité trottinette doit toujours être confirmée.',
+                text: 'Pratique pour reperer une prise, mais la compatibilite reste a confirmer.',
               },
               {
                 name: 'PlugShare',
-                text: 'Pratique pour croiser disponibilité et type de prise en temps réel.',
+                text: 'Utile pour croiser disponibilite et type de prise.',
               },
               {
                 name: 'Google Maps',
-                text: 'Utile pour repérer la borne, mais pas pour valider le branchement réel.',
+                text: 'Utile pour trouver le lieu, pas pour garantir le branchement.',
               },
             ].map((app) => (
               <div key={app.name} className="rounded-2xl bg-slate-50 p-4">
@@ -79,12 +79,12 @@ export function RechargePage() {
           </div>
         </div>
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
-          <h2 className="text-lg font-semibold text-slate-950">Bon réflexe avant départ</h2>
+          <h2 className="text-lg font-semibold text-slate-950">Bon reflexe avant depart</h2>
           <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600">
             <li>Emporte toujours ton chargeur.</li>
-            <li>Reste à proximité de la trottinette pendant la recharge.</li>
-            <li>Prévois 3 heures ou plus pour une vraie recharge.</li>
-            <li>Si la borne est en parking voiture, vérifie l’accès réel avant d’y compter.</li>
+            <li>Reste a proximite de la trottinette pendant la recharge.</li>
+            <li>Prevois plusieurs heures pour une vraie recharge.</li>
+            <li>Si la borne est sur un parking voiture, verifie l'acces reel.</li>
           </ul>
         </div>
       </section>

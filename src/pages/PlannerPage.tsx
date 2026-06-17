@@ -75,18 +75,15 @@ export function PlannerPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <SectionTitle description="Prépare ta sortie avec une estimation simple et prudente. Le calcul reste indicatif et doit toujours être vérifié avant départ.">
-        Préparer ma sortie
+      <SectionTitle description="Une estimation simple pour trier les sorties selon ton autonomie.">
+        Preparer ma sortie
       </SectionTitle>
 
       <section className="mt-6 grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
           <SectionKicker>Planification rapide</SectionKicker>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Point de départ</h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">
-            Choisis si les calculs partent d’Aix-en-Provence ou de ta position actuelle. L’estimation reste
-            indicatrice et à vérifier selon la météo, les côtes et la recharge.
-          </p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Point de depart</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">Choisis ton point de depart. Les estimations restent a confirmer sur le trajet reel.</p>
 
           <div className="mt-4 flex flex-wrap gap-2">
             <button
@@ -118,7 +115,7 @@ export function PlannerPage() {
               {statusMessage}
             </div>
           ) : null}
-          {isLocating ? <p className="mt-3 text-sm text-slate-500">Localisation en cours…</p> : null}
+          {isLocating ? <p className="mt-3 text-sm text-slate-500">Localisation en cours...</p> : null}
 
           <div className="mt-6 space-y-5">
             <label className="block">
@@ -142,7 +139,7 @@ export function PlannerPage() {
             </label>
 
             <label className="block">
-              <span className="text-sm font-semibold text-slate-950">Type de sortie souhaitée</span>
+              <span className="text-sm font-semibold text-slate-950">Type de sortie</span>
               <select
                 value={tripType}
                 onChange={(event) => setTripType(event.target.value as PlannerTripType)}
@@ -187,40 +184,37 @@ export function PlannerPage() {
             </label>
           </div>
 
-          <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-slate-50 p-4 text-sm text-slate-600">
+          <div className="mt-6 grid gap-2 rounded-[1.5rem] bg-slate-50 p-4 text-sm text-slate-600">
             <p>
-              Point de départ: <strong className="text-slate-950">{origin.label}</strong>
+              Point de depart : <strong className="text-slate-950">{origin.label}</strong>
             </p>
             <p>
-              Source: <strong className="text-slate-950">{origin.source === 'user-location' ? 'Ma position actuelle' : 'Aix-en-Provence'}</strong>
+              Source : <strong className="text-slate-950">{origin.source === 'user-location' ? 'Ma position actuelle' : 'Aix-en-Provence'}</strong>
             </p>
             <p>
-              Autonomie choisie: <strong className="text-slate-950">{autonomyKm} km</strong>
+              Autonomie : <strong className="text-slate-950">{autonomyKm} km</strong>
             </p>
             <p>
-              Type: <strong className="text-slate-950">{chosenTrip}</strong>
+              Type : <strong className="text-slate-950">{chosenTrip}</strong>
             </p>
             <p>
-              Envie: <strong className="text-slate-950">{chosenMood}</strong>
+              Envie : <strong className="text-slate-950">{chosenMood}</strong>
             </p>
             <p>
-              Prudence: <strong className="text-slate-950">{chosenPrudence}</strong>
+              Prudence : <strong className="text-slate-950">{chosenPrudence}</strong>
             </p>
           </div>
         </div>
 
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
-          <SectionKicker>Résultats</SectionKicker>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Sorties recommandées</h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">
-            Les suggestions sont triées par adéquation globale. Les sorties longues restent affichées avec leur
-            avertissement pour éviter les mauvaises surprises.
-          </p>
+          <SectionKicker>Resultats</SectionKicker>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Sorties recommandees</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">Les sorties longues restent visibles, avec un avertissement clair.</p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             <Pill tone="sky">Estimation</Pill>
-            <Pill tone="emerald">Marge de sécurité</Pill>
-            <Pill tone="amber">À vérifier</Pill>
+            <Pill tone="emerald">Marge</Pill>
+            <Pill tone="amber">A verifier</Pill>
           </div>
 
           <div className="mt-6 space-y-4">
@@ -229,9 +223,7 @@ export function PlannerPage() {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <h3 className="text-lg font-semibold text-slate-950">{spot.name}</h3>
-                    <p className="mt-1 text-sm text-slate-500">
-                      {spot.distanceLabel} · {spot.duration} · {spot.distanceKmFromAix > 30 ? 'Sortie longue' : 'Sortie locale'}
-                    </p>
+                    <p className="mt-1 text-sm text-slate-500">{spot.distanceLabel} · {spot.duration} · {spot.distanceKmFromAix > 30 ? 'Sortie longue' : 'Sortie locale'}</p>
                   </div>
                   <Pill
                     tone={
@@ -265,15 +257,15 @@ export function PlannerPage() {
                   </Pill>
                   <Pill>{spot.duration}</Pill>
                   {routeDistances[spot.id]?.durationLabel ? (
-                    <Pill tone="sky">Durée vélo estimée: {routeDistances[spot.id]?.durationLabel}</Pill>
+                    <Pill tone="sky">Duree velo estimee : {routeDistances[spot.id]?.durationLabel}</Pill>
                   ) : null}
                   <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>
                     {spot.rechargeStatus === 'confirmed'
-                      ? 'Recharge confirmée'
+                      ? 'Recharge confirmee'
                       : spot.rechargeStatus === 'nearby'
                         ? 'Recharge possible'
                         : spot.rechargeStatus === 'verify'
-                          ? 'Recharge à vérifier'
+                          ? 'Recharge a verifier'
                           : 'Aucune recharge connue'}
                   </Pill>
                 </div>
@@ -282,10 +274,10 @@ export function PlannerPage() {
                     {routeDistances[spot.id]
                       ? routeDistances[spot.id].source === 'google-routes'
                         ? routeDistances[spot.id].origin.source === 'user-location'
-                          ? 'Calcul basé sur votre position'
-                          : 'Calcul basé sur Aix-en-Provence'
-                        : 'Calcul basé sur distance indicative'
-                      : 'Calcul basé sur distance indicative'}
+                          ? 'Trajet reel estime depuis votre position'
+                          : 'Trajet reel estime depuis Aix'
+                        : 'Distance indicative'
+                      : 'Distance indicative'}
                   </p>
                   <Link
                     to={`/sorties/${spot.id}`}
@@ -301,11 +293,8 @@ export function PlannerPage() {
       </section>
 
       <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
-        <p className="text-sm font-semibold text-slate-950">Mémo rapide</p>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
-          Le planner reste une aide à la décision. Pour les distances longues, compte sur un retour alternatif, une
-          recharge vérifiée ou un trajet combiné train / voiture.
-        </p>
+        <p className="text-sm font-semibold text-slate-950">Memo rapide</p>
+        <p className="mt-2 text-sm leading-6 text-slate-600">Pour les longues distances, prevois une marge, une recharge confirmee ou un retour alternatif.</p>
         <div className="mt-4">
           <Link to="/sorties" className="inline-flex rounded-full bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky">
             Retour au catalogue

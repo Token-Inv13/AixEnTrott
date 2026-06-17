@@ -12,7 +12,7 @@ import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
 import { formatRechargeStatus } from '../lib/spot-utils';
 import { getNearbySpots } from '../lib/nearby';
 
-const filters = ['Tous', 'Soir', 'Week-end', 'Journée', 'Recharge confirmée', 'Recharge à vérifier'] as const;
+const filters = ['Tous', 'Soir', 'Week-end', 'Journee', 'Recharge confirmee', 'Recharge a verifier'] as const;
 
 export function CartePage() {
   const [active, setActive] = useState<(typeof filters)[number]>('Tous');
@@ -27,7 +27,7 @@ export function CartePage() {
         return spots.filter((spot) => spot.category === 'soir');
       case 'Week-end':
         return spots.filter((spot) => spot.category === 'weekend');
-      case 'Journée':
+      case 'Journee':
         return spots.filter((spot) => spot.category === 'journee');
       default:
         return spots;
@@ -35,10 +35,10 @@ export function CartePage() {
   }, [active]);
 
   const visibleCharge = useMemo(() => {
-    if (active === 'Recharge confirmée') {
+    if (active === 'Recharge confirmee') {
       return chargingPoints.filter((point) => point.compatibility === 'confirmed-220v');
     }
-    if (active === 'Recharge à vérifier') {
+    if (active === 'Recharge a verifier') {
       return chargingPoints.filter((point) => point.compatibility === 'verify' || point.compatibility === 'possible-220v');
     }
     return chargingPoints;
@@ -62,7 +62,7 @@ export function CartePage() {
     setLocalMessage(null);
     const accepted = await useUserLocation();
     if (!accepted) {
-      setLocalMessage('Localisation refusée. Les distances restent calculées depuis Aix-en-Provence.');
+      setLocalMessage("Localisation refusee. Les distances restent calculees depuis Aix-en-Provence.");
     }
   }
 
@@ -71,14 +71,11 @@ export function CartePage() {
     useDefaultOrigin();
   }
 
-  const originMessage =
-    origin.source === 'user-location'
-      ? 'Distances depuis votre position'
-      : 'Distances depuis Aix-en-Provence';
+  const originMessage = origin.source === 'user-location' ? 'Depuis votre position' : 'Depuis Aix-en-Provence';
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <SectionTitle description="Carte utile pour comparer la proximité, la recharge et les sorties autour d’Aix.">
+      <SectionTitle description="Compare rapidement les sorties proches et les points de recharge autour d'Aix.">
         Carte interactive
       </SectionTitle>
 
@@ -102,11 +99,9 @@ export function CartePage() {
           onClick={handleBackToAix}
           className="inline-flex rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-sky-50"
         >
-          Revenir à Aix
+          Revenir a Aix
         </button>
-        <div className="rounded-full bg-slate-50 px-4 py-2 text-sm font-medium text-slate-600">
-          {originMessage}
-        </div>
+        <div className="rounded-full bg-slate-50 px-4 py-2 text-sm font-medium text-slate-600">{originMessage}</div>
       </div>
       {statusMessage ? (
         <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-600 shadow-soft">
@@ -118,7 +113,7 @@ export function CartePage() {
           {localMessage}
         </div>
       ) : null}
-      {isLocating ? <p className="mt-3 text-sm text-slate-500">Localisation en cours…</p> : null}
+      {isLocating ? <p className="mt-3 text-sm text-slate-500">Localisation en cours...</p> : null}
 
       <div className="mt-6 flex flex-wrap gap-2">
         {filters.map((filter) => (
@@ -167,12 +162,10 @@ export function CartePage() {
                 onClick={() => setShowAllNearby((current) => !current)}
                 className="text-sm font-medium text-sky"
               >
-                {showAllNearby ? 'Réduire' : 'Afficher toutes les sorties'}
+                {showAllNearby ? 'Reduire' : 'Afficher toutes les sorties'}
               </button>
             </div>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              {originMessage}. Distance directe indicative. Trajet réel à vérifier.
-            </p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">{originMessage}. Distances directes indicatives.</p>
             <div className="mt-4 space-y-3">
               {displayedNearbySpots.map(({ spot, directDistanceKm }) => {
                 const routeDistance = routeDistances[spot.id];
@@ -189,11 +182,9 @@ export function CartePage() {
                         {formatRechargeStatus(spot.rechargeStatus)}
                       </Pill>
                     </div>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">
-                      À proximité · Distance directe indicative : {directDistanceKm.toFixed(1)} km
-                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">A proximite · {directDistanceKm.toFixed(1)} km en direct</p>
                     {routeDistance?.durationLabel ? (
-                      <p className="mt-1 text-xs text-slate-500">Durée vélo estimée : {routeDistance.durationLabel}</p>
+                      <p className="mt-1 text-xs text-slate-500">Duree velo estimee : {routeDistance.durationLabel}</p>
                     ) : null}
                     <div className="mt-3 flex flex-wrap gap-2">
                       <button
@@ -209,7 +200,7 @@ export function CartePage() {
                         rel="noreferrer"
                         className="rounded-full bg-sky px-3 py-1.5 text-xs font-semibold text-white"
                       >
-                        Itinéraire vélo
+                        Itineraire velo
                       </a>
                     </div>
                   </article>
@@ -219,7 +210,7 @@ export function CartePage() {
           </div>
 
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
-            <p className="text-sm font-semibold text-slate-950">Légende</p>
+            <p className="text-sm font-semibold text-slate-950">Legende</p>
             <div className="mt-4 space-y-3 text-sm text-slate-600">
               <div className="flex items-center gap-3">
                 <span className="h-3 w-3 rounded-full bg-sky-600" />
@@ -235,14 +226,12 @@ export function CartePage() {
               </div>
             </div>
             {!hasGoogleMaps ? (
-              <p className="mt-4 text-xs leading-5 text-slate-500">
-                Google Maps n’est pas activé sur ce déploiement. Leaflet reste le fallback principal.
-              </p>
+              <p className="mt-4 text-xs leading-5 text-slate-500">Google Maps n'est pas active ici. La carte Leaflet reste disponible.</p>
             ) : null}
           </div>
 
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
-            <p className="text-sm font-semibold text-slate-950">Sortie sélectionnée</p>
+            <p className="text-sm font-semibold text-slate-950">Sortie selectionnee</p>
             <select
               value={selectedSpot?.id ?? ''}
               onChange={(event) => setSelectedSpotId(event.target.value)}
@@ -260,19 +249,19 @@ export function CartePage() {
                 <p className="mt-2">
                   {selectedRouteDistance
                     ? selectedRouteDistance.origin.source === 'user-location'
-                      ? 'Distance calculée depuis votre position'
-                      : 'Distance calculée depuis Aix-en-Provence'
+                      ? 'Distance calculee depuis votre position'
+                      : 'Distance calculee depuis Aix-en-Provence'
                     : 'Distance indicative depuis Aix-en-Provence'}
                   : {(selectedRouteDistance?.distanceKm ?? selectedSpot.distanceKmFromAix).toFixed(1)} km
                 </p>
-                {selectedRouteDistance?.durationLabel ? <p className="mt-1">Durée vélo estimée : {selectedRouteDistance.durationLabel}</p> : null}
+                {selectedRouteDistance?.durationLabel ? <p className="mt-1">Duree velo estimee : {selectedRouteDistance.durationLabel}</p> : null}
                 <p className="mt-1">Recharge : {formatRechargeStatus(selectedSpot.rechargeStatus)}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Pill tone="sky">
                     {selectedRouteDistance
                       ? selectedRouteDistance.origin.source === 'user-location'
-                        ? 'Distance calculée depuis votre position'
-                        : 'Distance calculée depuis Aix-en-Provence'
+                        ? 'Distance calculee depuis votre position'
+                        : 'Distance calculee depuis Aix-en-Provence'
                       : 'Distance indicative depuis Aix-en-Provence'}
                   </Pill>
                   <Link className="rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white" to={`/sorties/${selectedSpot.id}`}>

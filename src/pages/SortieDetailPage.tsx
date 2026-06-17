@@ -34,11 +34,11 @@ export function SortieDetailPage() {
   const requiredAutonomyKm = roundTripKm * 1.2;
   const planAdvice =
     distanceKm > 30
-      ? 'Prévoir retour alternatif'
+      ? 'Prevoir retour alternatif'
       : spot.rechargeStatus === 'verify' || spot.rechargeStatus === 'none'
-        ? 'Recharge à vérifier'
+        ? 'Recharge a verifier'
         : distanceKm > 7
-          ? 'Prévoir marge'
+          ? 'Prevoir marge'
           : 'Sortie simple';
   const reportMailto = buildReportIssueMailto(
     spot.name,
@@ -59,8 +59,7 @@ export function SortieDetailPage() {
 
           <div className="mt-6 flex flex-wrap gap-2">
             <Pill tone={routeDistance?.source === 'google-routes' ? 'emerald' : 'sky'}>
-              {routeDistance ? formatRouteDistanceLabel(routeDistance) : 'Distance indicative depuis Aix-en-Provence'}
-              {' '}
+              {routeDistance ? formatRouteDistanceLabel(routeDistance) : 'Distance indicative depuis Aix-en-Provence'}{' '}
               {distanceKm.toFixed(1)} km
             </Pill>
             <Pill tone="emerald">{formatBudget(spot.budget)}</Pill>
@@ -69,16 +68,16 @@ export function SortieDetailPage() {
             <Pill tone={spot.rechargeStatus === 'confirmed' ? 'emerald' : spot.rechargeStatus === 'nearby' ? 'sky' : 'amber'}>
               {formatRechargeStatus(spot.rechargeStatus)}
             </Pill>
-            {routeDistance?.durationLabel ? <Pill tone="sky">Durée vélo estimée {routeDistance.durationLabel}</Pill> : null}
+            {routeDistance?.durationLabel ? <Pill tone="sky">Duree velo estimee {routeDistance.durationLabel}</Pill> : null}
           </div>
 
           <div className="mt-6 grid gap-3 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2">
             <div>
               <p className="text-sm font-semibold text-slate-950">Adresse / point de destination</p>
               <p className="mt-2 text-sm leading-6 text-slate-600">{spot.address}</p>
-              <p className="mt-1 text-xs text-slate-500">Repère court: {destinationShortLabel(spot.address)}</p>
+              <p className="mt-1 text-xs text-slate-500">Repere court : {destinationShortLabel(spot.address)}</p>
             </div>
-            <div className="flex flex-wrap gap-2 sm:justify-end sm:items-start">
+            <div className="flex flex-wrap gap-2 sm:items-start sm:justify-end">
               <a
                 href={spot.googleMapsUrl}
                 target="_blank"
@@ -93,7 +92,7 @@ export function SortieDetailPage() {
                 rel="noreferrer"
                 className="inline-flex items-center justify-center rounded-full bg-sky px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky/90"
               >
-                Itinéraire vélo Google Maps
+                Itineraire velo Google Maps
               </a>
               <a
                 href={reportMailto}
@@ -103,22 +102,18 @@ export function SortieDetailPage() {
               </a>
             </div>
           </div>
-          <p className="mt-3 text-xs leading-5 text-slate-500">
-            L’itinéraire vélo Google Maps est indicatif. Vérifie toujours la sécurité du trajet et les aménagements disponibles.
-          </p>
+          <p className="mt-3 text-xs leading-5 text-slate-500">Trajet velo indicatif, a confirmer selon le revetement et les amenagements.</p>
 
           <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
             <p className="text-sm font-semibold text-slate-950">Planification rapide</p>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              Cette estimation reste indicative et applique une marge de sécurité. À vérifier avant départ, surtout sur les longues sorties.
-            </p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">Estimation avec marge de securite. A confirmer avant depart.</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl bg-slate-50 p-4">
                 <p className="text-sm text-slate-500">
                   {routeDistance?.source === 'google-routes'
                     ? routeDistance.origin.source === 'user-location'
-                      ? 'Distance aller calculée depuis votre position'
-                      : 'Distance aller calculée depuis Aix-en-Provence'
+                      ? 'Distance aller calculee depuis votre position'
+                      : 'Distance aller calculee depuis Aix-en-Provence'
                     : 'Distance aller indicative depuis Aix-en-Provence'}
                 </p>
                 <p className="mt-2 text-sm font-semibold text-slate-950">{distanceKm.toFixed(1)} km</p>
@@ -128,7 +123,7 @@ export function SortieDetailPage() {
                 <p className="mt-2 text-sm font-semibold text-slate-950">{roundTripKm.toFixed(1)} km</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-4">
-                <p className="text-sm text-slate-500">Autonomie recommandée</p>
+                <p className="text-sm text-slate-500">Autonomie recommandee</p>
                 <p className="mt-2 text-sm font-semibold text-slate-950">{requiredAutonomyKm.toFixed(1)} km avec marge</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-4">
@@ -137,9 +132,9 @@ export function SortieDetailPage() {
                   {spot.rechargeStatus === 'confirmed'
                     ? 'Oui'
                     : spot.rechargeStatus === 'nearby'
-                      ? 'Partielle'
+                      ? 'Possible a proximite'
                       : spot.rechargeStatus === 'verify'
-                        ? 'À vérifier'
+                        ? 'A verifier'
                         : 'Non'}
                 </p>
               </div>
@@ -148,20 +143,18 @@ export function SortieDetailPage() {
               <p className="text-sm text-slate-500">Conseil</p>
               <p className="mt-2 text-sm font-semibold text-slate-950">{planAdvice}</p>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                {distanceKm > 30
-                  ? 'Sortie longue : prévoir train, voiture, recharge ou retour alternatif.'
-                  : getPlannerShortWarning(spot)}
+                {distanceKm > 30 ? 'Sortie longue : prevoir une marge ou un retour alternatif.' : getPlannerShortWarning(spot)}
               </p>
             </div>
           </div>
 
           <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
-            <p className="text-sm font-semibold text-slate-950">Fiabilité des infos</p>
+            <p className="text-sm font-semibold text-slate-950">Fiabilite des infos</p>
             <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
-              <li>Coordonnées : indicatives / à vérifier.</li>
+              <li>Coordonnees : indicatives / a verifier.</li>
               <li>Distance : indicative.</li>
               <li>Pistes cyclables : indicatives.</li>
-              <li>Recharge : à vérifier avant départ.</li>
+              <li>Recharge : a verifier avant depart.</li>
             </ul>
             <div className="mt-4">
               <a
@@ -175,7 +168,7 @@ export function SortieDetailPage() {
 
           <dl className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-slate-50 p-4">
-              <dt className="text-sm text-slate-500">Autonomie estimée</dt>
+              <dt className="text-sm text-slate-500">Autonomie estimee</dt>
               <dd className="mt-2 text-sm font-semibold text-slate-950">{autonomyRecommendation(distanceKm)}</dd>
             </div>
             <div className="rounded-2xl bg-slate-50 p-4">
@@ -191,7 +184,7 @@ export function SortieDetailPage() {
               <dd className="mt-2 text-sm font-semibold text-slate-950">{formatBudget(spot.budget)}</dd>
             </div>
             <div className="rounded-2xl bg-slate-50 p-4">
-              <dt className="text-sm text-slate-500">Difficulté</dt>
+              <dt className="text-sm text-slate-500">Difficulte</dt>
               <dd className="mt-2 text-sm font-semibold text-slate-950">
                 {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()}
               </dd>
@@ -201,7 +194,7 @@ export function SortieDetailPage() {
           <div className="mt-6 grid gap-4 rounded-[1.5rem] border border-slate-200 bg-white p-5">
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
-                <p className="text-sm font-semibold text-slate-950">Pistes cyclables / sécurité</p>
+                <p className="text-sm font-semibold text-slate-950">Pistes cyclables / securite</p>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{spot.cyclingInfrastructure.label}</p>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{spot.cyclingInfrastructure.notes}</p>
               </div>
@@ -222,14 +215,12 @@ export function SortieDetailPage() {
               </div>
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-950">Itinéraire indicatif</p>
+              <p className="text-sm font-semibold text-slate-950">Itineraire indicatif</p>
               <p className="mt-2 text-sm leading-6 text-slate-600">{spot.routeNotes}</p>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-950">Sortie simple</p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {spot.isSimpleRide ? 'Oui, dans une logique de sortie simple.' : 'Non, à traiter comme une sortie préparée.'}
-              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{spot.isSimpleRide ? 'Oui, dans une logique simple.' : 'Non, a traiter comme une sortie preparee.'}</p>
             </div>
           </div>
 
@@ -247,7 +238,7 @@ export function SortieDetailPage() {
 
         <div className="grid gap-4">
           <div className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft">
-            <p className="text-sm font-semibold text-slate-950">Carte centrée sur le lieu</p>
+            <p className="text-sm font-semibold text-slate-950">Carte centree sur le lieu</p>
             <div className="mt-4">
               <MapView
                 spots={[spot]}
@@ -263,12 +254,12 @@ export function SortieDetailPage() {
             <p className="text-sm font-semibold text-slate-950">Recharge</p>
             <p className="mt-3 text-sm leading-6 text-slate-600">
               {spot.rechargeStatus === 'confirmed'
-                ? 'Recharge confirmée ou proche, avec marge confortable.'
+                ? 'Recharge confirmee ou proche, avec marge confortable.'
                 : spot.rechargeStatus === 'nearby'
-                  ? 'Recharge possible à proximité, mais vérifie toujours la prise réelle avant de compter dessus.'
+                  ? 'Recharge possible a proximite, mais a confirmer sur place.'
                   : spot.rechargeStatus === 'verify'
-                    ? 'Recharge à vérifier avant le départ; ne pars pas dessus sans confirmation.'
-                    : 'Aucune recharge connue sur place. Prévois un plan B.'}
+                    ? 'Recharge a verifier avant le depart.'
+                    : 'Aucune recharge connue sur place. Prevois un plan B.'}
             </p>
           </div>
         </div>

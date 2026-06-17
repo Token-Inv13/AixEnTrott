@@ -38,7 +38,7 @@ export function SpotCard({
           <p className="mt-1 text-sm text-slate-500">
             {distanceLabel} {distanceValue.toFixed(1)} km · {spot.duration} · {areaLabel(spot.area)}
           </p>
-          {durationLabel ? <p className="mt-1 text-xs font-medium text-sky">Durée vélo estimée : {durationLabel}</p> : null}
+          {durationLabel ? <p className="mt-1 text-xs font-medium text-sky">Duree velo estimee : {durationLabel}</p> : null}
           <p className="mt-1 text-xs text-slate-500">
             {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()} · {spot.cyclingInfrastructure.label.toLowerCase()} ·{' '}
             {destinationShortLabel(spot.address)}
@@ -50,7 +50,7 @@ export function SpotCard({
           </Pill>
           {routeDistance ? (
             <Pill tone={routeDistance.source === 'google-routes' ? 'emerald' : 'amber'}>
-              {routeDistance.source === 'google-routes' ? 'Calcul basé sur Google Routes' : 'Calcul basé sur distance indicative'}
+              {routeDistance.source === 'google-routes' ? 'Trajet estime' : 'Distance indicative'}
             </Pill>
           ) : null}
           {verdict ? (
@@ -81,7 +81,7 @@ export function SpotCard({
           <dd className="mt-1 font-semibold text-slate-950">{categoryLabel(spot.category)}</dd>
         </div>
         <div className="rounded-2xl bg-slate-50 p-3">
-          <dt className="text-slate-500">Autonomie estimée</dt>
+          <dt className="text-slate-500">Autonomie estimee</dt>
           <dd className="mt-1 font-semibold text-slate-950">{autonomyRecommendation(distanceValue)}</dd>
         </div>
         <div className="rounded-2xl bg-slate-50 p-3">
@@ -105,16 +105,14 @@ export function SpotCard({
           Voir la fiche
         </Link>
       </div>
-      <p className="mt-3 text-xs text-slate-500">
-        Les itinéraires vélo Google Maps sont indicatifs et peuvent ne pas refléter toutes les pistes cyclables ou zones adaptées aux trottinettes.
-      </p>
+      <p className="mt-3 text-xs text-slate-500">Trajet reel a confirmer selon votre point de depart.</p>
       <a
         href={buildGoogleMapsDirectionsUrl(spot.latitude, spot.longitude)}
         target="_blank"
         rel="noreferrer"
         className="mt-3 inline-flex text-xs font-semibold text-sky"
       >
-        Itinéraire Google Maps
+        Ouvrir dans Google Maps
       </a>
     </article>
   );

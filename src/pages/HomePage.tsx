@@ -19,12 +19,11 @@ export function HomePage() {
       <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
           <SectionKicker>Aix en trott</SectionKicker>
-          <SectionTitle description="Un mini-site statique pour choisir rapidement une sortie en trottinette électrique autour d’Aix-en-Provence, avec cartes, filtres et recharge.">
-            Prépare ta sortie en trottinette autour d’Aix-en-Provence
+          <SectionTitle description="Sorties, carte et recharge autour d'Aix pour preparer plus vite.">
+            Prepare ta sortie en trottinette autour d'Aix-en-Provence
           </SectionTitle>
           <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-            Les contenus du guide ont été structurés par distance, budget, ambiance et solution de recharge pour te
-            faire gagner du temps, sans masquer les contraintes réelles d’autonomie.
+            Des idees triees par distance, ambiance et recharge, avec une lecture simple de l'autonomie.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             {quickActions.map((action) => (
@@ -44,10 +43,8 @@ export function HomePage() {
             ))}
           </div>
           <div className="mt-5 rounded-3xl border border-sky-100 bg-sky-50/70 p-4">
-            <p className="text-sm font-semibold text-slate-950">Préparer ma sortie selon mon autonomie</p>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              Compare rapidement ton autonomie, le type de sortie et les solutions de recharge avant de partir.
-            </p>
+            <p className="text-sm font-semibold text-slate-950">Preparer ma sortie selon mon autonomie</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">Compare ton autonomie, le style de sortie et la recharge.</p>
             <Link
               to="/planner"
               className="mt-4 inline-flex rounded-full bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky"
@@ -69,7 +66,7 @@ export function HomePage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-slate-950">Carte utile</p>
-                <p className="text-sm text-slate-500">Sorties et recharge autour d’Aix</p>
+                <p className="text-sm text-slate-500">Sorties et recharge autour d'Aix</p>
               </div>
               <Pill tone="sky">OpenStreetMap</Pill>
             </div>
@@ -78,13 +75,13 @@ export function HomePage() {
             </div>
           </div>
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
-            <p className="text-sm font-semibold text-slate-950">Résumé rapide</p>
+            <p className="text-sm font-semibold text-slate-950">Resume rapide</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {[
-                { label: 'Sorties prêtes', value: spots.length },
+                { label: 'Sorties pretes', value: spots.length },
                 { label: 'Points recharge', value: chargingPoints.length },
                 { label: 'Zones couvertes', value: 5 },
-                { label: 'Avertissement', value: 'Recharge à vérifier' },
+                { label: 'Alerte', value: 'Recharge a verifier' },
               ].map((item) => (
                 <div key={item.label} className="rounded-2xl bg-slate-50 p-4">
                   <p className="text-xs font-medium text-slate-500">{item.label}</p>
@@ -99,19 +96,19 @@ export function HomePage() {
       <section className="mt-10 grid gap-4 lg:grid-cols-3">
         {[
           {
-            title: '0–3 km',
-            text: 'Boucles immédiates pour le soir, sans prise de risque sur la batterie.',
-            pills: ['centre', 'parcs', 'marché'],
+            title: '0-3 km',
+            text: 'Boucles tres courtes pour une sortie simple.',
+            pills: ['centre', 'parcs', 'marche'],
           },
           {
-            title: '3–7 km',
-            text: 'Le meilleur équilibre entre respiration et autonomie pour un départ après le travail.',
+            title: '3-7 km',
+            text: "Le bon format pour sortir sans trop tirer sur la batterie.",
             pills: ['calme', 'nature', 'patrimoine'],
           },
           {
             title: '+7 km',
-            text: 'À réserver au week-end et à une sortie préparée, surtout quand la recharge n’est pas garantie.',
-            pills: ['journée', 'recharge', 'retour planifié'],
+            text: 'A garder pour une sortie preparee avec marge ou retour alternatif.',
+            pills: ['journee', 'recharge', 'retour planifie'],
           },
         ].map((block) => (
           <article key={block.title} className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
@@ -128,12 +125,12 @@ export function HomePage() {
 
       <section className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
         <SectionKicker>Comment utiliser le site ?</SectionKicker>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">En 4 étapes</h2>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">En 4 etapes</h2>
         <ol className="mt-5 grid gap-3 md:grid-cols-2">
           {[
             'Choisis ton temps disponible',
             'Filtre par distance ou ambiance',
-            'Vérifie l’autonomie et la recharge',
+            "Verifie l'autonomie et la recharge",
             'Pars avec batterie pleine, eau, casque et antivol',
           ].map((step, index) => (
             <li key={step} className="rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">
@@ -148,8 +145,8 @@ export function HomePage() {
 
       <section className="mt-10 grid gap-6 lg:grid-cols-[1fr_1fr]">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
-          <SectionKicker>Top départ</SectionKicker>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Sorties faciles à lancer</h2>
+          <SectionKicker>Top depart</SectionKicker>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Sorties faciles a lancer</h2>
           <div className="mt-5 grid gap-3">
             {highlights.map((spot) => (
               <Link
@@ -161,7 +158,7 @@ export function HomePage() {
                   <div>
                     <p className="font-semibold text-slate-950">{spot.name}</p>
                     <p className="mt-1 text-sm text-slate-500">
-                      Distance indicative {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
+                      {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
                     </p>
                   </div>
                   <Pill>{formatRechargeStatus(spot.rechargeStatus)}</Pill>
@@ -172,12 +169,12 @@ export function HomePage() {
         </div>
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
           <SectionKicker>Recharge</SectionKicker>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Ce qu’il faut retenir</h2>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">A retenir</h2>
           <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-600">
-            <li>Les bornes voiture ne sont pas automatiquement adaptées à la trottinette.</li>
-            <li>Les prises 220V confirmées doivent être vérifiées au moment du départ.</li>
-            <li>Bag Mobile et les solutions privées sont pratiques pour le train et les longues sorties.</li>
-            <li>Chargemap, PlugShare et Google Maps servent surtout à vérifier l’existence d’une prise, pas la compatibilité réelle.</li>
+            <li>Une borne voiture n'est pas automatiquement compatible.</li>
+            <li>Meme avec une prise 220V annoncee, verifie avant de partir.</li>
+            <li>Les solutions privees sont utiles pour le train et les longues sorties.</li>
+            <li>Les applis servent a reperer une prise, pas a garantir la compatibilite.</li>
           </ul>
         </div>
       </section>
