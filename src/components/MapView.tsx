@@ -4,20 +4,13 @@ import { CircleMarker, MapContainer, Marker, Popup, Polyline, TileLayer, useMap 
 import L, { type LatLngExpression } from 'leaflet';
 import type { ChargingPoint } from '../data/chargingPoints';
 import type { Spot } from '../data/spots';
-import {
-  destinationShortLabel,
-  categoryLabel,
-  formatBudget,
-  formatCompatibility,
-  formatDifficulty,
-  formatRechargeStatus,
-  formatRouteType,
-} from '../lib/spot-utils';
+import { formatCompatibility } from '../lib/spot-utils';
 import { buildGoogleMapsDirectionsUrl } from '../lib/google-maps-config';
 import { decodePolyline } from '../lib/polyline';
-import { formatRouteDistanceLabel, type RouteDistanceDisplay } from '../lib/route-distance-types';
-import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
+import { type RouteDistanceDisplay } from '../lib/route-distance-types';
 import { getDefaultRouteOrigin, type RouteOrigin } from '../lib/user-location';
+import { haversineKm } from '../lib/nearby';
+import { SpotMapPopup } from './SpotMapPopup';
 
 function makeIcon(color: string) {
   return L.divIcon({
@@ -105,56 +98,12 @@ export function MapView({
           ? spots.map((spot) => (
               <Marker key={spot.id} position={[spot.latitude, spot.longitude]} icon={makeIcon('#2563eb')}>
                 <Popup>
-                  <div className="max-w-[15rem]">
-                    <h3 className="text-sm font-semibold text-slate-950">{spot.name}</h3>
-                    <p className="mt-1 text-xs text-slate-500">Type: Sortie</p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      {routeDistanceBySpotId[spot.id]
-                        ? formatRouteDistanceLabel(routeDistanceBySpotId[spot.id]!)
-                        : 'Distance indicative depuis Aix-en-Provence'}
-                      : {(routeDistanceBySpotId[spot.id]?.distanceKm ?? spot.distanceKmFromAix).toFixed(1)} km
-                    </p>
-                    {routeDistanceBySpotId[spot.id]?.durationLabel ? (
-                      <p className="mt-1 text-xs text-slate-500">
-                        Durée vélo estimée: {routeDistanceBySpotId[spot.id]?.durationLabel}
-                      </p>
-                    ) : null}
-                    <p className="mt-1 text-xs text-slate-500">Budget: {formatBudget(spot.budget)}</p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      Statut recharge: {formatRechargeStatus(spot.rechargeStatus)}
-                    </p>
-                    <p className="mt-1 text-xs text-slate-500">Type: {categoryLabel(spot.category)}</p>
-                    <p className="mt-1 text-xs text-slate-500">Adresse: {destinationShortLabel(spot.address)}</p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      Difficulté: {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()}
-                    </p>
-                    <p className="mt-1 text-xs text-slate-500">Pistes: {spot.cyclingInfrastructure.label}</p>
-                    <p className="mt-2 text-[11px] leading-5 text-slate-400">
-                      Les itinéraires vélo Google Maps sont indicatifs et peuvent ne pas refléter toutes les pistes
-                      cyclables ou zones adaptées aux trottinettes.
-                    </p>
-                    <a
-                      className="mt-3 inline-flex text-xs font-semibold text-sky"
-                      href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Itinéraire vélo
-                    </a>
-                    <div className="mt-2 flex flex-col gap-1">
-                      <Link className="inline-flex text-xs font-semibold text-sky" to={`/sorties/${spot.id}`}>
-                        Voir la fiche
-                      </Link>
-                      <a
-                        className="inline-flex text-xs font-semibold text-sky"
-                        href={buildGoogleMapsDirectionsUrl(spot.latitude, spot.longitude)}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Ouvrir destination
-                      </a>
-                    </div>
-                  </div>
+                  <SpotMapPopup
+                    spot={spot}
+                    originLabel={origin.source === 'user-location' ? 'votre position' : 'Aix-en-Provence'}
+                    directDistanceKm={haversineKm(origin.latitude, origin.longitude, spot.latitude, spot.longitude)}
+                    routeDistance={routeDistanceBySpotId[spot.id]}
+                  />
                 </Popup>
               </Marker>
             ))
@@ -165,11 +114,19 @@ export function MapView({
                 <Popup>
                   <div className="max-w-[13rem]">
                     <h3 className="text-sm font-semibold text-slate-950">{point.name}</h3>
-                    <p className="mt-1 text-xs text-slate-500">Type: Recharge</p>
-                    <p className="mt-1 text-xs text-slate-500">Statut recharge: {formatCompatibility(point.compatibility)}</p>
+                    <p className="mt-1 text-xs text-slate-500">Type : Recharge</p>
+                    <p className="mt-1 text-xs text-slate-500">Statut recharge : {formatCompatibility(point.compatibility)}</p>
                     <p className="mt-1 text-xs text-slate-500">
                       {point.city} · {point.address}
                     </p>
+                    <a
+                      className="mt-3 inline-flex text-xs font-semibold text-sky"
+                      href={buildGoogleMapsDirectionsUrl(point.latitude, point.longitude)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Ouvrir destination
+                    </a>
                   </div>
                 </Popup>
               </Marker>
