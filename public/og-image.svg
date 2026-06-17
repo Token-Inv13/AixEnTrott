@@ -2,9 +2,9 @@
   <rect width="1200" height="630" rx="48" fill="#F8FAFC"/>
   <circle cx="184" cy="140" r="88" fill="#38BDF8"/>
   <circle cx="184" cy="140" r="54" fill="#0F172A" fill-opacity="0.08"/>
-  <text x="316" y="212" fill="#0F172A" font-family="Arial, sans-serif" font-size="72" font-weight="700">Trott-out-Aix</text>
+  <text x="316" y="212" fill="#0F172A" font-family="Arial, sans-serif" font-size="72" font-weight="700">Aix en trott</text>
   <text x="316" y="286" fill="#334155" font-family="Arial, sans-serif" font-size="34">Sorties en trottinette autour d’Aix-en-Provence</text>
   <text x="316" y="346" fill="#475569" font-family="Arial, sans-serif" font-size="26">Planification, autonomie, recharge et conseils pratiques</text>
   <rect x="316" y="404" width="236" height="64" rx="32" fill="#0F172A"/>
-  <text x="368" y="447" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="24" font-weight="700">trott-out-aix</text>
+  <text x="368" y="447" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="24" font-weight="700">Aix en trott</text>
 </svg>

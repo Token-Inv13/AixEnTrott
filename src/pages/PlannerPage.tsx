@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SectionKicker, SectionTitle, Pill } from '../components/Badges';
 import { useRouteDistances } from '../hooks/use-route-distances';
@@ -15,6 +15,8 @@ import {
   type PlannerPrudence,
   type PlannerTripType,
 } from '../lib/planner';
+import { formatRouteDistanceLabel } from '../lib/route-distance-types';
+import { useRouteOrigin } from '../context/route-origin-context';
 
 const autonomyOptions = [20, 30, 40, 60, 80] as const;
 
@@ -23,6 +25,12 @@ export function PlannerPage() {
   const [tripType, setTripType] = useState<PlannerTripType>('evening');
   const [primaryMood, setPrimaryMood] = useState<PlannerMood>('calme');
   const [prudence, setPrudence] = useState<PlannerPrudence>('easy-only');
+  const { origin, isLocating, statusMessage, useDefaultOrigin, useUserLocation } = useRouteOrigin();
+  const [departureChoice, setDepartureChoice] = useState<'default-aix' | 'user-location'>(origin.source);
+
+  useEffect(() => {
+    setDepartureChoice(origin.source);
+  }, [origin.source]);
 
   const preferences = useMemo(
     () => ({
@@ -34,7 +42,7 @@ export function PlannerPage() {
     [autonomyKm, tripType, primaryMood, prudence],
   );
 
-  const routeDistances = useRouteDistances(spots);
+  const routeDistances = useRouteDistances(spots, origin);
   const routeDistanceById = useMemo(
     () =>
       Object.fromEntries(Object.entries(routeDistances).map(([id, value]) => [id, value.distanceKm])) as Record<
@@ -52,6 +60,19 @@ export function PlannerPage() {
   const chosenMood = getMoodLabel(primaryMood);
   const chosenPrudence = getPrudenceLabel(prudence);
 
+  async function handleDepartureChoice(choice: 'default-aix' | 'user-location') {
+    setDepartureChoice(choice);
+    if (choice === 'default-aix') {
+      useDefaultOrigin();
+      return;
+    }
+
+    const accepted = await useUserLocation();
+    if (!accepted) {
+      setDepartureChoice('default-aix');
+    }
+  }
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <SectionTitle description="Prépare ta sortie avec une estimation simple et prudente. Le calcul reste indicatif et doit toujours être vérifié avant départ.">
@@ -61,11 +82,43 @@ export function PlannerPage() {
       <section className="mt-6 grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
           <SectionKicker>Planification rapide</SectionKicker>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Tes critères</h2>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Point de départ</h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">
-            On compare une estimation aller-retour indicative avec une marge de sécurité de 20 %. Le résultat reste
-            à vérifier selon la météo, les côtes et la recharge.
+            Choisis si les calculs partent d’Aix-en-Provence ou de ta position actuelle. L’estimation reste
+            indicatrice et à vérifier selon la météo, les côtes et la recharge.
           </p>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => handleDepartureChoice('default-aix')}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                departureChoice === 'default-aix'
+                  ? 'bg-slate-950 text-white shadow-soft'
+                  : 'bg-slate-50 text-slate-600 ring-1 ring-slate-200 hover:bg-sky-50'
+              }`}
+            >
+              Aix-en-Provence
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDepartureChoice('user-location')}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                departureChoice === 'user-location'
+                  ? 'bg-slate-950 text-white shadow-soft'
+                  : 'bg-slate-50 text-slate-600 ring-1 ring-slate-200 hover:bg-sky-50'
+              }`}
+            >
+              Ma position actuelle
+            </button>
+          </div>
+
+          {statusMessage ? (
+            <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
+              {statusMessage}
+            </div>
+          ) : null}
+          {isLocating ? <p className="mt-3 text-sm text-slate-500">Localisation en cours…</p> : null}
 
           <div className="mt-6 space-y-5">
             <label className="block">
@@ -136,6 +189,12 @@ export function PlannerPage() {
 
           <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-slate-50 p-4 text-sm text-slate-600">
             <p>
+              Point de départ: <strong className="text-slate-950">{origin.label}</strong>
+            </p>
+            <p>
+              Source: <strong className="text-slate-950">{origin.source === 'user-location' ? 'Ma position actuelle' : 'Aix-en-Provence'}</strong>
+            </p>
+            <p>
               Autonomie choisie: <strong className="text-slate-950">{autonomyKm} km</strong>
             </p>
             <p>
@@ -199,7 +258,9 @@ export function PlannerPage() {
                 </ul>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Pill>
-                    {routeDistances[spot.id]?.source === 'google-routes' ? 'Distance calculée' : 'Distance indicative'}{' '}
+                    {routeDistances[spot.id]
+                      ? formatRouteDistanceLabel(routeDistances[spot.id])
+                      : 'Distance indicative depuis Aix-en-Provence'}{' '}
                     {(routeDistances[spot.id]?.distanceKm ?? spot.distanceKmFromAix).toFixed(1)} km
                   </Pill>
                   <Pill>{spot.duration}</Pill>
@@ -218,8 +279,12 @@ export function PlannerPage() {
                 </div>
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                   <p className="text-sm text-slate-500">
-                    {routeDistances[spot.id]?.source === 'google-routes'
-                      ? 'Calcul basé sur Google Routes'
+                    {routeDistances[spot.id]
+                      ? routeDistances[spot.id].source === 'google-routes'
+                        ? routeDistances[spot.id].origin.source === 'user-location'
+                          ? 'Calcul basé sur votre position'
+                          : 'Calcul basé sur Aix-en-Provence'
+                        : 'Calcul basé sur distance indicative'
                       : 'Calcul basé sur distance indicative'}
                   </p>
                   <Link

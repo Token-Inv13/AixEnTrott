@@ -15,8 +15,9 @@ import {
 } from '../lib/spot-utils';
 import { buildGoogleMapsDirectionsUrl } from '../lib/google-maps-config';
 import { decodePolyline } from '../lib/polyline';
-import type { RouteDistanceDisplay } from '../lib/route-distance-types';
+import { formatRouteDistanceLabel, type RouteDistanceDisplay } from '../lib/route-distance-types';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
+import { getDefaultRouteOrigin, type RouteOrigin } from '../lib/user-location';
 
 function makeIcon(color: string) {
   return L.divIcon({
@@ -55,6 +56,7 @@ export function MapView({
   chargingPoints,
   showSpots = true,
   showCharging = true,
+  origin = getDefaultRouteOrigin(),
   routePolyline,
   routeDistanceBySpotId = {},
   height = 'h-[26rem]',
@@ -63,6 +65,7 @@ export function MapView({
   chargingPoints: ChargingPoint[];
   showSpots?: boolean;
   showCharging?: boolean;
+  origin?: RouteOrigin;
   routePolyline?: string | null;
   routeDistanceBySpotId?: Record<string, RouteDistanceDisplay | undefined>;
   height?: string;
@@ -75,8 +78,9 @@ export function MapView({
     if (showCharging) {
       chargingPoints.forEach((point) => coords.push([point.latitude, point.longitude]));
     }
+    coords.push([origin.latitude, origin.longitude]);
     return coords.length ? coords : ([[43.5297, 5.4474]] as LatLngExpression[]);
-  }, [spots, chargingPoints, showSpots, showCharging]);
+  }, [spots, chargingPoints, showSpots, showCharging, origin.latitude, origin.longitude]);
 
   return (
     <div className={`overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-soft ${height}`}>
@@ -92,6 +96,11 @@ export function MapView({
             pathOptions={{ color: '#0f172a', weight: 4, opacity: 0.85 }}
           />
         ) : null}
+        <Marker
+          position={[origin.latitude, origin.longitude]}
+          icon={makeIcon(origin.source === 'user-location' ? '#111827' : '#94a3b8')}
+          title={origin.source === 'user-location' ? 'Ma position' : origin.label}
+        />
         {showSpots
           ? spots.map((spot) => (
               <Marker key={spot.id} position={[spot.latitude, spot.longitude]} icon={makeIcon('#2563eb')}>
@@ -100,8 +109,10 @@ export function MapView({
                     <h3 className="text-sm font-semibold text-slate-950">{spot.name}</h3>
                     <p className="mt-1 text-xs text-slate-500">Type: Sortie</p>
                     <p className="mt-1 text-xs text-slate-500">
-                      {routeDistanceBySpotId[spot.id]?.source === 'google-routes' ? 'Distance calculée' : 'Distance indicative'}:{' '}
-                      {(routeDistanceBySpotId[spot.id]?.distanceKm ?? spot.distanceKmFromAix).toFixed(1)} km
+                      {routeDistanceBySpotId[spot.id]
+                        ? formatRouteDistanceLabel(routeDistanceBySpotId[spot.id]!)
+                        : 'Distance indicative depuis Aix-en-Provence'}
+                      : {(routeDistanceBySpotId[spot.id]?.distanceKm ?? spot.distanceKmFromAix).toFixed(1)} km
                     </p>
                     {routeDistanceBySpotId[spot.id]?.durationLabel ? (
                       <p className="mt-1 text-xs text-slate-500">
@@ -165,7 +176,7 @@ export function MapView({
             ))
           : null}
         <CircleMarker
-          center={[43.5297, 5.4474]}
+          center={[origin.latitude, origin.longitude]}
           radius={28}
           pathOptions={{ color: '#94a3b8', fillColor: '#e2e8f0', fillOpacity: 0.3 }}
         />

@@ -5,6 +5,7 @@ import { Pill, SectionTitle } from '../components/Badges';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots, type Spot } from '../data/spots';
 import { formatRechargeStatus } from '../lib/spot-utils';
+import { useRouteOrigin } from '../context/route-origin-context';
 
 type FilterState = {
   distance: string;
@@ -79,6 +80,7 @@ function ChipButton({
 
 export function SortiesPage() {
   const [searchParams] = useSearchParams();
+  const { origin } = useRouteOrigin();
   const [filters, setFilters] = useState<FilterState>({
     distance: searchParams.get('distance') ?? 'all',
     budget: searchParams.get('budget') ?? 'all',
@@ -89,13 +91,19 @@ export function SortiesPage() {
   const [autonomyKm, setAutonomyKm] = useState<number | null>(40);
 
   const filtered = useMemo(() => spots.filter((spot) => matchesFilters(spot, filters)), [filters]);
-  const routeDistances = useRouteDistances(filtered);
+  const routeDistances = useRouteDistances(filtered, origin);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <SectionTitle description="Catalogue filtrable des sorties. Toutes les distances sont indicatives et les statuts de recharge restent prudents par défaut.">
         Sorties autour d’Aix
       </SectionTitle>
+
+      <div className="mt-5 rounded-[1.5rem] border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-600 shadow-soft">
+        {origin.source === 'user-location'
+          ? 'Distances calculées depuis votre position.'
+          : 'Distances calculées depuis Aix-en-Provence.'}
+      </div>
 
       <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-4">

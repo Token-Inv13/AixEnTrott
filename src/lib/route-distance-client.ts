@@ -1,6 +1,11 @@
 import type { Spot } from '../data/spots';
-import { getDefaultOrigin, hasGoogleMapsPublicApiKey } from './google-maps-config';
-import { formatDurationLabel, type RouteDistanceDisplay, type RouteDistanceResult } from './route-distance-types';
+import { hasGoogleMapsPublicApiKey } from './google-maps-config';
+import { getDefaultRouteOrigin, type RouteOrigin } from './user-location';
+import {
+  formatDurationLabel,
+  type RouteDistanceDisplay,
+  type RouteDistanceResult,
+} from './route-distance-types';
 
 type CacheEntry = {
   expiresAt: number;
@@ -40,6 +45,7 @@ function setCache(cache: Record<string, CacheEntry>) {
 
 function buildCacheKey(params: RouteDistanceRequest) {
   return [
+    params.origin.source,
     params.originLat.toFixed(5),
     params.originLng.toFixed(5),
     params.destinationLat.toFixed(5),
@@ -49,6 +55,7 @@ function buildCacheKey(params: RouteDistanceRequest) {
 }
 
 export type RouteDistanceRequest = {
+  origin: RouteOrigin;
   originLat: number;
   originLng: number;
   destinationLat: number;
@@ -56,9 +63,13 @@ export type RouteDistanceRequest = {
   travelMode?: 'BICYCLE';
 };
 
-export function createIndicativeRouteDistance(distanceKm: number): RouteDistanceDisplay {
+export function createIndicativeRouteDistance(
+  distanceKm: number,
+  origin: RouteOrigin = getDefaultRouteOrigin(),
+): RouteDistanceDisplay {
   const durationSeconds = Math.max(60, Math.round(distanceKm * 4 * 60));
   return {
+    origin,
     provider: 'google-routes',
     source: 'indicative',
     distanceKm,
@@ -103,6 +114,7 @@ export async function resolveRouteDistance(request: RouteDistanceRequest, fallba
     }
 
     const value: RouteDistanceDisplay = {
+      origin: request.origin,
       provider: payload.result.provider,
       source: 'google-routes',
       distanceKm: payload.result.distanceKm,
@@ -124,12 +136,16 @@ export async function resolveRouteDistance(request: RouteDistanceRequest, fallba
   }
 }
 
-export async function resolveRouteDistanceForSpot(spot: Spot, fallbackDistanceKm = spot.distanceKmFromAix) {
-  const origin = getDefaultOrigin();
+export async function resolveRouteDistanceForSpot(
+  spot: Spot,
+  origin: RouteOrigin = getDefaultRouteOrigin(),
+  fallbackDistanceKm = spot.distanceKmFromAix,
+) {
   return resolveRouteDistance(
     {
-      originLat: origin.lat,
-      originLng: origin.lng,
+      origin,
+      originLat: origin.latitude,
+      originLng: origin.longitude,
       destinationLat: spot.latitude,
       destinationLng: spot.longitude,
       travelMode: 'BICYCLE',

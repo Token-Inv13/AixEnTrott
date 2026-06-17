@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import type { Spot } from '../data/spots';
 import { buildGoogleMapsDirectionsUrl } from '../lib/google-maps-config';
 import { getAutonomyVerdict, getPlannerShortWarning } from '../lib/planner';
-import { type RouteDistanceDisplay } from '../lib/route-distance-types';
+import { formatRouteDistanceLabel, type RouteDistanceDisplay } from '../lib/route-distance-types';
 import {
   destinationShortLabel,
   areaLabel,
@@ -26,7 +26,7 @@ export function SpotCard({
 }) {
   const verdict = autonomyKm == null ? null : getAutonomyVerdict(spot, autonomyKm);
   const longTripWarning = getPlannerShortWarning(spot);
-  const distanceLabel = routeDistance?.label ?? 'Distance indicative';
+  const distanceLabel = routeDistance ? formatRouteDistanceLabel(routeDistance) : 'Distance indicative depuis Aix-en-Provence';
   const distanceValue = routeDistance?.distanceKm ?? spot.distanceKmFromAix;
   const durationLabel = routeDistance?.durationLabel;
 
@@ -40,8 +40,8 @@ export function SpotCard({
           </p>
           {durationLabel ? <p className="mt-1 text-xs font-medium text-sky">Durée vélo estimée : {durationLabel}</p> : null}
           <p className="mt-1 text-xs text-slate-500">
-            {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()} ·{' '}
-            {spot.cyclingInfrastructure.label.toLowerCase()} · {destinationShortLabel(spot.address)}
+            {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()} · {spot.cyclingInfrastructure.label.toLowerCase()} ·{' '}
+            {destinationShortLabel(spot.address)}
           </p>
         </div>
         <div className="flex flex-wrap justify-end gap-2">
@@ -106,8 +106,7 @@ export function SpotCard({
         </Link>
       </div>
       <p className="mt-3 text-xs text-slate-500">
-        Les itinéraires vélo Google Maps sont indicatifs et peuvent ne pas refléter toutes les pistes cyclables ou zones
-        adaptées aux trottinettes.
+        Les itinéraires vélo Google Maps sont indicatifs et peuvent ne pas refléter toutes les pistes cyclables ou zones adaptées aux trottinettes.
       </p>
       <a
         href={buildGoogleMapsDirectionsUrl(spot.latitude, spot.longitude)}

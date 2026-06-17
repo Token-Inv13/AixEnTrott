@@ -18,7 +18,7 @@ export function HomePage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
-          <SectionKicker>trott-out-aix</SectionKicker>
+          <SectionKicker>Aix en trott</SectionKicker>
           <SectionTitle description="Un mini-site statique pour choisir rapidement une sortie en trottinette électrique autour d’Aix-en-Provence, avec cartes, filtres et recharge.">
             Prépare ta sortie en trottinette autour d’Aix-en-Provence
           </SectionTitle>

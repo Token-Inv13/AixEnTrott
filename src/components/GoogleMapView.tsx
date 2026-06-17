@@ -4,16 +4,15 @@ import type { ChargingPoint } from '../data/chargingPoints';
 import type { Spot } from '../data/spots';
 import { buildGoogleMapsDirectionsUrl, getGoogleMapsPublicApiKey, hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
 import { decodePolyline } from '../lib/polyline';
-import type { RouteDistanceDisplay } from '../lib/route-distance-types';
+import { formatRouteDistanceLabel, type RouteDistanceDisplay } from '../lib/route-distance-types';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
+import { getDefaultRouteOrigin, type RouteOrigin } from '../lib/user-location';
 import {
   destinationShortLabel,
-  categoryLabel,
   formatBudget,
   formatCompatibility,
   formatDifficulty,
   formatRechargeStatus,
-  formatRouteType,
 } from '../lib/spot-utils';
 
 function buildMarkerIcon(color: string) {
@@ -26,21 +25,12 @@ function buildMarkerIcon(color: string) {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
-function getDefaultBounds(spots: Spot[], chargingPoints: ChargingPoint[]) {
+function getDefaultBounds(spots: Spot[], chargingPoints: ChargingPoint[], origin: RouteOrigin) {
   const coords = [
     ...spots.map((spot) => ({ lat: spot.latitude, lng: spot.longitude })),
     ...chargingPoints.map((point) => ({ lat: point.latitude, lng: point.longitude })),
+    { lat: origin.latitude, lng: origin.longitude },
   ];
-
-  if (!coords.length) {
-    return {
-      north: 43.63,
-      south: 43.42,
-      east: 5.68,
-      west: 5.24,
-      padding: 48,
-    };
-  }
 
   const lats = coords.map((coord) => coord.lat);
   const lngs = coords.map((coord) => coord.lng);
@@ -57,6 +47,7 @@ export function GoogleMapView({
   spots,
   chargingPoints,
   selectedSpotId,
+  origin = getDefaultRouteOrigin(),
   routePolyline,
   routeDistanceBySpotId = {},
   height = 'h-[26rem]',
@@ -65,6 +56,7 @@ export function GoogleMapView({
   spots: Spot[];
   chargingPoints: ChargingPoint[];
   selectedSpotId?: string | null;
+  origin?: RouteOrigin;
   routePolyline?: string | null;
   routeDistanceBySpotId?: Record<string, RouteDistanceDisplay | undefined>;
   height?: string;
@@ -73,7 +65,7 @@ export function GoogleMapView({
   const apiKey = getGoogleMapsPublicApiKey();
   const selectedSpot = spots.find((spot) => spot.id === selectedSpotId) ?? null;
   const selectedRouteDistance = selectedSpot ? routeDistanceBySpotId[selectedSpot.id] : undefined;
-  const defaultBounds = useMemo(() => getDefaultBounds(spots, chargingPoints), [spots, chargingPoints]);
+  const defaultBounds = useMemo(() => getDefaultBounds(spots, chargingPoints, origin), [spots, chargingPoints, origin]);
   const [activeId, setActiveId] = useState<string | null>(selectedSpotId ?? null);
 
   useEffect(() => {
@@ -90,19 +82,12 @@ export function GoogleMapView({
     <div className={`overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-soft ${height}`}>
       <APIProvider apiKey={apiKey}>
         <Map defaultBounds={defaultBounds} defaultZoom={10} gestureHandling="greedy" disableDefaultUI>
-          {encodedPath ? (
-            <Polyline
-              encodedPath={routePolyline ?? ''}
-              strokeColor="#0f172a"
-              strokeWeight={4}
-              strokeOpacity={0.9}
-            />
-          ) : null}
+          {encodedPath ? <Polyline encodedPath={routePolyline ?? ''} strokeColor="#0f172a" strokeWeight={4} strokeOpacity={0.9} /> : null}
 
           <Marker
-            position={{ lat: 43.5297, lng: 5.4474 }}
-            icon={buildMarkerIcon('#0f766e')}
-            title="Aix-en-Provence"
+            position={{ lat: origin.latitude, lng: origin.longitude }}
+            icon={buildMarkerIcon(origin.source === 'user-location' ? '#111827' : '#94a3b8')}
+            title={origin.source === 'user-location' ? 'Ma position' : origin.label}
           />
 
           {spots.map((spot) => (
@@ -137,7 +122,7 @@ export function GoogleMapView({
                 <h3 className="text-sm font-semibold text-slate-950">{selectedSpot.name}</h3>
                 <p className="mt-1 text-xs text-slate-500">Type: Sortie</p>
                 <p className="mt-1 text-xs text-slate-500">
-                  {selectedRouteDistance?.source === 'google-routes' ? 'Distance calculée' : 'Distance indicative'}:{' '}
+                  {selectedRouteDistance ? formatRouteDistanceLabel(selectedRouteDistance) : 'Distance indicative depuis Aix-en-Provence'}:{' '}
                   {(selectedRouteDistance?.distanceKm ?? selectedSpot.distanceKmFromAix).toFixed(1)} km
                 </p>
                 {selectedRouteDistance?.durationLabel ? (
@@ -152,20 +137,10 @@ export function GoogleMapView({
                   Les itinéraires vélo Google Maps sont indicatifs et peuvent ne pas refléter toutes les pistes cyclables ou zones adaptées aux trottinettes.
                 </p>
                 <div className="mt-3 flex flex-col gap-1">
-                  <a
-                    href={buildGoogleMapsDirectionsUrl(selectedSpot.latitude, selectedSpot.longitude)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs font-semibold text-sky"
-                  >
+                  <a href={buildGoogleMapsDirectionsUrl(selectedSpot.latitude, selectedSpot.longitude)} target="_blank" rel="noreferrer" className="text-xs font-semibold text-sky">
                     Ouvrir destination
                   </a>
-                  <a
-                    href={buildGoogleMapsBikeDirectionsUrl(selectedSpot.latitude, selectedSpot.longitude)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs font-semibold text-sky"
-                  >
+                  <a href={buildGoogleMapsBikeDirectionsUrl(selectedSpot.latitude, selectedSpot.longitude)} target="_blank" rel="noreferrer" className="text-xs font-semibold text-sky">
                     Itinéraire vélo Google Maps
                   </a>
                 </div>
@@ -176,23 +151,19 @@ export function GoogleMapView({
           {activeId && chargingPoints.some((point) => point.id === activeId) ? (
             <InfoWindow
               position={{
-                lat: chargingPoints.find((point) => point.id === activeId)?.latitude ?? 43.5297,
-                lng: chargingPoints.find((point) => point.id === activeId)?.longitude ?? 5.4474,
+                lat: chargingPoints.find((point) => point.id === activeId)?.latitude ?? origin.latitude,
+                lng: chargingPoints.find((point) => point.id === activeId)?.longitude ?? origin.longitude,
               }}
               onCloseClick={() => setActiveId(null)}
             >
               <div className="max-w-[14rem]">
-                <h3 className="text-sm font-semibold text-slate-950">
-                  {chargingPoints.find((point) => point.id === activeId)?.name}
-                </h3>
+                <h3 className="text-sm font-semibold text-slate-950">{chargingPoints.find((point) => point.id === activeId)?.name}</h3>
                 <p className="mt-1 text-xs text-slate-500">Type: Recharge</p>
                 <p className="mt-1 text-xs text-slate-500">
-                  Statut recharge:{' '}
-                  {formatCompatibility(chargingPoints.find((point) => point.id === activeId)?.compatibility ?? 'verify')}
+                  Statut recharge: {formatCompatibility(chargingPoints.find((point) => point.id === activeId)?.compatibility ?? 'verify')}
                 </p>
                 <p className="mt-1 text-xs text-slate-500">
-                  {chargingPoints.find((point) => point.id === activeId)?.city} ·{' '}
-                  {chargingPoints.find((point) => point.id === activeId)?.address}
+                  {chargingPoints.find((point) => point.id === activeId)?.city} · {chargingPoints.find((point) => point.id === activeId)?.address}
                 </p>
               </div>
             </InfoWindow>

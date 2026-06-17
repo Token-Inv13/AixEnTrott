@@ -5,6 +5,7 @@ import { buildReportIssueMailto } from '../config/site';
 import { useRouteDistance } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
+import { formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { getPlannerShortWarning } from '../lib/planner';
 import {
   areaLabel,
@@ -16,11 +17,13 @@ import {
   formatRoadSafetyLevel,
   formatRouteType,
 } from '../lib/spot-utils';
+import { useRouteOrigin } from '../context/route-origin-context';
 
 export function SortieDetailPage() {
   const { id } = useParams();
   const spot = spots.find((item) => item.id === id);
-  const routeDistance = useRouteDistance(spot);
+  const { origin } = useRouteOrigin();
+  const routeDistance = useRouteDistance(spot, origin);
 
   if (!spot) {
     return <Navigate to="/sorties" replace />;
@@ -56,7 +59,9 @@ export function SortieDetailPage() {
 
           <div className="mt-6 flex flex-wrap gap-2">
             <Pill tone={routeDistance?.source === 'google-routes' ? 'emerald' : 'sky'}>
-              {routeDistance?.source === 'google-routes' ? 'Distance calculée' : 'Distance indicative'} {distanceKm.toFixed(1)} km
+              {routeDistance ? formatRouteDistanceLabel(routeDistance) : 'Distance indicative depuis Aix-en-Provence'}
+              {' '}
+              {distanceKm.toFixed(1)} km
             </Pill>
             <Pill tone="emerald">{formatBudget(spot.budget)}</Pill>
             <Pill>{spot.duration}</Pill>
@@ -110,7 +115,11 @@ export function SortieDetailPage() {
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl bg-slate-50 p-4">
                 <p className="text-sm text-slate-500">
-                  {routeDistance?.source === 'google-routes' ? 'Distance aller calculée' : 'Distance aller indicative'}
+                  {routeDistance?.source === 'google-routes'
+                    ? routeDistance.origin.source === 'user-location'
+                      ? 'Distance aller calculée depuis votre position'
+                      : 'Distance aller calculée depuis Aix-en-Provence'
+                    : 'Distance aller indicative depuis Aix-en-Provence'}
                 </p>
                 <p className="mt-2 text-sm font-semibold text-slate-950">{distanceKm.toFixed(1)} km</p>
               </div>
@@ -240,7 +249,14 @@ export function SortieDetailPage() {
           <div className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft">
             <p className="text-sm font-semibold text-slate-950">Carte centrée sur le lieu</p>
             <div className="mt-4">
-              <MapView spots={[spot]} chargingPoints={[]} showCharging={false} routePolyline={routeDistance?.encodedPolyline} height="h-[24rem]" />
+              <MapView
+                spots={[spot]}
+                chargingPoints={[]}
+                showCharging={false}
+                origin={origin}
+                routePolyline={routeDistance?.encodedPolyline}
+                height="h-[24rem]"
+              />
             </div>
           </div>
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">

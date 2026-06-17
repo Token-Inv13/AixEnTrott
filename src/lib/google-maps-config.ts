@@ -1,3 +1,5 @@
+import { getDefaultRouteOrigin } from './user-location';
+
 export type DefaultOrigin = {
   lat: number;
   lng: number;
@@ -13,9 +15,10 @@ export function hasGoogleMapsPublicApiKey() {
 }
 
 export function getDefaultOrigin(): DefaultOrigin {
-  const lat = Number(import.meta.env.VITE_DEFAULT_ORIGIN_LAT ?? '43.529742');
-  const lng = Number(import.meta.env.VITE_DEFAULT_ORIGIN_LNG ?? '5.447427');
-  const label = import.meta.env.VITE_DEFAULT_ORIGIN_LABEL?.trim() || 'Aix-en-Provence';
+  const fallback = getDefaultRouteOrigin();
+  const lat = Number(import.meta.env.VITE_DEFAULT_ORIGIN_LAT ?? String(fallback.latitude));
+  const lng = Number(import.meta.env.VITE_DEFAULT_ORIGIN_LNG ?? String(fallback.longitude));
+  const label = import.meta.env.VITE_DEFAULT_ORIGIN_LABEL?.trim() || fallback.label;
   return {
     lat: Number.isFinite(lat) ? lat : 43.529742,
     lng: Number.isFinite(lng) ? lng : 5.447427,

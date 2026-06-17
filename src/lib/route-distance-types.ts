@@ -1,3 +1,5 @@
+import type { RouteOrigin } from './user-location';
+
 export type RouteDistanceResult = {
   distanceMeters: number;
   distanceKm: number;
@@ -10,6 +12,7 @@ export type RouteDistanceResult = {
 };
 
 export type RouteDistanceDisplay = {
+  origin: RouteOrigin;
   provider: 'google-routes';
   source: 'google-routes' | 'indicative';
   distanceKm: number;
@@ -19,6 +22,16 @@ export type RouteDistanceDisplay = {
   label: 'Distance calculée' | 'Distance indicative';
   isEstimated: boolean;
 };
+
+export function formatRouteDistanceLabel(distance: RouteDistanceDisplay) {
+  if (distance.source === 'indicative') {
+    return 'Distance indicative depuis Aix-en-Provence';
+  }
+
+  return distance.origin.source === 'user-location'
+    ? 'Distance calculée depuis votre position'
+    : 'Distance calculée depuis Aix-en-Provence';
+}
 
 export function formatDurationLabel(seconds: number) {
   const totalMinutes = Math.max(1, Math.round(seconds / 60));

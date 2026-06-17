@@ -2,11 +2,15 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Spot } from '../data/spots';
 import { resolveRouteDistanceForSpot } from '../lib/route-distance-client';
 import type { RouteDistanceDisplay } from '../lib/route-distance-types';
+import type { RouteOrigin } from '../lib/user-location';
 
 type RouteDistanceMap = Record<string, RouteDistanceDisplay>;
 
-export function useRouteDistances(spots: Spot[]) {
-  const keys = useMemo(() => spots.map((spot) => spot.id).join('|'), [spots]);
+export function useRouteDistances(spots: Spot[], origin: RouteOrigin) {
+  const keys = useMemo(
+    () => `${origin.source}|${origin.latitude}|${origin.longitude}|${spots.map((spot) => spot.id).join('|')}`,
+    [origin.source, origin.latitude, origin.longitude, spots],
+  );
   const [routeDistances, setRouteDistances] = useState<RouteDistanceMap>({});
 
   useEffect(() => {
@@ -14,7 +18,7 @@ export function useRouteDistances(spots: Spot[]) {
 
     async function run() {
       const pairs = await Promise.all(
-        spots.map(async (spot) => [spot.id, await resolveRouteDistanceForSpot(spot)] as const),
+        spots.map(async (spot) => [spot.id, await resolveRouteDistanceForSpot(spot, origin)] as const),
       );
 
       if (cancelled) {
@@ -33,12 +37,12 @@ export function useRouteDistances(spots: Spot[]) {
     return () => {
       cancelled = true;
     };
-  }, [keys]);
+  }, [keys, origin, spots]);
 
   return routeDistances;
 }
 
-export function useRouteDistance(spot?: Spot | null) {
+export function useRouteDistance(spot?: Spot | null, origin?: RouteOrigin) {
   const [routeDistance, setRouteDistance] = useState<RouteDistanceDisplay | null>(null);
 
   useEffect(() => {
@@ -50,7 +54,7 @@ export function useRouteDistance(spot?: Spot | null) {
         return;
       }
 
-      const result = await resolveRouteDistanceForSpot(spot);
+      const result = await resolveRouteDistanceForSpot(spot, origin);
       if (!cancelled) {
         setRouteDistance(result);
       }
@@ -61,7 +65,7 @@ export function useRouteDistance(spot?: Spot | null) {
     return () => {
       cancelled = true;
     };
-  }, [spot?.id]);
+  }, [spot?.id, origin?.source, origin?.latitude, origin?.longitude]);
 
   return routeDistance;
 }
