@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aix en trott | Hors ligne</title>
+    <meta name="theme-color" content="#0f172a" />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Manrope, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 28%),
+          radial-gradient(circle at top right, rgba(16, 185, 129, 0.1), transparent 24%),
+          #f8fafc;
+        color: #0f172a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      main {
+        width: min(100%, 720px);
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        border-radius: 32px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 24px 64px rgba(15, 23, 42, 0.08);
+        padding: 32px;
+      }
+
+      img {
+        display: block;
+        width: min(220px, 100%);
+        height: auto;
+      }
+
+      h1 {
+        margin: 24px 0 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.05;
+      }
+
+      p {
+        margin: 16px 0 0;
+        color: #475569;
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      a,
+      button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .primary {
+        background: #0f172a;
+        color: white;
+      }
+
+      .secondary {
+        background: #e2e8f0;
+        color: #0f172a;
+      }
+
+      ul {
+        margin: 24px 0 0;
+        padding-left: 18px;
+        color: #475569;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/logo-horizontal.png" alt="Aix en trott" />
+      <h1>Connexion absente, guide toujours accessible</h1>
+      <p>Le site ne peut pas charger de nouvelles donnees pour le moment. Si l'application a deja ete ouverte, les pages principales restent disponibles hors ligne.</p>
+      <ul>
+        <li>Reessaie dans quelques secondes si le reseau revient.</li>
+        <li>Les cartes et trajets temps reel peuvent rester limites hors connexion.</li>
+        <li>Les contenus consultes recemment sont les plus fiables hors ligne.</li>
+      </ul>
+      <div class="actions">
+        <a class="primary" href="/">Retour a l'accueil</a>
+        <button class="secondary" type="button" onclick="window.location.reload()">Recharger</button>
+      </div>
+    </main>
+  </body>
+</html>

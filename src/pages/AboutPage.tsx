@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { SectionKicker, SectionTitle } from '../components/Badges';
+import { PwaInstallCard } from '../components/PwaInstallCard';
 
 export function AboutPage() {
   return (
@@ -36,6 +37,10 @@ export function AboutPage() {
           </div>
         </div>
       </section>
+
+      <div className="mt-6">
+        <PwaInstallCard />
+      </div>
     </div>
   );
 }
