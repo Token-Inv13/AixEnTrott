@@ -31,12 +31,12 @@ export function Layout({ children }: { children: ReactNode }) {
     <div className="app-shell min-h-screen">
       <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-          <Link to="/" className="flex items-center gap-3">
-            <img src="/logo-mark.svg" alt="Aix en trott" className="h-10 w-10 rounded-2xl shadow-soft" />
-            <span className="leading-tight">
-              <span className="block text-sm font-semibold tracking-wide text-slate-950">Aix en trott</span>
-              <span className="block text-xs text-slate-500">Sorties en trottinette autour d'Aix</span>
-            </span>
+          <Link to="/" className="flex items-center" aria-label="Aix en trott, retour a l'accueil">
+            <img
+              src="/logo-horizontal.png"
+              alt="Aix en trott"
+              className="h-10 w-auto max-w-[176px] sm:h-12 sm:max-w-[208px]"
+            />
           </Link>
           <nav className="hidden items-center gap-1 rounded-full border border-slate-200 bg-slate-50 p-1 md:flex">
             {navItems.map((item) => (

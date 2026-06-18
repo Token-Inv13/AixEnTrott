@@ -1,10 +1,11 @@
-const CACHE_NAME = 'aix-en-trott-v1';
+const CACHE_NAME = 'aix-en-trott-v2';
 const APP_SHELL = [
   '/',
   '/manifest.webmanifest',
-  '/favicon.svg',
-  '/logo-mark.svg',
-  '/og-image.svg',
+  '/favicon-32.png',
+  '/logo-horizontal.png',
+  '/logo-emblem-mini.png',
+  '/og-image.png',
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
