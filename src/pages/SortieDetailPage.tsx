@@ -1,6 +1,8 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
+import { AdSlot } from '../components/AdSlot';
 import { MapView } from '../components/MapView';
 import { Pill, SectionKicker } from '../components/Badges';
+import { ADSENSE_SLOTS } from '../config/ads';
 import { buildReportIssueMailto } from '../config/site';
 import { useRouteDistance } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
@@ -234,6 +236,12 @@ export function SortieDetailPage() {
               ))}
             </ul>
           </div>
+
+          <AdSlot
+            className="mt-6"
+            slotId={ADSENSE_SLOTS.sortieDetailBanner}
+            label="Banniere fiche sortie"
+          />
         </div>
 
         <div className="grid gap-4">

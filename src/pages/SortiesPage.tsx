@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { AdSlot } from '../components/AdSlot';
 import { SpotCard } from '../components/SpotCard';
 import { Pill, SectionTitle } from '../components/Badges';
+import { ADSENSE_SLOTS } from '../config/ads';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots, type Spot } from '../data/spots';
 import { useRouteOrigin } from '../context/route-origin-context';
@@ -90,6 +92,8 @@ export function SortiesPage() {
   const [autonomyKm, setAutonomyKm] = useState<number | null>(40);
 
   const filtered = useMemo(() => spots.filter((spot) => matchesFilters(spot, filters)), [filters]);
+  const leadSpots = filtered.slice(0, 3);
+  const remainingSpots = filtered.slice(3);
   const routeDistances = useRouteDistances(filtered, origin);
 
   return (
@@ -184,15 +188,35 @@ export function SortiesPage() {
       </div>
 
       {filtered.length ? (
-        <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((spot) => (
-            <SpotCard
-              key={spot.id}
-              spot={spot}
-              autonomyKm={autonomyKm ?? undefined}
-              routeDistance={routeDistances[spot.id]}
+        <section className="mt-6 space-y-6">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {leadSpots.map((spot) => (
+              <SpotCard
+                key={spot.id}
+                spot={spot}
+                autonomyKm={autonomyKm ?? undefined}
+                routeDistance={routeDistances[spot.id]}
+              />
+            ))}
+          </div>
+
+          {filtered.length > 3 ? (
+            <AdSlot
+              slotId={ADSENSE_SLOTS.sortiesBanner}
+              label="Banniere catalogue sorties"
             />
-          ))}
+          ) : null}
+
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {remainingSpots.map((spot) => (
+              <SpotCard
+                key={spot.id}
+                spot={spot}
+                autonomyKm={autonomyKm ?? undefined}
+                routeDistance={routeDistances[spot.id]}
+              />
+            ))}
+          </div>
         </section>
       ) : (
         <section className="mt-6 rounded-[2rem] border border-dashed border-slate-300 bg-white p-10 text-center shadow-soft">

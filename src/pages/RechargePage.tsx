@@ -1,4 +1,6 @@
+import { AdSlot } from '../components/AdSlot';
 import { SectionTitle } from '../components/Badges';
+import { ADSENSE_SLOTS } from '../config/ads';
 import { ChargingPointCard } from '../components/ChargingPointCard';
 import { buildReportIssueMailto } from '../config/site';
 import { chargingPoints } from '../data/chargingPoints';
@@ -88,6 +90,12 @@ export function RechargePage() {
           </ul>
         </div>
       </section>
+
+      <AdSlot
+        className="mt-6"
+        slotId={ADSENSE_SLOTS.rechargeBanner}
+        label="Banniere recharge"
+      />
     </div>
   );
 }

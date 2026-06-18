@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AdSlot } from '../components/AdSlot';
 import { Pill, SectionTitle } from '../components/Badges';
 import { GoogleMapView } from '../components/GoogleMapView';
 import { MapView } from '../components/MapView';
+import { ADSENSE_SLOTS } from '../config/ads';
 import { chargingPoints } from '../data/chargingPoints';
 import { spots } from '../data/spots';
 import { useRouteDistances } from '../hooks/use-route-distances';
@@ -271,6 +273,12 @@ export function CartePage() {
               </div>
             ) : null}
           </div>
+
+          <AdSlot
+            className="hidden lg:block"
+            slotId={ADSENSE_SLOTS.carteSidebarBanner}
+            label="Banniere carte desktop"
+          />
         </div>
       </section>
     </div>

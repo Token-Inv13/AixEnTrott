@@ -3,7 +3,9 @@ import { chargingPoints } from '../data/chargingPoints';
 import { distanceBands, spots } from '../data/spots';
 import { areaLabel, formatRechargeStatus } from '../lib/spot-utils';
 import { Pill, SectionKicker, SectionTitle } from '../components/Badges';
+import { AdSlot } from '../components/AdSlot';
 import { MapView } from '../components/MapView';
+import { ADSENSE_SLOTS } from '../config/ads';
 
 const quickActions = [
   { to: '/sorties?moment=soir', label: 'Je veux sortir ce soir', tone: 'sky' as const },
@@ -92,6 +94,12 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      <AdSlot
+        className="mt-8"
+        slotId={ADSENSE_SLOTS.homeBanner}
+        label="Banniere accueil"
+      />
 
       <section className="mt-10 grid gap-4 lg:grid-cols-3">
         {[
