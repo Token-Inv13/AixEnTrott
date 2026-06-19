@@ -6,8 +6,10 @@ export type RouteDistanceResult = {
   durationSeconds: number;
   durationLabel: string;
   encodedPolyline?: string;
+  alternativeCount: number;
+  legCount: number;
   provider: 'google-routes';
-  travelMode: 'BICYCLE';
+  travelMode: 'BICYCLE' | 'TWO_WHEELER';
   isEstimated: false;
 };
 
@@ -19,7 +21,10 @@ export type RouteDistanceDisplay = {
   durationSeconds: number;
   durationLabel: string;
   encodedPolyline?: string;
+  alternativeCount: number;
+  legCount: number;
   label: 'Distance calculee' | 'Distance indicative';
+  travelMode?: 'BICYCLE' | 'TWO_WHEELER';
   isEstimated: boolean;
 };
 
@@ -40,4 +45,16 @@ export function formatDurationLabel(seconds: number) {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
   return minutes ? `${hours} h ${minutes} min` : `${hours} h`;
+}
+
+export function getBicycleRouteWarning() {
+  return "Les trajets Google pour velo ou deux-roues restent indicatifs. Google signale que certains amenagements, restrictions ou portions cyclables peuvent manquer: verifiez toujours sur place.";
+}
+
+export function formatAlternativeRoutesLabel(distance: Pick<RouteDistanceDisplay, 'alternativeCount'>) {
+  if (!distance.alternativeCount) {
+    return 'Itineraire principal Google';
+  }
+
+  return `${distance.alternativeCount + 1} itineraires Google disponibles`;
 }

@@ -1,9 +1,16 @@
-const CACHE_NAME = 'aix-en-trott-v4';
+const CACHE_NAME = 'aix-en-trott-v5';
 const APP_SHELL = [
   '/',
+  '/planner',
+  '/sorties',
+  '/carte',
+  '/recharge',
+  '/conseils',
+  '/a-propos',
   '/offline.html',
   '/manifest.webmanifest',
   '/favicon-32.png',
+  '/favicon.svg',
   '/apple-touch-icon.png',
   '/icon-192.png',
   '/icon-512.png',
@@ -11,7 +18,9 @@ const APP_SHELL = [
   '/icon-512-maskable.png',
   '/logo-horizontal.png',
   '/logo-emblem-mini.png',
+  '/logo-mark.svg',
   '/og-image.png',
+  '/og-image.svg',
   '/ads.txt',
 ];
 
@@ -73,6 +82,12 @@ self.addEventListener('activate', (event) => {
     ),
   );
   self.clients.claim();
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', (event) => {

@@ -13,6 +13,7 @@ import { type RouteDistanceDisplay } from '../lib/route-distance-types';
 import { getDefaultRouteOrigin, getOriginFromLabel, type RouteOrigin } from '../lib/user-location';
 import { formatCompatibility } from '../lib/spot-utils';
 import { haversineKm } from '../lib/nearby';
+import { MapView } from './MapView';
 import { SpotMapPopup } from './SpotMapPopup';
 
 function MapBoundsController({
@@ -52,6 +53,17 @@ function MapBoundsController({
   return null;
 }
 
+type GoogleMapViewProps = {
+  spots: Spot[];
+  chargingPoints: ChargingPoint[];
+  selectedSpotId?: string | null;
+  origin?: RouteOrigin;
+  routePolyline?: string | null;
+  routeDistanceBySpotId?: Record<string, RouteDistanceDisplay | undefined>;
+  height?: string;
+  onSelectSpot?: (spotId: string | null) => void;
+};
+
 export function GoogleMapView({
   spots,
   chargingPoints,
@@ -61,20 +73,12 @@ export function GoogleMapView({
   routeDistanceBySpotId = {},
   height = 'h-[26rem]',
   onSelectSpot,
-}: {
-  spots: Spot[];
-  chargingPoints: ChargingPoint[];
-  selectedSpotId?: string | null;
-  origin?: RouteOrigin;
-  routePolyline?: string | null;
-  routeDistanceBySpotId?: Record<string, RouteDistanceDisplay | undefined>;
-  height?: string;
-  onSelectSpot?: (spotId: string | null) => void;
-}) {
+}: GoogleMapViewProps) {
   const apiKey = getGoogleMapsPublicApiKey();
   const mapId = getGoogleMapsMapId();
   const selectedSpot = spots.find((spot) => spot.id === selectedSpotId) ?? null;
   const [activeId, setActiveId] = useState<string | null>(selectedSpotId ?? null);
+  const [hasRuntimeError, setHasRuntimeError] = useState(false);
   const activeChargingPoint = useMemo(
     () => chargingPoints.find((point) => point.id === activeId) ?? null,
     [activeId, chargingPoints],
@@ -88,13 +92,22 @@ export function GoogleMapView({
     setActiveId(selectedSpotId ?? null);
   }, [selectedSpotId]);
 
-  if (!apiKey) {
-    return null;
+  if (!apiKey || hasRuntimeError) {
+    return (
+      <MapView
+        spots={spots}
+        chargingPoints={chargingPoints}
+        origin={origin}
+        routePolyline={routePolyline}
+        routeDistanceBySpotId={routeDistanceBySpotId}
+        height={height}
+      />
+    );
   }
 
   return (
     <div className={`overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-soft ${height}`}>
-      <APIProvider apiKey={apiKey} {...GOOGLE_MAPS_PROVIDER_OPTIONS}>
+      <APIProvider apiKey={apiKey} onError={() => setHasRuntimeError(true)} {...GOOGLE_MAPS_PROVIDER_OPTIONS}>
         <Map
           defaultCenter={{ lat: origin.latitude, lng: origin.longitude }}
           defaultZoom={10}

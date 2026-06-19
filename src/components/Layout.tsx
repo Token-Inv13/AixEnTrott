@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { PwaStatusBanner } from './PwaStatusBanner';
 
 const navItems = [
   { to: '/', label: 'Accueil' },
@@ -29,6 +30,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="app-shell min-h-screen">
+      <PwaStatusBanner />
       <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center" aria-label="Aix en trott, retour a l'accueil">

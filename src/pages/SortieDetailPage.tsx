@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
 import { GoogleMapView } from '../components/GoogleMapView';
 import { MapView } from '../components/MapView';
+import { RouteMethodNotice } from '../components/RouteMethodNotice';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { Pill, SectionKicker } from '../components/Badges';
 import { ADSENSE_SLOTS } from '../config/ads';
@@ -10,8 +11,9 @@ import { useRouteDistance } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
 import { hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
-import { formatRouteDistanceLabel } from '../lib/route-distance-types';
+import { formatAlternativeRoutesLabel, formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { getPlannerShortWarning } from '../lib/planner';
+import { assessTripForBatteryProfile, batteryProfiles, getTripConstraintLabels } from '../lib/trip-planning';
 import { getOriginFromLabel } from '../lib/user-location';
 import {
   areaLabel,
@@ -39,6 +41,7 @@ export function SortieDetailPage() {
   const distanceKm = routeDistance?.distanceKm ?? spot.distanceKmFromAix;
   const roundTripKm = distanceKm * 2;
   const requiredAutonomyKm = roundTripKm * 1.2;
+  const routeConstraints = getTripConstraintLabels(spot, distanceKm);
   const planAdvice =
     distanceKm > 30
       ? 'Prevoir retour alternatif'
@@ -76,6 +79,7 @@ export function SortieDetailPage() {
               {formatRechargeStatus(spot.rechargeStatus)}
             </Pill>
             {routeDistance?.durationLabel ? <Pill tone="sky">Duree velo estimee {routeDistance.durationLabel}</Pill> : null}
+            {routeDistance ? <Pill>{formatAlternativeRoutesLabel(routeDistance)}</Pill> : null}
           </div>
 
           <div className="mt-6 grid gap-3 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2">
@@ -110,6 +114,8 @@ export function SortieDetailPage() {
             </div>
           </div>
           <p className="mt-3 text-xs leading-5 text-slate-500">Trajet velo indicatif, a confirmer selon le revetement et les amenagements.</p>
+
+          <RouteMethodNotice className="mt-4" />
 
           <RouteOriginPanel
             className="mt-6"
@@ -157,6 +163,56 @@ export function SortieDetailPage() {
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 {distanceKm > 30 ? 'Sortie longue : prevoir une marge ou un retour alternatif.' : getPlannerShortWarning(spot)}
               </p>
+            </div>
+            {routeConstraints.length ? (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {routeConstraints.map((constraint) => (
+                  <Pill key={constraint}>{constraint}</Pill>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
+            <p className="text-sm font-semibold text-slate-950">Profils batterie</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Estimation aller-retour par profil indicatif. Relief, vent, temperature et etat batterie restent a verifier.
+            </p>
+            <div className="mt-4 grid gap-3">
+              {batteryProfiles.map((profile) => {
+                const assessment = assessTripForBatteryProfile(distanceKm, profile, spot.rechargeStatus);
+
+                return (
+                  <div key={profile.id} className="rounded-2xl bg-slate-50 p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <p className="font-semibold text-slate-950">{profile.label}</p>
+                        <p className="mt-1 text-sm text-slate-500">
+                          Utilisable environ {assessment.usableRangeKm.toFixed(1)} km · reserve {assessment.reserveKm.toFixed(1)} km
+                        </p>
+                      </div>
+                      <Pill
+                        tone={
+                          assessment.status === 'comfortable'
+                            ? 'emerald'
+                            : assessment.status === 'tight'
+                              ? 'sky'
+                              : assessment.status === 'recharge-needed'
+                                ? 'amber'
+                                : 'rose'
+                        }
+                      >
+                        {assessment.label}
+                      </Pill>
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-slate-600">{assessment.note}</p>
+                    <p className="mt-2 text-sm text-slate-600">
+                      Aller-retour indicatif {assessment.roundTripKm.toFixed(1)} km · buffer {assessment.bufferKm >= 0 ? '+' : ''}
+                      {assessment.bufferKm.toFixed(1)} km
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 

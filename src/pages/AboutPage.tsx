@@ -39,7 +39,7 @@ export function AboutPage() {
       </section>
 
       <div className="mt-6">
-        <PwaInstallCard />
+        <PwaInstallCard className="max-w-3xl" />
       </div>
     </div>
   );

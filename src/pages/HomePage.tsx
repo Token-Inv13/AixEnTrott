@@ -8,6 +8,7 @@ import { areaLabel, formatRechargeStatus } from '../lib/spot-utils';
 import { Pill, SectionKicker, SectionTitle } from '../components/Badges';
 import { AdSlot } from '../components/AdSlot';
 import { MapView } from '../components/MapView';
+import { PwaInstallCard } from '../components/PwaInstallCard';
 import { ADSENSE_SLOTS } from '../config/ads';
 
 const quickActions = [
@@ -114,6 +115,28 @@ export function HomePage() {
         slotId={ADSENSE_SLOTS.homeBanner}
         label="Banniere accueil"
       />
+
+      <section className="mt-8 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
+          <SectionKicker>Mode app</SectionKicker>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Installer le guide sur ton telephone</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            Pratique pour garder la carte, le planner et les fiches a portee de main avant de partir.
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {[
+              'Acces plus rapide au planner',
+              "Ecran d'accueil propre et sans onglets",
+              'Pages recentes disponibles hors ligne',
+            ].map((item) => (
+              <div key={item} className="rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+        <PwaInstallCard compact />
+      </section>
 
       <section className="mt-10 grid gap-4 lg:grid-cols-3">
         {[

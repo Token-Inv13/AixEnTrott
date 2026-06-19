@@ -12,6 +12,7 @@
   "background_color": "#f8fafc",
   "theme_color": "#0f172a",
   "categories": ["travel", "navigation", "lifestyle"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon-192.png",
@@ -34,6 +35,15 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Accueil Aix en trott"
     }
   ],
   "shortcuts": [

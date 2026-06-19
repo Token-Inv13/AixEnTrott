@@ -59,7 +59,7 @@ export type RouteDistanceRequest = {
   originLng: number;
   destinationLat: number;
   destinationLng: number;
-  travelMode?: 'BICYCLE';
+  travelMode?: 'BICYCLE' | 'TWO_WHEELER';
 };
 
 export function createIndicativeRouteDistance(
@@ -74,7 +74,10 @@ export function createIndicativeRouteDistance(
     distanceKm,
     durationSeconds,
     durationLabel: formatDurationLabel(durationSeconds),
+    alternativeCount: 0,
+    legCount: 1,
     label: 'Distance indicative',
+    travelMode: 'BICYCLE',
     isEstimated: true,
   };
 }
@@ -96,7 +99,7 @@ export async function resolveRouteDistance(request: RouteDistanceRequest, fallba
         originLng: request.originLng,
         destinationLat: request.destinationLat,
         destinationLng: request.destinationLng,
-        travelMode: request.travelMode ?? 'BICYCLE',
+        travelMode: request.travelMode ?? 'TWO_WHEELER',
       }),
     });
 
@@ -116,7 +119,10 @@ export async function resolveRouteDistance(request: RouteDistanceRequest, fallba
       durationSeconds: payload.result.durationSeconds,
       durationLabel: payload.result.durationLabel,
       encodedPolyline: payload.result.encodedPolyline,
+      alternativeCount: payload.result.alternativeCount,
+      legCount: payload.result.legCount,
       label: 'Distance calculee',
+      travelMode: payload.result.travelMode,
       isEstimated: false,
     };
 
@@ -143,7 +149,7 @@ export async function resolveRouteDistanceForSpot(
       originLng: origin.longitude,
       destinationLat: spot.latitude,
       destinationLng: spot.longitude,
-      travelMode: 'BICYCLE',
+      travelMode: 'TWO_WHEELER',
     },
     fallbackDistanceKm,
   );

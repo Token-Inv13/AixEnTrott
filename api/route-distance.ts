@@ -1,19 +1,28 @@
+type TravelMode = 'BICYCLE' | 'TWO_WHEELER';
+
 type RouteDistanceRequestBody = {
   originLat: number;
   originLng: number;
   destinationLat: number;
   destinationLng: number;
-  travelMode?: 'BICYCLE';
+  travelMode?: TravelMode;
+};
+
+type ComputeRoute = {
+  distanceMeters?: number;
+  duration?: string;
+  routeLabels?: string[];
+  legs?: Array<{
+    distanceMeters?: number;
+    duration?: string;
+  }>;
+  polyline?: {
+    encodedPolyline?: string;
+  };
 };
 
 type ComputeRoutesResponse = {
-  routes?: Array<{
-    distanceMeters?: number;
-    duration?: string;
-    polyline?: {
-      encodedPolyline?: string;
-    };
-  }>;
+  routes?: ComputeRoute[];
 };
 
 type JsonResponse = {
@@ -24,8 +33,10 @@ type JsonResponse = {
     durationSeconds: number;
     durationLabel: string;
     encodedPolyline?: string;
+    alternativeCount: number;
+    legCount: number;
     provider: 'google-routes';
-    travelMode: 'BICYCLE';
+    travelMode: TravelMode;
     isEstimated: false;
   };
 } | {
@@ -46,7 +57,8 @@ type VercelLikeRequest = {
 };
 
 const ROUTES_API_URL = 'https://routes.googleapis.com/directions/v2:computeRoutes';
-const FIELD_MASK = 'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline';
+const FIELD_MASK =
+  'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline,routes.routeLabels,routes.legs.distanceMeters,routes.legs.duration';
 
 function parseDurationToSeconds(duration: string | undefined) {
   if (!duration) {
@@ -94,7 +106,9 @@ function normalizeBody(body: unknown): RouteDistanceRequestBody | null {
   const originLng = toNumber(record.originLng);
   const destinationLat = toNumber(record.destinationLat);
   const destinationLng = toNumber(record.destinationLng);
-  const travelMode = record.travelMode === 'BICYCLE' ? 'BICYCLE' : 'BICYCLE';
+  const travelMode = record.travelMode === 'BICYCLE' || record.travelMode === 'TWO_WHEELER'
+    ? record.travelMode
+    : 'TWO_WHEELER';
 
   if (originLat == null || originLng == null || destinationLat == null || destinationLng == null) {
     return null;
@@ -116,6 +130,55 @@ function getApiKey() {
     process.env.GOOGLE_MAPS_SERVER_API_KEY?.trim() ||
     ''
   );
+}
+
+function buildRequestBody(payload: RouteDistanceRequestBody, travelMode: TravelMode) {
+  return {
+    origin: {
+      location: {
+        latLng: {
+          latitude: payload.originLat,
+          longitude: payload.originLng,
+        },
+      },
+    },
+    destination: {
+      location: {
+        latLng: {
+          latitude: payload.destinationLat,
+          longitude: payload.destinationLng,
+        },
+      },
+    },
+    travelMode,
+    computeAlternativeRoutes: true,
+    units: 'METRIC',
+    languageCode: 'fr-FR',
+    polylineQuality: 'OVERVIEW',
+  };
+}
+
+async function requestRoutes(payload: RouteDistanceRequestBody, apiKey: string, travelMode: TravelMode) {
+  const response = await fetch(ROUTES_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': apiKey,
+      'X-Goog-FieldMask': FIELD_MASK,
+    },
+    body: JSON.stringify(buildRequestBody(payload, travelMode)),
+  });
+
+  const data = (await response.json()) as ComputeRoutesResponse | { error?: { message?: string } };
+  const routes = 'routes' in data ? data.routes ?? [] : [];
+  const route = routes[0];
+
+  return {
+    response,
+    data,
+    routes,
+    route,
+  };
 }
 
 export default async function handler(req: VercelLikeRequest, res: VercelLikeResponse) {
@@ -143,59 +206,45 @@ export default async function handler(req: VercelLikeRequest, res: VercelLikeRes
     return;
   }
 
-  const body = {
-    origin: {
-      location: {
-        latLng: {
-          latitude: payload.originLat,
-          longitude: payload.originLng,
-        },
-      },
-    },
-    destination: {
-      location: {
-        latLng: {
-          latitude: payload.destinationLat,
-          longitude: payload.destinationLng,
-        },
-      },
-    },
-    travelMode: payload.travelMode ?? 'BICYCLE',
-    computeAlternativeRoutes: false,
-    units: 'METRIC',
-  };
+  const modesToTry: TravelMode[] = payload.travelMode === 'BICYCLE' ? ['BICYCLE'] : ['TWO_WHEELER', 'BICYCLE'];
+  let lastAttempt: Awaited<ReturnType<typeof requestRoutes>> | null = null;
+  let effectiveTravelMode: TravelMode = modesToTry[0];
 
-  const response = await fetch(ROUTES_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Goog-Api-Key': apiKey,
-      'X-Goog-FieldMask': FIELD_MASK,
-    },
-    body: JSON.stringify(body),
-  });
+  for (const travelMode of modesToTry) {
+    const attempt = await requestRoutes(payload, apiKey, travelMode);
+    lastAttempt = attempt;
 
-  const data = (await response.json()) as ComputeRoutesResponse | { error?: { message?: string } };
-  const route = 'routes' in data ? data.routes?.[0] : undefined;
+    if (attempt.response.ok && attempt.route?.distanceMeters != null && attempt.route.duration) {
+      effectiveTravelMode = travelMode;
+      break;
+    }
+  }
 
-  if (!response.ok || route?.distanceMeters == null || !route.duration) {
-    res.status(response.status >= 400 ? response.status : 502).json({
+  if (!lastAttempt || !lastAttempt.response.ok || lastAttempt.route?.distanceMeters == null || !lastAttempt.route.duration) {
+    res.status(lastAttempt?.response.status && lastAttempt.response.status >= 400 ? lastAttempt.response.status : 502).json({
       ok: false,
-      error: 'error' in data && data.error?.message ? data.error.message : 'Google Routes API request failed',
+      error:
+        lastAttempt &&
+        'error' in lastAttempt.data &&
+        lastAttempt.data.error?.message
+          ? lastAttempt.data.error.message
+          : 'Google Routes API request failed',
     });
     return;
   }
 
-  const durationSeconds = parseDurationToSeconds(route.duration);
-  const distanceMeters = route.distanceMeters;
+  const durationSeconds = parseDurationToSeconds(lastAttempt.route.duration);
+  const distanceMeters = lastAttempt.route.distanceMeters;
   const result = {
     distanceMeters,
     distanceKm: Number((distanceMeters / 1000).toFixed(1)),
     durationSeconds,
     durationLabel: formatDurationLabel(durationSeconds),
-    encodedPolyline: route.polyline?.encodedPolyline,
+    encodedPolyline: lastAttempt.route.polyline?.encodedPolyline,
+    alternativeCount: Math.max(0, lastAttempt.routes.length - 1),
+    legCount: lastAttempt.route.legs?.length ?? 1,
     provider: 'google-routes' as const,
-    travelMode: 'BICYCLE' as const,
+    travelMode: effectiveTravelMode,
     isEstimated: false as const,
   };
 

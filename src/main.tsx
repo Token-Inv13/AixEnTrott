@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
 import './styles.css';
 import App from './App';
+import { registerPwaServiceWorker } from './lib/pwa-registration';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -13,10 +14,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   </React.StrictMode>,
 );
 
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {
-      // Keep the app usable even if registration fails.
-    });
-  });
-}
+registerPwaServiceWorker();
