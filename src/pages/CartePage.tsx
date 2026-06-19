@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
 import { Pill, SectionTitle } from '../components/Badges';
+import { PageSeo } from '../components/PageSeo';
 import { GoogleMapView } from '../components/GoogleMapView';
 import { MapView } from '../components/MapView';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
@@ -15,6 +16,7 @@ import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
 import { formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { formatRechargeStatus } from '../lib/spot-utils';
 import { getNearbySpots } from '../lib/nearby';
+import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 import { getOriginFromLabel } from '../lib/user-location';
 
 const filters = ['Tous', 'Soir', 'Week-end', 'Journee', 'Recharge confirmee', 'Recharge a verifier'] as const;
@@ -66,6 +68,24 @@ export function CartePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <PageSeo
+        title="Carte trottinette Aix : sorties et recharge"
+        description="Consultez la carte des sorties en trottinette autour d'Aix-en-Provence avec points de recharge, trajets indicatifs et sorties proches."
+        path="/carte"
+        jsonLd={buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/carte',
+            title: 'Carte trottinette Aix : sorties et recharge',
+            description:
+              "Consultez la carte des sorties en trottinette autour d'Aix-en-Provence avec points de recharge, trajets indicatifs et sorties proches.",
+          }),
+          buildBreadcrumbNode([
+            { name: 'Accueil', path: '/' },
+            { name: 'Carte', path: '/carte' },
+          ]),
+        ])}
+      />
       <SectionTitle description="Compare rapidement les sorties proches et les points de recharge autour d'Aix.">
         Carte interactive
       </SectionTitle>

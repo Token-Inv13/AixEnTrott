@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { PageSeo } from '../components/PageSeo';
 import { SectionKicker, SectionTitle, Pill } from '../components/Badges';
 import { RouteMethodNotice } from '../components/RouteMethodNotice';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
@@ -26,6 +27,7 @@ import {
   getTripConstraintLabels,
   type BatteryProfileId,
 } from '../lib/trip-planning';
+import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 import { getOriginFromLabel, getOriginSourceLabel } from '../lib/user-location';
 
 const autonomyOptions = [20, 30, 40, 60, 80] as const;
@@ -66,6 +68,24 @@ export function PlannerPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <PageSeo
+        title="Planner trottinette Aix : autonomie et recharge"
+        description="Comparez votre autonomie, la distance indicative aller-retour et les solutions de recharge pour choisir une sortie trottinette autour d'Aix."
+        path="/planner"
+        jsonLd={buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/planner',
+            title: 'Planner trottinette Aix : autonomie et recharge',
+            description:
+              "Comparez votre autonomie, la distance indicative aller-retour et les solutions de recharge pour choisir une sortie trottinette autour d'Aix.",
+          }),
+          buildBreadcrumbNode([
+            { name: 'Accueil', path: '/' },
+            { name: 'Preparer', path: '/planner' },
+          ]),
+        ])}
+      />
       <SectionTitle description="Une estimation simple pour trier les sorties selon ton autonomie.">
         Preparer ma sortie
       </SectionTitle>

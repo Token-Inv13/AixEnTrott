@@ -1,8 +1,28 @@
 import { SectionTitle } from '../components/Badges';
+import { PageSeo } from '../components/PageSeo';
+import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 
 export function ConseilsPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <PageSeo
+        title="Conseils trottinette electrique autour d'Aix"
+        description="Retrouvez les conseils pratiques pour preparer une sortie en trottinette electrique autour d'Aix : autonomie, recharge, securite et erreurs a eviter."
+        path="/conseils"
+        jsonLd={buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/conseils',
+            title: 'Conseils trottinette electrique autour d Aix',
+            description:
+              "Retrouvez les conseils pratiques pour preparer une sortie en trottinette electrique autour d'Aix : autonomie, recharge, securite et erreurs a eviter.",
+          }),
+          buildBreadcrumbNode([
+            { name: 'Accueil', path: '/' },
+            { name: 'Conseils', path: '/conseils' },
+          ]),
+        ])}
+      />
       <SectionTitle description="Les meilleures sorties sont souvent les plus simples a relire avant de partir.">
         Conseils
       </SectionTitle>

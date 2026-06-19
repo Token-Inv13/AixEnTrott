@@ -1,15 +1,35 @@
 import { AdSlot } from '../components/AdSlot';
+import { PageSeo } from '../components/PageSeo';
 import { SectionTitle } from '../components/Badges';
 import { ADSENSE_SLOTS } from '../config/ads';
 import { ChargingPointCard } from '../components/ChargingPointCard';
 import { buildReportIssueMailto } from '../config/site';
 import { chargingPoints } from '../data/chargingPoints';
+import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 
 export function RechargePage() {
   const reportMailto = buildReportIssueMailto('Recharge', 'https://aixentrott.fr/recharge');
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <PageSeo
+        title="Recharge trottinette autour d'Aix-en-Provence"
+        description="Reperez des solutions de recharge trottinette autour d'Aix-en-Provence : prise 220V confirmee, borne voiture, acces prive et points a verifier."
+        path="/recharge"
+        jsonLd={buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/recharge',
+            title: "Recharge trottinette autour d'Aix-en-Provence",
+            description:
+              "Reperez des solutions de recharge trottinette autour d'Aix-en-Provence : prise 220V confirmee, borne voiture, acces prive et points a verifier.",
+          }),
+          buildBreadcrumbNode([
+            { name: 'Accueil', path: '/' },
+            { name: 'Recharge', path: '/recharge' },
+          ]),
+        ])}
+      />
       <SectionTitle description="Les points listes distinguent clairement 220V, borne voiture, acces prive et points a verifier.">
         Recharge
       </SectionTitle>

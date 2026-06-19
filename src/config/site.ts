@@ -1,3 +1,10 @@
+export const SITE_NAME = 'Aix en trott';
+export const SITE_URL = 'https://aixentrott.fr';
+export const SITE_DEFAULT_TITLE = "Aix en trott - Sorties en trottinette autour d'Aix-en-Provence";
+export const SITE_DEFAULT_DESCRIPTION =
+  "Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence : itineraires, carte, autonomie, recharge et conseils pratiques.";
+export const SITE_DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 // TODO: replace with the definitive support address when it is ready.
 export const SITE_CONTACT_EMAIL = 'devande-service@tasknote.io';
 
@@ -11,4 +18,9 @@ export function buildReportIssueMailto(placeName: string, pageUrl: string) {
   ].join('\n');
 
   return `mailto:${SITE_CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+export function buildSiteUrl(path = '/') {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${SITE_URL}${normalizedPath}`;
 }

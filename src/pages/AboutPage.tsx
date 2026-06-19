@@ -1,10 +1,31 @@
 import { Link } from 'react-router-dom';
 import { SectionKicker, SectionTitle } from '../components/Badges';
+import { PageSeo } from '../components/PageSeo';
 import { PwaInstallCard } from '../components/PwaInstallCard';
+import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 
 export function AboutPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <PageSeo
+        title="A propos de Aix en trott"
+        description="Comprenez l'objectif de Aix en trott, les limites des distances indicatives, la recharge a verifier et la logique du guide autour d'Aix-en-Provence."
+        path="/a-propos"
+        jsonLd={buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/a-propos',
+            title: 'A propos de Aix en trott',
+            description:
+              "Comprenez l'objectif de Aix en trott, les limites des distances indicatives, la recharge a verifier et la logique du guide autour d'Aix-en-Provence.",
+            pageType: 'AboutPage',
+          }),
+          buildBreadcrumbNode([
+            { name: 'Accueil', path: '/' },
+            { name: 'A propos', path: '/a-propos' },
+          ]),
+        ])}
+      />
       <SectionTitle description="Ce que le site aide a preparer, et ce qu'il faut toujours verifier avant de partir.">
         A propos
       </SectionTitle>

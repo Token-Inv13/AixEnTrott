@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
 import { GoogleMapView } from '../components/GoogleMapView';
 import { MapView } from '../components/MapView';
+import { PageSeo } from '../components/PageSeo';
 import { RouteMethodNotice } from '../components/RouteMethodNotice';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { Pill, SectionKicker } from '../components/Badges';
@@ -13,6 +14,7 @@ import { hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
 import { formatAlternativeRoutesLabel, formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { getPlannerShortWarning } from '../lib/planner';
+import { buildSpotSeoDescription, buildSpotSeoGraph } from '../lib/seo';
 import { assessTripForBatteryProfile, batteryProfiles, getTripConstraintLabels } from '../lib/trip-planning';
 import { getOriginFromLabel } from '../lib/user-location';
 import {
@@ -54,9 +56,17 @@ export function SortieDetailPage() {
     spot.name,
     typeof window !== 'undefined' ? window.location.href : `https://aixentrott.fr/sorties/${spot.id}`,
   );
+  const seoDescription = buildSpotSeoDescription(spot);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <PageSeo
+        title={`${spot.name} - sortie trottinette autour d'Aix`}
+        description={seoDescription}
+        path={`/sorties/${spot.id}`}
+        type="article"
+        jsonLd={buildSpotSeoGraph(spot)}
+      />
       <Link to="/sorties" className="text-sm font-semibold text-sky">
         ← Retour au catalogue
       </Link>

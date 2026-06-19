@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
+import { PageSeo } from '../components/PageSeo';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { SpotCard } from '../components/SpotCard';
 import { Pill, SectionTitle } from '../components/Badges';
@@ -8,6 +9,7 @@ import { ADSENSE_SLOTS } from '../config/ads';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots, type Spot } from '../data/spots';
 import { useRouteOrigin } from '../context/route-origin-context';
+import { buildCollectionSeoGraph } from '../lib/seo';
 
 type FilterState = {
   distance: string;
@@ -99,6 +101,21 @@ export function SortiesPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <PageSeo
+        title="Sorties en trottinette autour d'Aix-en-Provence"
+        description="Decouvrez des sorties en trottinette autour d'Aix-en-Provence : nature, villages, littoral, autonomie indicative et recharge a verifier."
+        path="/sorties"
+        jsonLd={buildCollectionSeoGraph({
+          path: '/sorties',
+          title: "Sorties en trottinette autour d'Aix-en-Provence",
+          description:
+            "Decouvrez des sorties en trottinette autour d'Aix-en-Provence : nature, villages, littoral, autonomie indicative et recharge a verifier.",
+          items: spots.map((spot) => ({
+            name: spot.name,
+            path: `/sorties/${spot.id}`,
+          })),
+        })}
+      />
       <SectionTitle description="Filtre les sorties par distance, ambiance, budget et recharge.">
         Sorties autour d'Aix
       </SectionTitle>

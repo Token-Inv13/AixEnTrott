@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Host: https://aixentrott.fr
 Sitemap: https://aixentrott.fr/sitemap.xml

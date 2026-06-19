@@ -8,8 +8,10 @@ import { areaLabel, formatRechargeStatus } from '../lib/spot-utils';
 import { Pill, SectionKicker, SectionTitle } from '../components/Badges';
 import { AdSlot } from '../components/AdSlot';
 import { MapView } from '../components/MapView';
+import { PageSeo } from '../components/PageSeo';
 import { PwaInstallCard } from '../components/PwaInstallCard';
 import { ADSENSE_SLOTS } from '../config/ads';
+import { buildSeoGraph, buildWebsiteNodes, buildWebPageNode } from '../lib/seo';
 
 const quickActions = [
   { to: '/sorties?moment=soir', label: 'Je veux sortir ce soir', tone: 'sky' as const },
@@ -24,6 +26,20 @@ export function HomePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <PageSeo
+        title="Sorties en trottinette autour d'Aix-en-Provence"
+        description="Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence : sorties, carte, recharge, autonomie et conseils pratiques."
+        path="/"
+        jsonLd={buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/',
+            title: "Sorties en trottinette autour d'Aix-en-Provence",
+            description:
+              "Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence : sorties, carte, recharge, autonomie et conseils pratiques.",
+          }),
+        ])}
+      />
       <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
           <SectionKicker>Aix en trott</SectionKicker>
