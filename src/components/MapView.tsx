@@ -100,6 +100,7 @@ export function MapView({
                 <Popup>
                   <SpotMapPopup
                     spot={spot}
+                    origin={origin}
                     originLabel={getOriginFromLabel(origin)}
                     directDistanceKm={haversineKm(origin.latitude, origin.longitude, spot.latitude, spot.longitude)}
                     routeDistance={routeDistanceBySpotId[spot.id]}
@@ -121,7 +122,7 @@ export function MapView({
                     </p>
                     <a
                       className="mt-3 inline-flex text-xs font-semibold text-sky"
-                      href={buildGoogleMapsDirectionsUrl(point.latitude, point.longitude)}
+                      href={buildGoogleMapsDirectionsUrl(point.latitude, point.longitude, origin)}
                       target="_blank"
                       rel="noreferrer"
                     >

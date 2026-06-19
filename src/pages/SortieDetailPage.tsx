@@ -1,11 +1,14 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
+import { GoogleMapView } from '../components/GoogleMapView';
 import { MapView } from '../components/MapView';
+import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { Pill, SectionKicker } from '../components/Badges';
 import { ADSENSE_SLOTS } from '../config/ads';
 import { buildReportIssueMailto } from '../config/site';
 import { useRouteDistance } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
+import { hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
 import { formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { getPlannerShortWarning } from '../lib/planner';
@@ -27,6 +30,7 @@ export function SortieDetailPage() {
   const spot = spots.find((item) => item.id === id);
   const { origin } = useRouteOrigin();
   const routeDistance = useRouteDistance(spot, origin);
+  const hasGoogleMaps = hasGoogleMapsPublicApiKey();
 
   if (!spot) {
     return <Navigate to="/sorties" replace />;
@@ -55,7 +59,7 @@ export function SortieDetailPage() {
       </Link>
 
       <section className="mt-4 grid gap-6 lg:grid-cols-[1fr_1fr]">
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="min-w-0 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
           <SectionKicker>Fiche sortie</SectionKicker>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{spot.name}</h1>
           <p className="mt-3 text-base leading-7 text-slate-600">{spot.description}</p>
@@ -90,7 +94,7 @@ export function SortieDetailPage() {
                 Ouvrir destination
               </a>
               <a
-                href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude)}
+                href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude, origin)}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center rounded-full bg-sky px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky/90"
@@ -106,6 +110,13 @@ export function SortieDetailPage() {
             </div>
           </div>
           <p className="mt-3 text-xs leading-5 text-slate-500">Trajet velo indicatif, a confirmer selon le revetement et les amenagements.</p>
+
+          <RouteOriginPanel
+            className="mt-6"
+            compact
+            title="Choisir mon depart"
+            description="Ajuste la distance et le trajet velo avec ta position ou une adresse avant de partir."
+          />
 
           <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
             <p className="text-sm font-semibold text-slate-950">Planification rapide</p>
@@ -243,18 +254,30 @@ export function SortieDetailPage() {
           />
         </div>
 
-        <div className="grid gap-4">
+        <div className="min-w-0 grid gap-4">
           <div className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft">
             <p className="text-sm font-semibold text-slate-950">Carte centree sur le lieu</p>
             <div className="mt-4">
-              <MapView
-                spots={[spot]}
-                chargingPoints={[]}
-                showCharging={false}
-                origin={origin}
-                routePolyline={routeDistance?.encodedPolyline}
-                height="h-[24rem]"
-              />
+              {hasGoogleMaps ? (
+                <GoogleMapView
+                  spots={[spot]}
+                  chargingPoints={[]}
+                  selectedSpotId={spot.id}
+                  origin={origin}
+                  routePolyline={routeDistance?.encodedPolyline}
+                  routeDistanceBySpotId={{ [spot.id]: routeDistance ?? undefined }}
+                  height="h-[24rem]"
+                />
+              ) : (
+                <MapView
+                  spots={[spot]}
+                  chargingPoints={[]}
+                  showCharging={false}
+                  origin={origin}
+                  routePolyline={routeDistance?.encodedPolyline}
+                  height="h-[24rem]"
+                />
+              )}
             </div>
           </div>
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import type { Spot } from '../data/spots';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
 import { formatRouteDistanceLabel, type RouteDistanceDisplay } from '../lib/route-distance-types';
+import type { RouteOrigin } from '../lib/user-location';
 import {
   areaLabel,
   destinationShortLabel,
@@ -12,11 +13,13 @@ import {
 
 export function SpotMapPopup({
   spot,
+  origin,
   originLabel,
   directDistanceKm,
   routeDistance,
 }: {
   spot: Spot;
+  origin: RouteOrigin;
   originLabel: string;
   directDistanceKm: number;
   routeDistance?: RouteDistanceDisplay | null;
@@ -47,7 +50,7 @@ export function SpotMapPopup({
         </Link>
         <a
           className="inline-flex rounded-full bg-sky px-3 py-1.5 text-xs font-semibold text-white"
-          href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude)}
+          href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude, origin)}
           target="_blank"
           rel="noreferrer"
         >

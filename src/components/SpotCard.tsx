@@ -18,15 +18,17 @@ import { Pill } from './Badges';
 export function SpotCard({
   spot,
   autonomyKm,
+  originLabel = 'Aix-en-Provence',
   routeDistance,
 }: {
   spot: Spot;
   autonomyKm?: number | null;
+  originLabel?: string;
   routeDistance?: RouteDistanceDisplay | null;
 }) {
   const verdict = autonomyKm == null ? null : getAutonomyVerdict(spot, autonomyKm);
   const longTripWarning = getPlannerShortWarning(spot);
-  const distanceLabel = routeDistance ? formatRouteDistanceLabel(routeDistance) : 'Distance indicative depuis Aix-en-Provence';
+  const distanceLabel = routeDistance ? formatRouteDistanceLabel(routeDistance) : `Distance indicative depuis ${originLabel}`;
   const distanceValue = routeDistance?.distanceKm ?? spot.distanceKmFromAix;
   const durationLabel = routeDistance?.durationLabel;
 

@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SectionKicker, SectionTitle, Pill } from '../components/Badges';
-import { RouteOriginSearch } from '../components/RouteOriginSearch';
+import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
 import {
@@ -18,7 +18,7 @@ import {
 } from '../lib/planner';
 import { formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { useRouteOrigin } from '../context/route-origin-context';
-import { getOriginFromLabel, getOriginSourceLabel, type RouteOriginSource } from '../lib/user-location';
+import { getOriginFromLabel, getOriginSourceLabel } from '../lib/user-location';
 
 const autonomyOptions = [20, 30, 40, 60, 80] as const;
 
@@ -27,12 +27,7 @@ export function PlannerPage() {
   const [tripType, setTripType] = useState<PlannerTripType>('evening');
   const [primaryMood, setPrimaryMood] = useState<PlannerMood>('calme');
   const [prudence, setPrudence] = useState<PlannerPrudence>('easy-only');
-  const { origin, isLocating, statusMessage, useCustomOrigin, useDefaultOrigin, useUserLocation } = useRouteOrigin();
-  const [departureChoice, setDepartureChoice] = useState<RouteOriginSource>(origin.source);
-
-  useEffect(() => {
-    setDepartureChoice(origin.source);
-  }, [origin.source]);
+  const { origin } = useRouteOrigin();
 
   const preferences = useMemo(
     () => ({
@@ -62,19 +57,6 @@ export function PlannerPage() {
   const chosenMood = getMoodLabel(primaryMood);
   const chosenPrudence = getPrudenceLabel(prudence);
 
-  async function handleDepartureChoice(choice: 'default-aix' | 'user-location') {
-    setDepartureChoice(choice);
-    if (choice === 'default-aix') {
-      useDefaultOrigin();
-      return;
-    }
-
-    const accepted = await useUserLocation();
-    if (!accepted) {
-      setDepartureChoice('default-aix');
-    }
-  }
-
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <SectionTitle description="Une estimation simple pour trier les sorties selon ton autonomie.">
@@ -82,51 +64,15 @@ export function PlannerPage() {
       </SectionTitle>
 
       <section className="mt-6 grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="min-w-0 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
           <SectionKicker>Planification rapide</SectionKicker>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Point de depart</h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">Choisis ton point de depart. Les estimations restent a confirmer sur le trajet reel.</p>
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => handleDepartureChoice('default-aix')}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                departureChoice === 'default-aix'
-                  ? 'bg-slate-950 text-white shadow-soft'
-                  : 'bg-slate-50 text-slate-600 ring-1 ring-slate-200 hover:bg-sky-50'
-              }`}
-            >
-              Aix-en-Provence
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDepartureChoice('user-location')}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                departureChoice === 'user-location'
-                  ? 'bg-slate-950 text-white shadow-soft'
-                  : 'bg-slate-50 text-slate-600 ring-1 ring-slate-200 hover:bg-sky-50'
-              }`}
-            >
-              Ma position actuelle
-            </button>
-          </div>
-
           <div className="mt-4">
-            <RouteOriginSearch
-              onSelect={(nextOrigin) => {
-                setDepartureChoice('custom-search');
-                useCustomOrigin(nextOrigin);
-              }}
+            <RouteOriginPanel
+              compact
+              title="Point de depart"
+              description="Choisis ton point de depart avant de comparer les sorties. Les trajets restent des estimations a confirmer."
             />
           </div>
-
-          {statusMessage ? (
-            <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
-              {statusMessage}
-            </div>
-          ) : null}
-          {isLocating ? <p className="mt-3 text-sm text-slate-500">Localisation en cours...</p> : null}
 
           <div className="mt-6 space-y-5">
             <label className="block">
@@ -217,7 +163,7 @@ export function PlannerPage() {
           </div>
         </div>
 
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="min-w-0 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
           <SectionKicker>Resultats</SectionKicker>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Sorties recommandees</h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">Les sorties longues restent visibles, avec un avertissement clair.</p>

@@ -1,11 +1,15 @@
-import { getDefaultRouteOrigin } from './user-location';
+import { getDefaultRouteOrigin, type RouteOrigin } from './user-location';
 
 export const GOOGLE_MAPS_PROVIDER_OPTIONS = {
-  libraries: ['places'] as string[],
+  libraries: ['places', 'marker'] as string[],
   language: 'fr',
   region: 'FR',
   authReferrerPolicy: 'origin' as const,
 };
+
+export function getGoogleMapsMapId() {
+  return import.meta.env.VITE_GOOGLE_MAPS_MAP_ID?.trim() || 'DEMO_MAP_ID';
+}
 
 export type DefaultOrigin = {
   lat: number;
@@ -33,10 +37,13 @@ export function getDefaultOrigin(): DefaultOrigin {
   };
 }
 
-export function buildGoogleMapsDirectionsUrl(destinationLat: number, destinationLng: number) {
+export function buildGoogleMapsDirectionsUrl(destinationLat: number, destinationLng: number, origin?: RouteOrigin) {
   const url = new URL('https://www.google.com/maps/dir/');
   url.searchParams.set('api', '1');
   url.searchParams.set('travelmode', 'bicycling');
+  if (origin) {
+    url.searchParams.set('origin', `${origin.latitude},${origin.longitude}`);
+  }
   url.searchParams.set('destination', `${destinationLat},${destinationLng}`);
   return url.toString();
 }

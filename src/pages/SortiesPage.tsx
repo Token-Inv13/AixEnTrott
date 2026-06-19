@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
+import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { SpotCard } from '../components/SpotCard';
 import { Pill, SectionTitle } from '../components/Badges';
 import { ADSENSE_SLOTS } from '../config/ads';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots, type Spot } from '../data/spots';
 import { useRouteOrigin } from '../context/route-origin-context';
-import { getOriginFromLabel } from '../lib/user-location';
 
 type FilterState = {
   distance: string;
@@ -103,11 +103,12 @@ export function SortiesPage() {
         Sorties autour d'Aix
       </SectionTitle>
 
-      <div className="mt-5 rounded-[1.5rem] border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-600 shadow-soft">
-        {origin.source === 'default-aix'
-          ? 'Distances indicatives depuis Aix-en-Provence.'
-          : `Trajets estimes depuis ${getOriginFromLabel(origin)}.`}
-      </div>
+      <RouteOriginPanel
+        className="mt-5"
+        compact
+        title="Lieu de depart"
+        description="Ajuste les estimations du catalogue avec Aix, ta position ou une adresse precise."
+      />
 
       <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -198,6 +199,7 @@ export function SortiesPage() {
                 key={spot.id}
                 spot={spot}
                 autonomyKm={autonomyKm ?? undefined}
+                originLabel={origin.label}
                 routeDistance={routeDistances[spot.id]}
               />
             ))}
@@ -216,6 +218,7 @@ export function SortiesPage() {
                 key={spot.id}
                 spot={spot}
                 autonomyKm={autonomyKm ?? undefined}
+                originLabel={origin.label}
                 routeDistance={routeDistances[spot.id]}
               />
             ))}

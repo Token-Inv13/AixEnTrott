@@ -4,7 +4,7 @@ import { AdSlot } from '../components/AdSlot';
 import { Pill, SectionTitle } from '../components/Badges';
 import { GoogleMapView } from '../components/GoogleMapView';
 import { MapView } from '../components/MapView';
-import { RouteOriginSearch } from '../components/RouteOriginSearch';
+import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { ADSENSE_SLOTS } from '../config/ads';
 import { chargingPoints } from '../data/chargingPoints';
 import { spots } from '../data/spots';
@@ -21,8 +21,7 @@ const filters = ['Tous', 'Soir', 'Week-end', 'Journee', 'Recharge confirmee', 'R
 
 export function CartePage() {
   const [active, setActive] = useState<(typeof filters)[number]>('Tous');
-  const { origin, statusMessage, isLocating, useCustomOrigin, useUserLocation, useDefaultOrigin } = useRouteOrigin();
-  const [localMessage, setLocalMessage] = useState<string | null>(null);
+  const { origin } = useRouteOrigin();
   const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
   const [showAllNearby, setShowAllNearby] = useState(false);
 
@@ -63,19 +62,6 @@ export function CartePage() {
     setSelectedSpotId(nearbySpots[0]?.spot.id ?? null);
   }, [nearbySpots, selectedSpot, visibleSpots]);
 
-  async function handleLocateMe() {
-    setLocalMessage(null);
-    const accepted = await useUserLocation();
-    if (!accepted) {
-      setLocalMessage("Localisation refusee. Les distances restent calculees depuis Aix-en-Provence.");
-    }
-  }
-
-  function handleBackToAix() {
-    setLocalMessage(null);
-    useDefaultOrigin();
-  }
-
   const originMessage = `Depuis ${getOriginFromLabel(origin)}`;
 
   return (
@@ -84,42 +70,12 @@ export function CartePage() {
         Carte interactive
       </SectionTitle>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={handleLocateMe}
-          className="inline-flex rounded-full bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky"
-        >
-          Me localiser
-        </button>
-        <button
-          type="button"
-          onClick={handleBackToAix}
-          className="inline-flex rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-sky-50"
-        >
-          Revenir a Aix
-        </button>
-        <div className="rounded-full bg-slate-50 px-4 py-2 text-sm font-medium text-slate-600">{originMessage}</div>
-      </div>
-      <div className="mt-4">
-        <RouteOriginSearch
-          onSelect={(nextOrigin) => {
-            setLocalMessage(null);
-            useCustomOrigin(nextOrigin);
-          }}
-        />
-      </div>
-      {statusMessage ? (
-        <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-600 shadow-soft">
-          {statusMessage}
-        </div>
-      ) : null}
-      {localMessage ? (
-        <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-600 shadow-soft">
-          {localMessage}
-        </div>
-      ) : null}
-      {isLocating ? <p className="mt-3 text-sm text-slate-500">Localisation en cours...</p> : null}
+      <RouteOriginPanel
+        className="mt-5"
+        compact
+        title="Depart du trajet"
+        description="Utilise Aix, ta position ou une adresse pour recalculer la carte et les sorties proches."
+      />
 
       <div className="mt-6 flex flex-wrap gap-2">
         {filters.map((filter) => (
@@ -198,10 +154,10 @@ export function CartePage() {
                         onClick={() => setSelectedSpotId(spot.id)}
                         className="rounded-full bg-slate-950 px-3 py-1.5 text-xs font-semibold text-white"
                       >
-                        Voir la fiche
+                        Voir sur la carte
                       </button>
                       <a
-                        href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude)}
+                        href={buildGoogleMapsBikeDirectionsUrl(spot.latitude, spot.longitude, origin)}
                         target="_blank"
                         rel="noreferrer"
                         className="rounded-full bg-sky px-3 py-1.5 text-xs font-semibold text-white"

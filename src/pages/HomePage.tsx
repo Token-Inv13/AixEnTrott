@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { GoogleMapView } from '../components/GoogleMapView';
 import { chargingPoints } from '../data/chargingPoints';
 import { distanceBands, spots } from '../data/spots';
+import { useRouteOrigin } from '../context/route-origin-context';
+import { hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
 import { areaLabel, formatRechargeStatus } from '../lib/spot-utils';
 import { Pill, SectionKicker, SectionTitle } from '../components/Badges';
 import { AdSlot } from '../components/AdSlot';
@@ -15,6 +18,8 @@ const quickActions = [
 
 export function HomePage() {
   const highlights = spots.slice(0, 6);
+  const { origin } = useRouteOrigin();
+  const hasGoogleMaps = hasGoogleMapsPublicApiKey();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -70,10 +75,19 @@ export function HomePage() {
                 <p className="text-sm font-semibold text-slate-950">Carte utile</p>
                 <p className="text-sm text-slate-500">Sorties et recharge autour d'Aix</p>
               </div>
-              <Pill tone="sky">OpenStreetMap</Pill>
+              <Pill tone="sky">{hasGoogleMaps ? 'Google Maps' : 'OpenStreetMap'}</Pill>
             </div>
             <div className="mt-4">
-              <MapView spots={spots.slice(0, 8)} chargingPoints={chargingPoints.slice(0, 4)} height="h-[19rem]" />
+              {hasGoogleMaps ? (
+                <GoogleMapView
+                  spots={spots.slice(0, 8)}
+                  chargingPoints={chargingPoints.slice(0, 4)}
+                  origin={origin}
+                  height="h-[19rem]"
+                />
+              ) : (
+                <MapView spots={spots.slice(0, 8)} chargingPoints={chargingPoints.slice(0, 4)} origin={origin} height="h-[19rem]" />
+              )}
             </div>
           </div>
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
