@@ -5,5 +5,6 @@ vite.config.js
 vite.config.d.ts
 .qa-*
 vite-dev.log
+.env.local
 
 .vercel

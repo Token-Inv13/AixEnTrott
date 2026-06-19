@@ -8,7 +8,7 @@ import { formatCompatibility } from '../lib/spot-utils';
 import { buildGoogleMapsDirectionsUrl } from '../lib/google-maps-config';
 import { decodePolyline } from '../lib/polyline';
 import { type RouteDistanceDisplay } from '../lib/route-distance-types';
-import { getDefaultRouteOrigin, type RouteOrigin } from '../lib/user-location';
+import { getDefaultRouteOrigin, getOriginFromLabel, type RouteOrigin } from '../lib/user-location';
 import { haversineKm } from '../lib/nearby';
 import { SpotMapPopup } from './SpotMapPopup';
 
@@ -100,7 +100,7 @@ export function MapView({
                 <Popup>
                   <SpotMapPopup
                     spot={spot}
-                    originLabel={origin.source === 'user-location' ? 'votre position' : 'Aix-en-Provence'}
+                    originLabel={getOriginFromLabel(origin)}
                     directDistanceKm={haversineKm(origin.latitude, origin.longitude, spot.latitude, spot.longitude)}
                     routeDistance={routeDistanceBySpotId[spot.id]}
                   />

@@ -1,5 +1,12 @@
 import { getDefaultRouteOrigin } from './user-location';
 
+export const GOOGLE_MAPS_PROVIDER_OPTIONS = {
+  libraries: ['places'] as string[],
+  language: 'fr',
+  region: 'FR',
+  authReferrerPolicy: 'origin' as const,
+};
+
 export type DefaultOrigin = {
   lat: number;
   lng: number;

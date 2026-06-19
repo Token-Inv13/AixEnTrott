@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { APIProvider, InfoWindow, Map, Marker, Polyline } from '@vis.gl/react-google-maps';
 import type { ChargingPoint } from '../data/chargingPoints';
 import type { Spot } from '../data/spots';
-import { buildGoogleMapsDirectionsUrl, getGoogleMapsPublicApiKey } from '../lib/google-maps-config';
+import { buildGoogleMapsDirectionsUrl, getGoogleMapsPublicApiKey, GOOGLE_MAPS_PROVIDER_OPTIONS } from '../lib/google-maps-config';
 import { decodePolyline } from '../lib/polyline';
 import { type RouteDistanceDisplay } from '../lib/route-distance-types';
-import { getDefaultRouteOrigin, type RouteOrigin } from '../lib/user-location';
+import { getDefaultRouteOrigin, getOriginFromLabel, type RouteOrigin } from '../lib/user-location';
 import { formatCompatibility } from '../lib/spot-utils';
 import { haversineKm } from '../lib/nearby';
 import { SpotMapPopup } from './SpotMapPopup';
@@ -74,7 +74,7 @@ export function GoogleMapView({
 
   return (
     <div className={`overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-soft ${height}`}>
-      <APIProvider apiKey={apiKey}>
+      <APIProvider apiKey={apiKey} {...GOOGLE_MAPS_PROVIDER_OPTIONS}>
         <Map defaultBounds={defaultBounds} defaultZoom={10} gestureHandling="greedy" disableDefaultUI>
           {encodedPath ? <Polyline encodedPath={routePolyline ?? ''} strokeColor="#0f172a" strokeWeight={4} strokeOpacity={0.9} /> : null}
 
@@ -112,12 +112,12 @@ export function GoogleMapView({
 
           {selectedSpot && activeId === selectedSpot.id ? (
             <InfoWindow position={{ lat: selectedSpot.latitude, lng: selectedSpot.longitude }} onCloseClick={() => setActiveId(null)}>
-              <SpotMapPopup
-                spot={selectedSpot}
-                originLabel={origin.source === 'user-location' ? 'votre position' : 'Aix-en-Provence'}
-                directDistanceKm={haversineKm(origin.latitude, origin.longitude, selectedSpot.latitude, selectedSpot.longitude)}
-                routeDistance={routeDistanceBySpotId[selectedSpot.id]}
-              />
+                <SpotMapPopup
+                  spot={selectedSpot}
+                  originLabel={getOriginFromLabel(origin)}
+                  directDistanceKm={haversineKm(origin.latitude, origin.longitude, selectedSpot.latitude, selectedSpot.longitude)}
+                  routeDistance={routeDistanceBySpotId[selectedSpot.id]}
+                />
             </InfoWindow>
           ) : null}
 

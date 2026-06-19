@@ -5,6 +5,7 @@ type RouteOriginContextValue = {
   origin: RouteOrigin;
   isLocating: boolean;
   statusMessage: string | null;
+  useCustomOrigin: (origin: RouteOrigin) => void;
   useDefaultOrigin: () => void;
   useUserLocation: () => Promise<boolean>;
 };
@@ -25,9 +26,13 @@ export function RouteOriginProvider({ children }: { children: ReactNode }) {
       origin,
       isLocating,
       statusMessage,
+      useCustomOrigin: (nextOrigin) => {
+        setOrigin(nextOrigin);
+        setStatusMessage(`Trajets calcules depuis ${nextOrigin.label}.`);
+      },
       useDefaultOrigin: () => {
         setOrigin(getDefaultRouteOrigin());
-        setStatusMessage('Distances calculées depuis Aix-en-Provence.');
+        setStatusMessage('Trajets calcules depuis Aix-en-Provence.');
       },
       useUserLocation: async () => {
         setIsLocating(true);
@@ -36,15 +41,15 @@ export function RouteOriginProvider({ children }: { children: ReactNode }) {
         try {
           const location = await requestBrowserLocation();
           setOrigin(location);
-          setStatusMessage('Distances calculées depuis votre position.');
+          setStatusMessage('Trajets calcules depuis votre position.');
           return true;
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Localisation indisponible.';
           setOrigin(getDefaultRouteOrigin());
           setStatusMessage(
-            message === 'Localisation refusée.'
-              ? 'Localisation refusée. Distances calculées depuis Aix-en-Provence.'
-              : 'Localisation indisponible. Distances calculées depuis Aix-en-Provence.',
+            message === 'Localisation refusee.'
+              ? 'Localisation refusee. Trajets calcules depuis Aix-en-Provence.'
+              : 'Localisation indisponible. Trajets calcules depuis Aix-en-Provence.',
           );
           return false;
         } finally {

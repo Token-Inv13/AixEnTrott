@@ -1,5 +1,4 @@
 import type { Spot } from '../data/spots';
-import { hasGoogleMapsPublicApiKey } from './google-maps-config';
 import { getDefaultRouteOrigin, type RouteOrigin } from './user-location';
 import {
   formatDurationLabel,
@@ -88,10 +87,6 @@ export async function resolveRouteDistance(request: RouteDistanceRequest, fallba
     return cached.value;
   }
 
-  if (!hasGoogleMapsPublicApiKey()) {
-    return createIndicativeRouteDistance(fallbackDistanceKm);
-  }
-
   try {
     const response = await fetch('/api/route-distance', {
       method: 'POST',
@@ -110,7 +105,7 @@ export async function resolveRouteDistance(request: RouteDistanceRequest, fallba
       | { ok: false; error: string };
 
     if (!response.ok || !payload.ok) {
-      return createIndicativeRouteDistance(fallbackDistanceKm);
+      return createIndicativeRouteDistance(fallbackDistanceKm, request.origin);
     }
 
     const value: RouteDistanceDisplay = {
@@ -121,7 +116,7 @@ export async function resolveRouteDistance(request: RouteDistanceRequest, fallba
       durationSeconds: payload.result.durationSeconds,
       durationLabel: payload.result.durationLabel,
       encodedPolyline: payload.result.encodedPolyline,
-      label: 'Distance calculée',
+      label: 'Distance calculee',
       isEstimated: false,
     };
 
@@ -132,7 +127,7 @@ export async function resolveRouteDistance(request: RouteDistanceRequest, fallba
     setCache(cache);
     return value;
   } catch {
-    return createIndicativeRouteDistance(fallbackDistanceKm);
+    return createIndicativeRouteDistance(fallbackDistanceKm, request.origin);
   }
 }
 

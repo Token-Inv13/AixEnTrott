@@ -1,4 +1,4 @@
-import type { RouteOrigin } from './user-location';
+import { getOriginFromLabel, type RouteOrigin } from './user-location';
 
 export type RouteDistanceResult = {
   distanceMeters: number;
@@ -19,18 +19,17 @@ export type RouteDistanceDisplay = {
   durationSeconds: number;
   durationLabel: string;
   encodedPolyline?: string;
-  label: 'Distance calculée' | 'Distance indicative';
+  label: 'Distance calculee' | 'Distance indicative';
   isEstimated: boolean;
 };
 
 export function formatRouteDistanceLabel(distance: RouteDistanceDisplay) {
+  const originLabel = getOriginFromLabel(distance.origin);
   if (distance.source === 'indicative') {
-    return 'Distance indicative depuis Aix-en-Provence';
+    return `Distance indicative depuis ${originLabel}`;
   }
 
-  return distance.origin.source === 'user-location'
-    ? 'Distance calculée depuis votre position'
-    : 'Distance calculée depuis Aix-en-Provence';
+  return `Distance calculee depuis ${originLabel}`;
 }
 
 export function formatDurationLabel(seconds: number) {

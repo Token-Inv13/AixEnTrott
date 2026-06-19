@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SectionKicker, SectionTitle, Pill } from '../components/Badges';
+import { RouteOriginSearch } from '../components/RouteOriginSearch';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
 import {
@@ -17,6 +18,7 @@ import {
 } from '../lib/planner';
 import { formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { useRouteOrigin } from '../context/route-origin-context';
+import { getOriginFromLabel, getOriginSourceLabel, type RouteOriginSource } from '../lib/user-location';
 
 const autonomyOptions = [20, 30, 40, 60, 80] as const;
 
@@ -25,8 +27,8 @@ export function PlannerPage() {
   const [tripType, setTripType] = useState<PlannerTripType>('evening');
   const [primaryMood, setPrimaryMood] = useState<PlannerMood>('calme');
   const [prudence, setPrudence] = useState<PlannerPrudence>('easy-only');
-  const { origin, isLocating, statusMessage, useDefaultOrigin, useUserLocation } = useRouteOrigin();
-  const [departureChoice, setDepartureChoice] = useState<'default-aix' | 'user-location'>(origin.source);
+  const { origin, isLocating, statusMessage, useCustomOrigin, useDefaultOrigin, useUserLocation } = useRouteOrigin();
+  const [departureChoice, setDepartureChoice] = useState<RouteOriginSource>(origin.source);
 
   useEffect(() => {
     setDepartureChoice(origin.source);
@@ -110,6 +112,15 @@ export function PlannerPage() {
             </button>
           </div>
 
+          <div className="mt-4">
+            <RouteOriginSearch
+              onSelect={(nextOrigin) => {
+                setDepartureChoice('custom-search');
+                useCustomOrigin(nextOrigin);
+              }}
+            />
+          </div>
+
           {statusMessage ? (
             <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
               {statusMessage}
@@ -189,7 +200,7 @@ export function PlannerPage() {
               Point de depart : <strong className="text-slate-950">{origin.label}</strong>
             </p>
             <p>
-              Source : <strong className="text-slate-950">{origin.source === 'user-location' ? 'Ma position actuelle' : 'Aix-en-Provence'}</strong>
+              Source : <strong className="text-slate-950">{getOriginSourceLabel(origin)}</strong>
             </p>
             <p>
               Autonomie : <strong className="text-slate-950">{autonomyKm} km</strong>
@@ -252,7 +263,7 @@ export function PlannerPage() {
                   <Pill>
                     {routeDistances[spot.id]
                       ? formatRouteDistanceLabel(routeDistances[spot.id])
-                      : 'Distance indicative depuis Aix-en-Provence'}{' '}
+                      : `Distance indicative depuis ${getOriginFromLabel(origin)}`}{' '}
                     {(routeDistances[spot.id]?.distanceKm ?? spot.distanceKmFromAix).toFixed(1)} km
                   </Pill>
                   <Pill>{spot.duration}</Pill>
@@ -273,9 +284,7 @@ export function PlannerPage() {
                   <p className="text-sm text-slate-500">
                     {routeDistances[spot.id]
                       ? routeDistances[spot.id].source === 'google-routes'
-                        ? routeDistances[spot.id].origin.source === 'user-location'
-                          ? 'Trajet reel estime depuis votre position'
-                          : 'Trajet reel estime depuis Aix'
+                        ? `Trajet reel estime depuis ${getOriginFromLabel(routeDistances[spot.id].origin)}`
                         : 'Distance indicative'
                       : 'Distance indicative'}
                   </p>

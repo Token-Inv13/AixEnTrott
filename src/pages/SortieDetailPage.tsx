@@ -9,6 +9,7 @@ import { spots } from '../data/spots';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
 import { formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { getPlannerShortWarning } from '../lib/planner';
+import { getOriginFromLabel } from '../lib/user-location';
 import {
   areaLabel,
   autonomyRecommendation,
@@ -61,7 +62,7 @@ export function SortieDetailPage() {
 
           <div className="mt-6 flex flex-wrap gap-2">
             <Pill tone={routeDistance?.source === 'google-routes' ? 'emerald' : 'sky'}>
-              {routeDistance ? formatRouteDistanceLabel(routeDistance) : 'Distance indicative depuis Aix-en-Provence'}{' '}
+              {routeDistance ? formatRouteDistanceLabel(routeDistance) : `Distance indicative depuis ${getOriginFromLabel(origin)}`}{' '}
               {distanceKm.toFixed(1)} km
             </Pill>
             <Pill tone="emerald">{formatBudget(spot.budget)}</Pill>
@@ -113,10 +114,8 @@ export function SortieDetailPage() {
               <div className="rounded-2xl bg-slate-50 p-4">
                 <p className="text-sm text-slate-500">
                   {routeDistance?.source === 'google-routes'
-                    ? routeDistance.origin.source === 'user-location'
-                      ? 'Distance aller calculee depuis votre position'
-                      : 'Distance aller calculee depuis Aix-en-Provence'
-                    : 'Distance aller indicative depuis Aix-en-Provence'}
+                    ? `Distance aller calculee depuis ${getOriginFromLabel(routeDistance.origin)}`
+                    : `Distance aller indicative depuis ${getOriginFromLabel(origin)}`}
                 </p>
                 <p className="mt-2 text-sm font-semibold text-slate-950">{distanceKm.toFixed(1)} km</p>
               </div>
@@ -179,7 +178,7 @@ export function SortieDetailPage() {
             </div>
             <div className="rounded-2xl bg-slate-50 p-4">
               <dt className="text-sm text-slate-500">Distance indicative</dt>
-              <dd className="mt-2 text-sm font-semibold text-slate-950">{distanceKm} km depuis Aix</dd>
+              <dd className="mt-2 text-sm font-semibold text-slate-950">{distanceKm} km depuis {getOriginFromLabel(origin)}</dd>
             </div>
             <div className="rounded-2xl bg-slate-50 p-4">
               <dt className="text-sm text-slate-500">Budget</dt>

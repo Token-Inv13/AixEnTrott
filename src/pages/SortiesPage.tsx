@@ -7,6 +7,7 @@ import { ADSENSE_SLOTS } from '../config/ads';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots, type Spot } from '../data/spots';
 import { useRouteOrigin } from '../context/route-origin-context';
+import { getOriginFromLabel } from '../lib/user-location';
 
 type FilterState = {
   distance: string;
@@ -103,7 +104,9 @@ export function SortiesPage() {
       </SectionTitle>
 
       <div className="mt-5 rounded-[1.5rem] border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-600 shadow-soft">
-        {origin.source === 'user-location' ? 'Trajets estimes depuis votre position.' : "Distances indicatives depuis Aix-en-Provence."}
+        {origin.source === 'default-aix'
+          ? 'Distances indicatives depuis Aix-en-Provence.'
+          : `Trajets estimes depuis ${getOriginFromLabel(origin)}.`}
       </div>
 
       <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft sm:p-5">

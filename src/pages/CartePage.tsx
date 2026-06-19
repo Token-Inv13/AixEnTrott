@@ -4,6 +4,7 @@ import { AdSlot } from '../components/AdSlot';
 import { Pill, SectionTitle } from '../components/Badges';
 import { GoogleMapView } from '../components/GoogleMapView';
 import { MapView } from '../components/MapView';
+import { RouteOriginSearch } from '../components/RouteOriginSearch';
 import { ADSENSE_SLOTS } from '../config/ads';
 import { chargingPoints } from '../data/chargingPoints';
 import { spots } from '../data/spots';
@@ -11,14 +12,16 @@ import { useRouteDistances } from '../hooks/use-route-distances';
 import { hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
 import { useRouteOrigin } from '../context/route-origin-context';
 import { buildGoogleMapsBikeDirectionsUrl } from '../lib/maps';
+import { formatRouteDistanceLabel } from '../lib/route-distance-types';
 import { formatRechargeStatus } from '../lib/spot-utils';
 import { getNearbySpots } from '../lib/nearby';
+import { getOriginFromLabel } from '../lib/user-location';
 
 const filters = ['Tous', 'Soir', 'Week-end', 'Journee', 'Recharge confirmee', 'Recharge a verifier'] as const;
 
 export function CartePage() {
   const [active, setActive] = useState<(typeof filters)[number]>('Tous');
-  const { origin, statusMessage, isLocating, useUserLocation, useDefaultOrigin } = useRouteOrigin();
+  const { origin, statusMessage, isLocating, useCustomOrigin, useUserLocation, useDefaultOrigin } = useRouteOrigin();
   const [localMessage, setLocalMessage] = useState<string | null>(null);
   const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
   const [showAllNearby, setShowAllNearby] = useState(false);
@@ -73,7 +76,7 @@ export function CartePage() {
     useDefaultOrigin();
   }
 
-  const originMessage = origin.source === 'user-location' ? 'Depuis votre position' : 'Depuis Aix-en-Provence';
+  const originMessage = `Depuis ${getOriginFromLabel(origin)}`;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -91,19 +94,20 @@ export function CartePage() {
         </button>
         <button
           type="button"
-          onClick={handleLocateMe}
-          className="inline-flex rounded-full bg-sky px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky/90"
-        >
-          Voir autour de moi
-        </button>
-        <button
-          type="button"
           onClick={handleBackToAix}
           className="inline-flex rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-sky-50"
         >
           Revenir a Aix
         </button>
         <div className="rounded-full bg-slate-50 px-4 py-2 text-sm font-medium text-slate-600">{originMessage}</div>
+      </div>
+      <div className="mt-4">
+        <RouteOriginSearch
+          onSelect={(nextOrigin) => {
+            setLocalMessage(null);
+            useCustomOrigin(nextOrigin);
+          }}
+        />
       </div>
       {statusMessage ? (
         <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-600 shadow-soft">
@@ -249,22 +253,14 @@ export function CartePage() {
               <div className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-600">
                 <p className="font-semibold text-slate-950">{selectedSpot.name}</p>
                 <p className="mt-2">
-                  {selectedRouteDistance
-                    ? selectedRouteDistance.origin.source === 'user-location'
-                      ? 'Distance calculee depuis votre position'
-                      : 'Distance calculee depuis Aix-en-Provence'
-                    : 'Distance indicative depuis Aix-en-Provence'}
+                  {selectedRouteDistance ? formatRouteDistanceLabel(selectedRouteDistance) : `Distance indicative depuis ${getOriginFromLabel(origin)}`}
                   : {(selectedRouteDistance?.distanceKm ?? selectedSpot.distanceKmFromAix).toFixed(1)} km
                 </p>
                 {selectedRouteDistance?.durationLabel ? <p className="mt-1">Duree velo estimee : {selectedRouteDistance.durationLabel}</p> : null}
                 <p className="mt-1">Recharge : {formatRechargeStatus(selectedSpot.rechargeStatus)}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Pill tone="sky">
-                    {selectedRouteDistance
-                      ? selectedRouteDistance.origin.source === 'user-location'
-                        ? 'Distance calculee depuis votre position'
-                        : 'Distance calculee depuis Aix-en-Provence'
-                      : 'Distance indicative depuis Aix-en-Provence'}
+                    {selectedRouteDistance ? formatRouteDistanceLabel(selectedRouteDistance) : `Distance indicative depuis ${getOriginFromLabel(origin)}`}
                   </Pill>
                   <Link className="rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white" to={`/sorties/${selectedSpot.id}`}>
                     Voir la fiche

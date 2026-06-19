@@ -1,8 +1,10 @@
+export type RouteOriginSource = 'default-aix' | 'user-location' | 'custom-search';
+
 export type RouteOrigin = {
   label: string;
   latitude: number;
   longitude: number;
-  source: 'default-aix' | 'user-location';
+  source: RouteOriginSource;
 };
 
 export const DEFAULT_ROUTE_ORIGIN: RouteOrigin = {
@@ -19,7 +21,27 @@ export function getDefaultRouteOrigin(): RouteOrigin {
 }
 
 export function getOriginFromLabel(origin: RouteOrigin) {
-  return origin.source === 'user-location' ? 'votre position' : 'Aix-en-Provence';
+  return origin.source === 'user-location' ? 'votre position' : origin.label;
+}
+
+export function getOriginSourceLabel(origin: RouteOrigin) {
+  switch (origin.source) {
+    case 'user-location':
+      return 'Ma position actuelle';
+    case 'custom-search':
+      return 'Depart personnalise';
+    default:
+      return 'Aix-en-Provence';
+  }
+}
+
+export function createCustomRouteOrigin(label: string, latitude: number, longitude: number): RouteOrigin {
+  return {
+    label,
+    latitude,
+    longitude,
+    source: 'custom-search',
+  };
 }
 
 export function readStoredRouteOrigin(): RouteOrigin | null {
@@ -38,7 +60,7 @@ export function readStoredRouteOrigin(): RouteOrigin | null {
       typeof parsed.label !== 'string' ||
       typeof parsed.latitude !== 'number' ||
       typeof parsed.longitude !== 'number' ||
-      (parsed.source !== 'default-aix' && parsed.source !== 'user-location')
+      (parsed.source !== 'default-aix' && parsed.source !== 'user-location' && parsed.source !== 'custom-search')
     ) {
       return null;
     }
@@ -81,7 +103,7 @@ export function clearStoredRouteOrigin() {
 export function requestBrowserLocation(): Promise<RouteOrigin> {
   return new Promise((resolve, reject) => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
-      reject(new Error('La géolocalisation n’est pas disponible sur ce navigateur.'));
+      reject(new Error("La geolocalisation n'est pas disponible sur ce navigateur."));
       return;
     }
 
@@ -96,7 +118,7 @@ export function requestBrowserLocation(): Promise<RouteOrigin> {
       },
       (error) => {
         if (error.code === 1) {
-          reject(new Error('Localisation refusée.'));
+          reject(new Error('Localisation refusee.'));
           return;
         }
         if (error.code === 2) {
@@ -104,10 +126,10 @@ export function requestBrowserLocation(): Promise<RouteOrigin> {
           return;
         }
         if (error.code === 3) {
-          reject(new Error('Délai de localisation dépassé.'));
+          reject(new Error('Delai de localisation depasse.'));
           return;
         }
-        reject(new Error('Impossible de récupérer la position.'));
+        reject(new Error('Impossible de recuperer la position.'));
       },
       {
         enableHighAccuracy: true,
