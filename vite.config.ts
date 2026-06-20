@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const googleSiteVerification = env.VITE_GOOGLE_SITE_VERIFICATION || '';
+  const googleSiteVerification = env.VITE_GOOGLE_SITE_VERIFICATION || 'vKJnekj9NI1OX40vKYcNXFT6S8lSfqrYhDMiHDc-P3w';
 
   return {
     plugins: [

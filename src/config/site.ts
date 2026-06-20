@@ -5,7 +5,8 @@ export const SITE_DEFAULT_DESCRIPTION =
   "Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence : itineraires, carte, autonomie, recharge et conseils pratiques.";
 export const SITE_DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 const importMetaEnv = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env;
-export const SITE_GOOGLE_VERIFICATION = importMetaEnv?.VITE_GOOGLE_SITE_VERIFICATION || '';
+export const SITE_GOOGLE_VERIFICATION =
+  importMetaEnv?.VITE_GOOGLE_SITE_VERIFICATION || 'vKJnekj9NI1OX40vKYcNXFT6S8lSfqrYhDMiHDc-P3w';
 
 // TODO: replace with the definitive support address when it is ready.
 export const SITE_CONTACT_EMAIL = 'devande-service@tasknote.io';
