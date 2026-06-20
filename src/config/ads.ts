@@ -1,4 +1,5 @@
-export const ADSENSE_CLIENT_ID = 'ca-pub-5209828957209966';
+export const ADSENSE_CLIENT_ID =
+  import.meta.env.VITE_ADSENSE_CLIENT_ID || 'ca-pub-5209828957209966';
 
 export const ADSENSE_TEST_MODE = import.meta.env.VITE_ADSENSE_TEST_MODE === 'true';
 
