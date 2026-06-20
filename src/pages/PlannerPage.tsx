@@ -4,6 +4,7 @@ import { PageSeo } from '../components/PageSeo';
 import { SectionKicker, SectionTitle, Pill } from '../components/Badges';
 import { RouteMethodNotice } from '../components/RouteMethodNotice';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
+import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
 import { spots } from '../data/spots';
 import { useRouteOrigin } from '../context/route-origin-context';
 import { useRouteDistances } from '../hooks/use-route-distances';
@@ -64,6 +65,11 @@ export function PlannerPage() {
   const recommendations = useMemo(
     () => getPlannerRecommendations(spots, preferences, 8, routeDistanceById),
     [preferences, routeDistanceById],
+  );
+  const guideLinks = editorialGuides.filter((guide) =>
+    ['sortie-trottinette-cassis', 'balade-trottinette-sainte-victoire', 'sortie-trottinette-aix-centre', 'sortie-trottinette-luberon'].includes(
+      guide.slug,
+    ),
   );
 
   return (
@@ -398,6 +404,32 @@ export function PlannerPage() {
           <Link to="/sorties" className="inline-flex rounded-full bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky">
             Retour au catalogue
           </Link>
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-slate-950">Guides a ouvrir selon le resultat</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Pratique pour passer d une estimation batterie a une lecture plus concrete de la zone, de la recharge ou du retour.
+            </p>
+          </div>
+          <Link to="/guides" className="text-sm font-semibold text-sky">
+            Tous les guides
+          </Link>
+        </div>
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          {guideLinks.map((guide) => (
+            <Link
+              key={guide.slug}
+              to={getEditorialGuidePath(guide.slug)}
+              className="rounded-[1.5rem] bg-slate-50 p-4 transition hover:bg-sky-50/60"
+            >
+              <p className="font-semibold text-slate-950">{guide.shortTitle}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
+            </Link>
+          ))}
         </div>
       </section>
     </div>

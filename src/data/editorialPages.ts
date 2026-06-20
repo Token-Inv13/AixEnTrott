@@ -532,6 +532,174 @@ export const editorialGuides: EditorialGuide[] = [
       { label: 'Voir la recharge', to: '/recharge', description: 'Ne compter que sur des prises compatibles verifiees.' },
     ],
   },
+  {
+    slug: 'sortie-trottinette-ventabren',
+    title: 'Sortie trottinette Ventabren : bon compromis entre proche, calme et panorama',
+    shortTitle: 'Sortie trottinette Ventabren',
+    description:
+      "Preparez une sortie trottinette vers Ventabren avec une lecture simple de la distance, de l ambiance et de la marge utile depuis Aix.",
+    intro:
+      "Ventabren fait partie des meilleurs compromis autour d Aix quand on cherche une sortie un peu plus respiree sans basculer dans un grand projet logistique. C est une bonne destination de transition entre ville et sortie plus preparee.",
+    sections: [
+      {
+        title: 'Pourquoi Ventabren est utile dans le catalogue',
+        paragraphs: [
+          "La zone reste assez proche pour etre lisible, tout en donnant une vraie impression de sortie. C est souvent plus interessant qu une simple boucle urbaine si tu veux changer d ambiance sans surcharger la batterie.",
+          "Elle sert aussi de palier logique avant de viser des secteurs plus longs comme Salon, la Cote Bleue ou le Luberon.",
+        ],
+      },
+      {
+        title: 'Comment bien l utiliser',
+        paragraphs: [
+          "Le catalogue et la carte suffisent souvent pour valider l envie, puis le planner permet de confirmer la marge si ton point de depart change.",
+          "Si tu veux rouler en fin de journee, Ventabren peut rester une bonne option a condition de garder une lecture simple du retour.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Ventabren convient-il a une sortie du soir ?',
+        answer: 'Oui dans beaucoup de cas, selon ton depart et ton autonomie disponible.',
+      },
+      {
+        question: 'Quelle page consulter en plus ?',
+        answer: 'La carte si tu veux comparer Ventabren avec Eguilles ou Venelles selon ta position.',
+      },
+    ],
+    relatedSpotIds: ['ventabren', 'eguilles', 'venelles', 'coudoux'],
+    relatedGuideSlugs: ['sortie-trottinette-venelles-eguilles', 'sortie-trottinette-aix-centre'],
+    ctas: [
+      { label: 'Voir la fiche Ventabren', to: '/sorties/ventabren', description: 'Relire le point principal pour cette destination proche.' },
+      { label: 'Voir la carte', to: '/carte', description: 'Comparer Ventabren avec les autres sorties proches.' },
+      { label: 'Ouvrir le planner', to: '/planner', description: 'Verifier la marge si tu pars d un autre point qu Aix centre.' },
+    ],
+  },
+  {
+    slug: 'balade-trottinette-gardanne-fuveau',
+    title: 'Balade trottinette Gardanne Fuveau : sorties intermediaires a l est d Aix',
+    shortTitle: 'Balade trottinette Gardanne Fuveau',
+    description:
+      "Comparez Gardanne, Meyreuil, Fuveau et Trets pour une sortie trottinette intermediaire autour d Aix avec une preparation encore simple.",
+    intro:
+      "L est d Aix offre des sorties souvent sous-estimees pour monter progressivement en distance sans viser tout de suite une grande destination. C est utile quand tu veux rouler davantage tout en gardant un cadre encore raisonnable.",
+    sections: [
+      {
+        title: 'Pourquoi ces sorties sont interessantes',
+        paragraphs: [
+          "Gardanne, Meyreuil, Fuveau ou Trets permettent de passer a un format intermediaire. On sort du tres court sans arriver dans le niveau de contrainte du littoral ou du Luberon.",
+          "Cela en fait de bons terrains pour mieux comprendre ta consommation reelle de batterie et la qualite de ton plan de retour.",
+        ],
+      },
+      {
+        title: 'Comment choisir entre elles',
+        paragraphs: [
+          "Le planner aide a cadrer la marge, puis la carte sert a voir celle qui colle le mieux a ton point de depart du jour.",
+          "Si tu veux d abord tester une progression douce, commence par la sortie la plus proche et garde les autres comme paliers.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Ces sorties sont-elles plus simples que Sainte-Victoire ?',
+        answer: 'Souvent oui, car le relief et la logique de destination sont en general plus lisibles.',
+      },
+      {
+        question: 'Quel usage du site est le plus utile ici ?',
+        answer: 'Planner plus carte, puis une fiche detail seulement pour la destination retenue.',
+      },
+    ],
+    relatedSpotIds: ['gardanne', 'meyreuil', 'fuveau', 'trets'],
+    relatedGuideSlugs: ['balade-trottinette-sainte-victoire', 'sortie-trottinette-venelles-eguilles'],
+    ctas: [
+      { label: 'Voir les sorties proches', to: '/sorties?distance=7%E2%80%9315%20km', description: 'Comparer les formats intermediaires autour d Aix.' },
+      { label: 'Voir la carte', to: '/carte', description: 'Visualiser l est d Aix et ses alternatives.' },
+      { label: 'Ouvrir le planner', to: '/planner', description: 'Tester la marge sur une sortie un peu plus longue.' },
+    ],
+  },
+  {
+    slug: 'sortie-trottinette-martigues',
+    title: 'Sortie trottinette Martigues : destination eau et bord de mer a preparer',
+    shortTitle: 'Sortie trottinette Martigues',
+    description:
+      "Preparez une sortie trottinette vers Martigues avec une lecture plus claire de la distance, du retour et de l articulation avec la Cote Bleue.",
+    intro:
+      "Martigues peut sembler plus simple que Marseille ou Cassis sur une carte generale, mais cela reste une destination a cadrer serieusement depuis Aix. L enjeu est de savoir si tu vises le trajet complet ou surtout la balade sur place.",
+    sections: [
+      {
+        title: 'Le bon angle pour Martigues',
+        paragraphs: [
+          "Si tu veux surtout profiter du decor sur place, il peut etre plus pertinent de rapprocher le depart plutot que de tout consommer sur le trajet d approche.",
+          "Martigues se lit bien dans la meme famille que la Cote Bleue : destination attractive, mais rarement sortie simple depuis Aix.",
+        ],
+      },
+      {
+        title: 'Ce qu il faut verifier',
+        paragraphs: [
+          "Le planner permet de voir vite si la sortie bascule en zone preparee ou trop tendue. Ensuite, la recharge et les alternatives de retour deviennent les vraies variables utiles.",
+          "Il faut aussi garder une lecture concrete du temps disponible, pas seulement de la distance.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Martigues est-elle une sortie simple depuis Aix ?',
+        answer: 'Pas dans la plupart des cas. Il faut la traiter comme une sortie longue ou partiellement preparee.',
+      },
+      {
+        question: 'Avec quelle autre page la comparer ?',
+        answer: 'Avec la Cote Bleue et la recharge, pour bien lire les contraintes communes.',
+      },
+    ],
+    relatedSpotIds: ['martigues', 'saint-chamas-etang-de-berre', 'carry-le-rouet', 'sausset-les-pins'],
+    relatedGuideSlugs: ['sortie-trottinette-cote-bleue', 'sortie-trottinette-marseille'],
+    ctas: [
+      { label: 'Voir la fiche Martigues', to: '/sorties/martigues', description: 'Relire la destination et son format reel.' },
+      { label: 'Voir la recharge', to: '/recharge', description: 'Garder une lecture prudente des points de charge utiles.' },
+      { label: 'Ouvrir le planner', to: '/planner', description: 'Verifier si la sortie reste soutenable avec marge.' },
+    ],
+  },
+  {
+    slug: 'sortie-trottinette-avignon',
+    title: 'Sortie trottinette Avignon : idee longue distance a organiser autrement',
+    shortTitle: 'Sortie trottinette Avignon',
+    description:
+      "Préparez une sortie trottinette vers Avignon et l ile de la Barthelasse en gardant une lecture lucide de la distance et des alternatives de transport.",
+    intro:
+      "Avignon donne envie pour une vraie journee, mais ce n est pas une destination a vendre comme une sortie trottinette simple depuis Aix. Il faut la penser comme un projet hybride ou comme une sortie sur place apres transport.",
+    sections: [
+      {
+        title: 'Pourquoi il faut changer de logique',
+        paragraphs: [
+          "Sur ce type de destination, l important n est pas de prouver qu un aller est possible, mais de garder une journee encore exploitable et un retour fiable.",
+          "Le site aide ici a remettre le projet a la bonne echelle : sortie lointaine, a organiser differemment.",
+        ],
+      },
+      {
+        title: 'Comment l utiliser intelligemment',
+        paragraphs: [
+          "Le meilleur usage est souvent d ouvrir la fiche Avignon, puis de revenir au planner pour mesurer l ecart avec ton profil batterie reel.",
+          "Si l objectif principal est la balade locale sur place, un transport d approche n est pas un plan B, mais souvent la forme la plus logique du projet.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Avignon est-elle compatible avec une sortie simple en trottinette ?',
+        answer: 'Non. Il faut la classer parmi les destinations longues avec autre mode de transport ou plan de retour fort.',
+      },
+      {
+        question: 'Que faut-il verifier en premier ?',
+        answer: 'Le temps total de la journee, la marge batterie et le mode de retour.',
+      },
+    ],
+    relatedSpotIds: ['avignon-ile-de-la-barthelasse', 'voie-verte-du-calavon', 'luberon-roussillon'],
+    relatedGuideSlugs: ['sortie-trottinette-luberon', 'sortie-trottinette-salon-provence'],
+    ctas: [
+      { label: 'Voir la fiche Avignon', to: '/sorties/avignon-ile-de-la-barthelasse', description: 'Relire la destination longue distance.' },
+      { label: 'Ouvrir le planner', to: '/planner', description: 'Mesurer l ecart avec ton autonomie disponible.' },
+      { label: 'Voir les conseils', to: '/conseils', description: 'Relire les erreurs a eviter sur les sorties longues.' },
+    ],
+  },
 ];
 
 export function getEditorialGuidePath(slug: string) {

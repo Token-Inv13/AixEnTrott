@@ -2,9 +2,14 @@ import { Link } from 'react-router-dom';
 import { SectionKicker, SectionTitle } from '../components/Badges';
 import { PageSeo } from '../components/PageSeo';
 import { PwaInstallCard } from '../components/PwaInstallCard';
+import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
 import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 
 export function AboutPage() {
+  const guideLinks = editorialGuides.filter((guide) =>
+    ['sortie-trottinette-aix-centre', 'recharge-trottinette-aix', 'balade-trottinette-sainte-victoire'].includes(guide.slug),
+  );
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageSeo
@@ -62,6 +67,33 @@ export function AboutPage() {
       <div className="mt-6">
         <PwaInstallCard className="max-w-3xl" />
       </div>
+
+      <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <SectionKicker>Guides</SectionKicker>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Exemples concrets de lecture du site</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              Si tu veux voir comment ces limites s appliquent en pratique, ouvre une page ciblee puis reviens sur le planner ou le catalogue.
+            </p>
+          </div>
+          <Link to="/guides" className="text-sm font-semibold text-sky">
+            Tous les guides
+          </Link>
+        </div>
+        <div className="mt-4 grid gap-4 lg:grid-cols-3">
+          {guideLinks.map((guide) => (
+            <Link
+              key={guide.slug}
+              to={getEditorialGuidePath(guide.slug)}
+              className="rounded-[1.5rem] bg-slate-50 p-4 transition hover:bg-sky-50/60"
+            >
+              <p className="font-semibold text-slate-950">{guide.shortTitle}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
