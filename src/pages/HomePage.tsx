@@ -1,17 +1,20 @@
+import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
-import { GoogleMapView } from '../components/GoogleMapView';
 import { chargingPoints } from '../data/chargingPoints';
+import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
 import { distanceBands, spots } from '../data/spots';
 import { useRouteOrigin } from '../context/route-origin-context';
 import { hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
 import { areaLabel, formatRechargeStatus } from '../lib/spot-utils';
 import { Pill, SectionKicker, SectionTitle } from '../components/Badges';
 import { AdSlot } from '../components/AdSlot';
-import { MapView } from '../components/MapView';
 import { PageSeo } from '../components/PageSeo';
 import { PwaInstallCard } from '../components/PwaInstallCard';
 import { ADSENSE_SLOTS } from '../config/ads';
 import { buildSeoGraph, buildWebsiteNodes, buildWebPageNode } from '../lib/seo';
+
+const GoogleMapView = lazy(() => import('../components/GoogleMapView').then((module) => ({ default: module.GoogleMapView })));
+const MapView = lazy(() => import('../components/MapView').then((module) => ({ default: module.MapView })));
 
 const quickActions = [
   { to: '/sorties?moment=soir', label: 'Je veux sortir ce soir', tone: 'sky' as const },
@@ -21,6 +24,7 @@ const quickActions = [
 
 export function HomePage() {
   const highlights = spots.slice(0, 6);
+  const guideHighlights = editorialGuides.slice(0, 4);
   const { origin } = useRouteOrigin();
   const hasGoogleMaps = hasGoogleMapsPublicApiKey();
 
@@ -95,16 +99,23 @@ export function HomePage() {
               <Pill tone="sky">{hasGoogleMaps ? 'Google Maps' : 'OpenStreetMap'}</Pill>
             </div>
             <div className="mt-4">
-              {hasGoogleMaps ? (
-                <GoogleMapView
-                  spots={spots.slice(0, 8)}
-                  chargingPoints={chargingPoints.slice(0, 4)}
-                  origin={origin}
-                  height="h-[19rem]"
-                />
-              ) : (
-                <MapView spots={spots.slice(0, 8)} chargingPoints={chargingPoints.slice(0, 4)} origin={origin} height="h-[19rem]" />
-              )}
+              <Suspense fallback={<div className="h-[19rem] rounded-[1.5rem] bg-slate-100" />}>
+                {hasGoogleMaps ? (
+                  <GoogleMapView
+                    spots={spots.slice(0, 8)}
+                    chargingPoints={chargingPoints.slice(0, 4)}
+                    origin={origin}
+                    height="h-[19rem]"
+                  />
+                ) : (
+                  <MapView
+                    spots={spots.slice(0, 8)}
+                    chargingPoints={chargingPoints.slice(0, 4)}
+                    origin={origin}
+                    height="h-[19rem]"
+                  />
+                )}
+              </Suspense>
             </div>
           </div>
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
@@ -237,6 +248,34 @@ export function HomePage() {
             <li>Les solutions privees sont utiles pour le train et les longues sorties.</li>
             <li>Les applis servent a reperer une prise, pas a garantir la compatibilite.</li>
           </ul>
+        </div>
+      </section>
+
+      <section className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <SectionKicker>Guides utiles</SectionKicker>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Pages a lire selon ton besoin</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+              Recharge, Cassis, Sainte-Victoire, sorties proches : des pages courtes pour aller vite sur les recherches les plus frequentes.
+            </p>
+          </div>
+          <Link to="/guides" className="inline-flex rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky">
+            Tous les guides
+          </Link>
+        </div>
+        <div className="mt-5 grid gap-4 lg:grid-cols-2">
+          {guideHighlights.map((guide) => (
+            <Link
+              key={guide.slug}
+              to={getEditorialGuidePath(guide.slug)}
+              className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4 transition hover:border-sky hover:bg-sky-50/60"
+            >
+              <p className="text-sm font-semibold text-sky">{guide.shortTitle}</p>
+              <p className="mt-2 text-base font-semibold text-slate-950">{guide.title}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
+            </Link>
+          ))}
         </div>
       </section>
     </div>

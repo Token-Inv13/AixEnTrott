@@ -1,8 +1,14 @@
+import { Link } from 'react-router-dom';
 import { SectionTitle } from '../components/Badges';
 import { PageSeo } from '../components/PageSeo';
+import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
 import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 
 export function ConseilsPage() {
+  const guideLinks = editorialGuides.filter((guide) =>
+    ['balade-trottinette-sainte-victoire', 'sortie-trottinette-aix-centre', 'sortie-trottinette-luberon'].includes(guide.slug),
+  );
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageSeo
@@ -52,6 +58,30 @@ export function ConseilsPage() {
           <li>Sous-estimer les cotes et le vent.</li>
           <li>Rouler dans les massifs fermes en ete.</li>
         </ul>
+      </section>
+
+      <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-950">Guides a lire ensuite</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">Pour passer d un conseil general a un cas concret de sortie ou de zone.</p>
+          </div>
+          <Link to="/guides" className="text-sm font-semibold text-sky">
+            Tous les guides
+          </Link>
+        </div>
+        <div className="mt-4 grid gap-4 lg:grid-cols-3">
+          {guideLinks.map((guide) => (
+            <Link
+              key={guide.slug}
+              to={getEditorialGuidePath(guide.slug)}
+              className="rounded-[1.5rem] bg-slate-50 p-4 transition hover:bg-sky-50/60"
+            >
+              <p className="font-semibold text-slate-950">{guide.shortTitle}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
+            </Link>
+          ))}
+        </div>
       </section>
     </div>
   );

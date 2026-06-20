@@ -23,6 +23,7 @@ export function Layout({ children }: { children: ReactNode }) {
     { to: '/', label: 'Accueil' },
     { to: '/sorties', label: 'Sorties' },
     { to: '/carte', label: 'Carte' },
+    { to: '/guides', label: 'Guides' },
     { to: '/recharge', label: 'Recharge' },
     { to: '/conseils', label: 'Conseils' },
     { to: '/a-propos', label: 'A propos' },

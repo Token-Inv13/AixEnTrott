@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
 import { PageSeo } from '../components/PageSeo';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { SpotCard } from '../components/SpotCard';
 import { Pill, SectionTitle } from '../components/Badges';
 import { ADSENSE_SLOTS } from '../config/ads';
+import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { spots, type Spot } from '../data/spots';
 import { useRouteOrigin } from '../context/route-origin-context';
@@ -97,6 +98,7 @@ export function SortiesPage() {
   const filtered = useMemo(() => spots.filter((spot) => matchesFilters(spot, filters)), [filters]);
   const leadSpots = filtered.slice(0, 3);
   const remainingSpots = filtered.slice(3);
+  const guideLinks = editorialGuides.slice(0, 4);
   const routeDistances = useRouteDistances(filtered, origin);
 
   return (
@@ -126,6 +128,31 @@ export function SortiesPage() {
         title="Lieu de depart"
         description="Ajuste les estimations du catalogue avec Aix, ta position ou une adresse precise."
       />
+
+      <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-slate-950">Guides pour mieux trier</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Si tu hesites entre recharge, sortie mer ou balade proche, ouvre d abord un guide cible puis reviens filtrer le catalogue.
+            </p>
+          </div>
+          <Link to="/guides" className="text-sm font-semibold text-sky">
+            Voir tous les guides
+          </Link>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {guideLinks.map((guide) => (
+            <Link
+              key={guide.slug}
+              to={getEditorialGuidePath(guide.slug)}
+              className="rounded-full bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-sky-50"
+            >
+              {guide.shortTitle}
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-4">

@@ -33,7 +33,10 @@ export function SpotCard({
   const durationLabel = routeDistance?.durationLabel;
 
   return (
-    <article className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+    <article
+      className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-soft"
+      style={{ contentVisibility: 'auto', containIntrinsicSize: '0 520px' }}
+    >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="text-lg font-semibold text-slate-950">{spot.name}</h3>

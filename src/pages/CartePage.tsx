@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
 import { Pill, SectionTitle } from '../components/Badges';
 import { PageSeo } from '../components/PageSeo';
-import { GoogleMapView } from '../components/GoogleMapView';
-import { MapView } from '../components/MapView';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { ADSENSE_SLOTS } from '../config/ads';
 import { chargingPoints } from '../data/chargingPoints';
+import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
 import { spots } from '../data/spots';
 import { useRouteDistances } from '../hooks/use-route-distances';
 import { hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
@@ -20,6 +19,8 @@ import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes
 import { getOriginFromLabel } from '../lib/user-location';
 
 const filters = ['Tous', 'Soir', 'Week-end', 'Journee', 'Recharge confirmee', 'Recharge a verifier'] as const;
+const GoogleMapView = lazy(() => import('../components/GoogleMapView').then((module) => ({ default: module.GoogleMapView })));
+const MapView = lazy(() => import('../components/MapView').then((module) => ({ default: module.MapView })));
 
 export function CartePage() {
   const [active, setActive] = useState<(typeof filters)[number]>('Tous');
@@ -56,6 +57,7 @@ export function CartePage() {
   const selectedSpot = visibleSpots.find((spot) => spot.id === selectedSpotId) ?? nearbySpots[0]?.spot ?? null;
   const selectedRouteDistance = selectedSpot ? routeDistances[selectedSpot.id] : undefined;
   const hasGoogleMaps = hasGoogleMapsPublicApiKey();
+  const guideLinks = editorialGuides.slice(0, 3);
 
   useEffect(() => {
     if (selectedSpot && visibleSpots.some((spot) => spot.id === selectedSpot.id)) {
@@ -113,27 +115,29 @@ export function CartePage() {
       </div>
 
       <section className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        {hasGoogleMaps ? (
-          <GoogleMapView
-            spots={visibleSpots}
-            chargingPoints={visibleCharge}
-            selectedSpotId={selectedSpot?.id ?? null}
-            origin={origin}
-            routePolyline={selectedRouteDistance?.encodedPolyline}
-            routeDistanceBySpotId={routeDistances}
-            height="h-[26rem]"
-            onSelectSpot={(spotId) => setSelectedSpotId(spotId)}
-          />
-        ) : (
-          <MapView
-            spots={visibleSpots}
-            chargingPoints={visibleCharge}
-            origin={origin}
-            routePolyline={selectedRouteDistance?.encodedPolyline}
-            routeDistanceBySpotId={routeDistances}
-            height="h-[26rem]"
-          />
-        )}
+        <Suspense fallback={<div className="h-[26rem] rounded-[2rem] border border-slate-200 bg-slate-100" />}>
+          {hasGoogleMaps ? (
+            <GoogleMapView
+              spots={visibleSpots}
+              chargingPoints={visibleCharge}
+              selectedSpotId={selectedSpot?.id ?? null}
+              origin={origin}
+              routePolyline={selectedRouteDistance?.encodedPolyline}
+              routeDistanceBySpotId={routeDistances}
+              height="h-[26rem]"
+              onSelectSpot={(spotId) => setSelectedSpotId(spotId)}
+            />
+          ) : (
+            <MapView
+              spots={visibleSpots}
+              chargingPoints={visibleCharge}
+              origin={origin}
+              routePolyline={selectedRouteDistance?.encodedPolyline}
+              routeDistanceBySpotId={routeDistances}
+              height="h-[26rem]"
+            />
+          )}
+        </Suspense>
 
         <div className="space-y-4">
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
@@ -210,6 +214,30 @@ export function CartePage() {
             {!hasGoogleMaps ? (
               <p className="mt-4 text-xs leading-5 text-slate-500">Google Maps n'est pas active ici. La carte Leaflet reste disponible.</p>
             ) : null}
+          </div>
+
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-slate-950">Guides utiles</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">Avant une sortie longue, ouvre une page ciblee puis reviens sur la carte.</p>
+              </div>
+              <Link to="/guides" className="text-sm font-semibold text-sky">
+                Tous les guides
+              </Link>
+            </div>
+            <div className="mt-4 space-y-3">
+              {guideLinks.map((guide) => (
+                <Link
+                  key={guide.slug}
+                  to={getEditorialGuidePath(guide.slug)}
+                  className="block rounded-2xl bg-slate-50 p-4 transition hover:bg-sky-50/60"
+                >
+                  <p className="font-semibold text-slate-950">{guide.shortTitle}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
+                </Link>
+              ))}
+            </div>
           </div>
 
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">

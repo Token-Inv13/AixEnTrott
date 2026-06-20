@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { editorialGuides, getEditorialGuidePath } from '../src/data/editorialPages.ts';
 import { spots } from '../src/data/spots.ts';
 import {
   SITE_DEFAULT_DESCRIPTION,
@@ -179,6 +180,36 @@ function buildSpotSeoGraph(spot) {
   ]);
 }
 
+function buildGuideSeoGraph(guide) {
+  const pathName = getEditorialGuidePath(guide.slug);
+
+  return buildSeoGraph([
+    ...buildWebsiteNodes(),
+    buildWebPageNode({
+      path: pathName,
+      title: guide.title,
+      description: guide.description,
+    }),
+    buildBreadcrumbNode([
+      { name: 'Accueil', path: '/' },
+      { name: 'Guides', path: '/guides' },
+      { name: guide.shortTitle, path: pathName },
+    ]),
+    {
+      '@type': 'FAQPage',
+      '@id': `${buildSiteUrl(pathName)}#faq`,
+      mainEntity: guide.faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    },
+  ]);
+}
+
 function injectTag(html, pattern, replacement) {
   if (!pattern.test(html)) {
     return html;
@@ -278,6 +309,10 @@ function buildRouteConfigs() {
   const collectionItems = spots.map((spot) => ({
     name: spot.name,
     path: `/sorties/${spot.id}`,
+  }));
+  const guideItems = editorialGuides.map((guide) => ({
+    name: guide.shortTitle,
+    path: getEditorialGuidePath(guide.slug),
   }));
 
   return [
@@ -403,6 +438,22 @@ function buildRouteConfigs() {
       }),
     },
     {
+      path: '/guides',
+      seo: buildPageSeo({
+        title: "Guides trottinette autour d'Aix-en-Provence",
+        description:
+          "Guides pratiques pour preparer une sortie trottinette autour d'Aix-en-Provence : Cassis, recharge, Sainte-Victoire, Cote Bleue, Luberon et sorties proches.",
+        path: '/guides',
+        jsonLd: buildCollectionSeoGraph({
+          path: '/guides',
+          title: "Guides trottinette autour d'Aix-en-Provence",
+          description:
+            "Guides pratiques pour preparer une sortie trottinette autour d'Aix-en-Provence : Cassis, recharge, Sainte-Victoire, Cote Bleue, Luberon et sorties proches.",
+          items: guideItems,
+        }),
+      }),
+    },
+    {
       path: '/a-propos',
       seo: buildPageSeo({
         title: 'A propos de Aix en trott',
@@ -433,6 +484,15 @@ function buildRouteConfigs() {
         type: 'article',
         path: `/sorties/${spot.id}`,
         jsonLd: buildSpotSeoGraph(spot),
+      }),
+    })),
+    ...editorialGuides.map((guide) => ({
+      path: getEditorialGuidePath(guide.slug),
+      seo: buildPageSeo({
+        title: guide.title,
+        description: guide.description,
+        path: getEditorialGuidePath(guide.slug),
+        jsonLd: buildGuideSeoGraph(guide),
       }),
     })),
   ];

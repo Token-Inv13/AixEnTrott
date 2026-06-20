@@ -1,13 +1,13 @@
+import { Suspense, lazy } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { AdSlot } from '../components/AdSlot';
-import { GoogleMapView } from '../components/GoogleMapView';
-import { MapView } from '../components/MapView';
 import { PageSeo } from '../components/PageSeo';
 import { RouteMethodNotice } from '../components/RouteMethodNotice';
 import { RouteOriginPanel } from '../components/RouteOriginPanel';
 import { Pill, SectionKicker } from '../components/Badges';
 import { ADSENSE_SLOTS } from '../config/ads';
 import { buildReportIssueMailto } from '../config/site';
+import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
 import { useRouteDistance } from '../hooks/use-route-distances';
 import { spots } from '../data/spots';
 import { hasGoogleMapsPublicApiKey } from '../lib/google-maps-config';
@@ -28,6 +28,9 @@ import {
   formatRouteType,
 } from '../lib/spot-utils';
 import { useRouteOrigin } from '../context/route-origin-context';
+
+const GoogleMapView = lazy(() => import('../components/GoogleMapView').then((module) => ({ default: module.GoogleMapView })));
+const MapView = lazy(() => import('../components/MapView').then((module) => ({ default: module.MapView })));
 
 export function SortieDetailPage() {
   const { id } = useParams();
@@ -57,6 +60,18 @@ export function SortieDetailPage() {
     typeof window !== 'undefined' ? window.location.href : `https://aixentrott.fr/sorties/${spot.id}`,
   );
   const seoDescription = buildSpotSeoDescription(spot);
+  const relatedSpots = spots
+    .filter(
+      (item) =>
+        item.id !== spot.id &&
+        (item.area === spot.area ||
+          item.routeType === spot.routeType ||
+          item.moods.some((mood) => spot.moods.includes(mood))),
+    )
+    .slice(0, 4);
+  const relatedGuides = editorialGuides
+    .filter((guide) => guide.relatedSpotIds.includes(spot.id))
+    .slice(0, 3);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -318,32 +333,88 @@ export function SortieDetailPage() {
             slotId={ADSENSE_SLOTS.sortieDetailBanner}
             label="Banniere fiche sortie"
           />
+
+          {relatedSpots.length ? (
+            <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-slate-950">Autres fiches proches</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">Pour comparer une alternative locale, plus simple ou plus proche dans le meme esprit.</p>
+                </div>
+                <Link to="/sorties" className="text-sm font-semibold text-sky">
+                  Tout le catalogue
+                </Link>
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {relatedSpots.map((relatedSpot) => (
+                  <Link
+                    key={relatedSpot.id}
+                    to={`/sorties/${relatedSpot.id}`}
+                    className="rounded-2xl bg-slate-50 p-4 transition hover:bg-sky-50/60"
+                  >
+                    <p className="font-semibold text-slate-950">{relatedSpot.name}</p>
+                    <p className="mt-1 text-sm text-slate-500">
+                      {relatedSpot.distanceLabel} - {relatedSpot.duration}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {relatedGuides.length ? (
+            <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-slate-950">Guides lies a cette sortie</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">Recharge, sortie longue ou secteur voisin : ouvre la page la plus utile avant de partir.</p>
+                </div>
+                <Link to="/guides" className="text-sm font-semibold text-sky">
+                  Tous les guides
+                </Link>
+              </div>
+              <div className="mt-4 space-y-3">
+                {relatedGuides.map((guide) => (
+                  <Link
+                    key={guide.slug}
+                    to={getEditorialGuidePath(guide.slug)}
+                    className="block rounded-2xl bg-slate-50 p-4 transition hover:bg-sky-50/60"
+                  >
+                    <p className="font-semibold text-slate-950">{guide.shortTitle}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
 
         <div className="min-w-0 grid gap-4">
           <div className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-soft">
             <p className="text-sm font-semibold text-slate-950">Carte centree sur le lieu</p>
             <div className="mt-4">
-              {hasGoogleMaps ? (
-                <GoogleMapView
-                  spots={[spot]}
-                  chargingPoints={[]}
-                  selectedSpotId={spot.id}
-                  origin={origin}
-                  routePolyline={routeDistance?.encodedPolyline}
-                  routeDistanceBySpotId={{ [spot.id]: routeDistance ?? undefined }}
-                  height="h-[24rem]"
-                />
-              ) : (
-                <MapView
-                  spots={[spot]}
-                  chargingPoints={[]}
-                  showCharging={false}
-                  origin={origin}
-                  routePolyline={routeDistance?.encodedPolyline}
-                  height="h-[24rem]"
-                />
-              )}
+              <Suspense fallback={<div className="h-[24rem] rounded-[1.5rem] bg-slate-100" />}>
+                {hasGoogleMaps ? (
+                  <GoogleMapView
+                    spots={[spot]}
+                    chargingPoints={[]}
+                    selectedSpotId={spot.id}
+                    origin={origin}
+                    routePolyline={routeDistance?.encodedPolyline}
+                    routeDistanceBySpotId={{ [spot.id]: routeDistance ?? undefined }}
+                    height="h-[24rem]"
+                  />
+                ) : (
+                  <MapView
+                    spots={[spot]}
+                    chargingPoints={[]}
+                    showCharging={false}
+                    origin={origin}
+                    routePolyline={routeDistance?.encodedPolyline}
+                    height="h-[24rem]"
+                  />
+                )}
+              </Suspense>
             </div>
           </div>
           <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
