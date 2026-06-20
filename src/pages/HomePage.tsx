@@ -11,7 +11,7 @@ import { AdSlot } from '../components/AdSlot';
 import { PageSeo } from '../components/PageSeo';
 import { PwaInstallCard } from '../components/PwaInstallCard';
 import { ADSENSE_SLOTS } from '../config/ads';
-import { buildSeoGraph, buildWebsiteNodes, buildWebPageNode } from '../lib/seo';
+import { buildHowToNode, buildSeoGraph, buildWebsiteNodes, buildWebPageNode } from '../lib/seo';
 
 const GoogleMapView = lazy(() => import('../components/GoogleMapView').then((module) => ({ default: module.GoogleMapView })));
 const MapView = lazy(() => import('../components/MapView').then((module) => ({ default: module.MapView })));
@@ -27,6 +27,12 @@ export function HomePage() {
   const guideHighlights = editorialGuides.slice(0, 4);
   const { origin } = useRouteOrigin();
   const hasGoogleMaps = hasGoogleMapsPublicApiKey();
+  const howToSteps = [
+    { name: 'Choisir ton temps disponible', text: 'Repere si tu veux une sortie rapide, du soir, week-end ou une journee.', path: '/sorties' },
+    { name: 'Filtrer par distance ou ambiance', text: 'Utilise le catalogue pour trier les sorties par distance, ambiance ou recharge.', path: '/sorties' },
+    { name: 'Verifier autonomie et recharge', text: 'Controle ton autonomie indicative et les points de recharge avant depart.', path: '/planner' },
+    { name: 'Partir equipe', text: 'Pars avec batterie pleine, eau, casque et antivol.', path: '/conseils' },
+  ];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -42,6 +48,7 @@ export function HomePage() {
             description:
               "Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence : sorties, carte, recharge, autonomie et conseils pratiques.",
           }),
+          buildHowToNode('/', 'Comment preparer une sortie en trottinette autour d Aix-en-Provence', howToSteps),
         ])}
       />
       <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">

@@ -65,7 +65,25 @@ function buildWebsiteNodes() {
         '@id': `${SITE_URL}#organization`,
       },
     },
+    buildSiteNavigationNode([
+      { name: 'Accueil', path: '/' },
+      { name: 'Preparer', path: '/planner' },
+      { name: 'Sorties', path: '/sorties' },
+      { name: 'Carte', path: '/carte' },
+      { name: 'Guides', path: '/guides' },
+      { name: 'Recharge', path: '/recharge' },
+      { name: 'Conseils', path: '/conseils' },
+    ]),
   ];
+}
+
+function buildSiteNavigationNode(items) {
+  return {
+    '@type': 'SiteNavigationElement',
+    '@id': `${SITE_URL}#navigation`,
+    name: items.map((item) => item.name),
+    url: items.map((item) => buildSiteUrl(item.path)),
+  };
 }
 
 function buildWebPageNode({ path, title, description, pageType = 'WebPage' }) {
@@ -105,6 +123,36 @@ function buildItemListNode(pathName, items) {
       position: index + 1,
       url: buildSiteUrl(item.path),
       name: item.name,
+    })),
+  };
+}
+
+function buildFaqPageNode(pathName, items) {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${buildSiteUrl(pathName)}#faq`,
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+function buildHowToNode(pathName, name, steps) {
+  return {
+    '@type': 'HowTo',
+    '@id': `${buildSiteUrl(pathName)}#howto`,
+    name,
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      url: step.path ? buildSiteUrl(step.path) : undefined,
     })),
   };
 }
@@ -330,6 +378,12 @@ function buildRouteConfigs() {
             description:
               "Preparez vos sorties en trottinette autour d'Aix-en-Provence : carte, idees de balades, recharge, autonomie et conseils utiles.",
           }),
+          buildHowToNode('/', 'Comment preparer une sortie en trottinette autour d Aix-en-Provence', [
+            { name: 'Choisir ton temps disponible', text: 'Repere si tu veux une sortie rapide, du soir, week-end ou une journee.', path: '/sorties' },
+            { name: 'Filtrer par distance ou ambiance', text: 'Utilise le catalogue pour trier les sorties par distance, ambiance ou recharge.', path: '/sorties' },
+            { name: 'Verifier autonomie et recharge', text: 'Controle ton autonomie indicative et les points de recharge avant depart.', path: '/planner' },
+            { name: 'Partir equipe', text: 'Pars avec batterie pleine, eau, casque et antivol.', path: '/conseils' },
+          ]),
         ]),
       }),
     },
@@ -411,6 +465,20 @@ function buildRouteConfigs() {
           buildBreadcrumbNode([
             { name: 'Accueil', path: '/' },
             { name: 'Recharge', path: '/recharge' },
+          ]),
+          buildFaqPageNode('/recharge', [
+            {
+              question: 'Une borne voiture suffit-elle pour charger une trottinette ?',
+              answer: "Non. Il faut verifier la presence d une prise 220V ou Schuko avant de compter dessus.",
+            },
+            {
+              question: 'Une recharge indiquee comme possible est-elle fiable ?',
+              answer: "Elle reste a confirmer avant depart. Ce n est pas une garantie d usage.",
+            },
+            {
+              question: 'Quel est le bon reflexe avant une longue sortie ?',
+              answer: "Croiser recharge, autonomie et solution de retour au lieu de compter sur une seule borne.",
+            },
           ]),
         ]),
       }),

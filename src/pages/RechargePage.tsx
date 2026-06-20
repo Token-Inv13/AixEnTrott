@@ -7,13 +7,27 @@ import { ChargingPointCard } from '../components/ChargingPointCard';
 import { buildReportIssueMailto } from '../config/site';
 import { chargingPoints } from '../data/chargingPoints';
 import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
-import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
+import { buildBreadcrumbNode, buildFaqPageNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 
 export function RechargePage() {
   const reportMailto = buildReportIssueMailto('Recharge', 'https://aixentrott.fr/recharge');
   const guideLinks = editorialGuides.filter((guide) =>
     ['recharge-trottinette-aix', 'sortie-trottinette-cassis', 'sortie-trottinette-la-ciotat'].includes(guide.slug),
   );
+  const faqItems = [
+    {
+      question: 'Une borne voiture suffit-elle pour charger une trottinette ?',
+      answer: "Non. Il faut verifier la presence d une prise 220V ou Schuko avant de compter dessus.",
+    },
+    {
+      question: 'Une recharge indiquee comme possible est-elle fiable ?',
+      answer: "Elle reste a confirmer avant depart. Ce n est pas une garantie d usage.",
+    },
+    {
+      question: 'Quel est le bon reflexe avant une longue sortie ?',
+      answer: "Croiser recharge, autonomie et solution de retour au lieu de compter sur une seule borne.",
+    },
+  ];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -33,6 +47,7 @@ export function RechargePage() {
             { name: 'Accueil', path: '/' },
             { name: 'Recharge', path: '/recharge' },
           ]),
+          buildFaqPageNode('/recharge', faqItems),
         ])}
       />
       <SectionTitle description="Les points listes distinguent clairement 220V, borne voiture, acces prive et points a verifier.">

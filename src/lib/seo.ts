@@ -18,6 +18,17 @@ type SeoListItem = {
   path: string;
 };
 
+type FaqItem = {
+  question: string;
+  answer: string;
+};
+
+type HowToStep = {
+  name: string;
+  text: string;
+  path?: string;
+};
+
 export type PageSeoInput = {
   title?: string;
   description?: string;
@@ -93,7 +104,25 @@ export function buildWebsiteNodes() {
         '@id': `${SITE_URL}#organization`,
       },
     },
+    buildSiteNavigationNode([
+      { name: 'Accueil', path: '/' },
+      { name: 'Preparer', path: '/planner' },
+      { name: 'Sorties', path: '/sorties' },
+      { name: 'Carte', path: '/carte' },
+      { name: 'Guides', path: '/guides' },
+      { name: 'Recharge', path: '/recharge' },
+      { name: 'Conseils', path: '/conseils' },
+    ]),
   ];
+}
+
+export function buildSiteNavigationNode(items: SeoListItem[]) {
+  return {
+    '@type': 'SiteNavigationElement',
+    '@id': `${SITE_URL}#navigation`,
+    name: items.map((item) => item.name),
+    url: items.map((item) => buildSiteUrl(item.path)),
+  };
 }
 
 export function buildWebPageNode({
@@ -143,6 +172,36 @@ export function buildItemListNode(path: string, items: SeoListItem[]) {
       position: index + 1,
       url: buildSiteUrl(item.path),
       name: item.name,
+    })),
+  };
+}
+
+export function buildFaqPageNode(path: string, items: FaqItem[]) {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${buildSiteUrl(path)}#faq`,
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+export function buildHowToNode(path: string, name: string, steps: HowToStep[]) {
+  return {
+    '@type': 'HowTo',
+    '@id': `${buildSiteUrl(path)}#howto`,
+    name,
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      url: step.path ? buildSiteUrl(step.path) : undefined,
     })),
   };
 }
