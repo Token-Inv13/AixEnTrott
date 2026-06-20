@@ -83,7 +83,7 @@ export function SortieDetailPage() {
         jsonLd={buildSpotSeoGraph(spot)}
       />
       <Link to="/sorties" className="text-sm font-semibold text-sky">
-        ← Retour au catalogue
+        Retour au catalogue
       </Link>
 
       <section className="mt-4 grid gap-6 lg:grid-cols-[1fr_1fr]">
@@ -213,7 +213,7 @@ export function SortieDetailPage() {
                       <div>
                         <p className="font-semibold text-slate-950">{profile.label}</p>
                         <p className="mt-1 text-sm text-slate-500">
-                          Utilisable environ {assessment.usableRangeKm.toFixed(1)} km · reserve {assessment.reserveKm.toFixed(1)} km
+                          Utilisable environ {assessment.usableRangeKm.toFixed(1)} km - reserve {assessment.reserveKm.toFixed(1)} km
                         </p>
                       </div>
                       <Pill
@@ -232,7 +232,7 @@ export function SortieDetailPage() {
                     </div>
                     <p className="mt-3 text-sm leading-6 text-slate-600">{assessment.note}</p>
                     <p className="mt-2 text-sm text-slate-600">
-                      Aller-retour indicatif {assessment.roundTripKm.toFixed(1)} km · buffer {assessment.bufferKm >= 0 ? '+' : ''}
+                      Aller-retour indicatif {assessment.roundTripKm.toFixed(1)} km - buffer {assessment.bufferKm >= 0 ? '+' : ''}
                       {assessment.bufferKm.toFixed(1)} km
                     </p>
                   </div>
@@ -279,7 +279,7 @@ export function SortieDetailPage() {
             <div className="rounded-2xl bg-slate-50 p-4">
               <dt className="text-sm text-slate-500">Difficulte</dt>
               <dd className="mt-2 text-sm font-semibold text-slate-950">
-                {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()}
+                {formatDifficulty(spot.difficulty)} - {formatRouteType(spot.routeType).toLowerCase()}
               </dd>
             </div>
           </dl>
@@ -342,7 +342,7 @@ export function SortieDetailPage() {
                   <p className="mt-2 text-sm leading-6 text-slate-600">Pour comparer une alternative locale, plus simple ou plus proche dans le meme esprit.</p>
                 </div>
                 <Link to="/sorties" className="text-sm font-semibold text-sky">
-                  Tout le catalogue
+                  Voir le catalogue
                 </Link>
               </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -434,3 +434,4 @@ export function SortieDetailPage() {
     </div>
   );
 }
+

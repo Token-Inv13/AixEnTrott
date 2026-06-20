@@ -75,16 +75,16 @@ export function PlannerPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageSeo
-        title="Planner trottinette Aix : autonomie et recharge"
-        description="Comparez votre autonomie, la distance indicative aller-retour et les solutions de recharge pour choisir une sortie trottinette autour d'Aix."
+        title="Planner trottinette a Aix-en-Provence : autonomie, batterie et recharge"
+        description="Comparez autonomie, profil batterie, trajet indicatif et recharge pour choisir une sortie trottinette autour d'Aix-en-Provence."
         path="/planner"
         jsonLd={buildSeoGraph([
           ...buildWebsiteNodes(),
           buildWebPageNode({
             path: '/planner',
-            title: 'Planner trottinette Aix : autonomie et recharge',
+            title: 'Planner trottinette a Aix-en-Provence : autonomie, batterie et recharge',
             description:
-              "Comparez votre autonomie, la distance indicative aller-retour et les solutions de recharge pour choisir une sortie trottinette autour d'Aix.",
+              "Comparez autonomie, profil batterie, trajet indicatif et recharge pour choisir une sortie trottinette autour d'Aix-en-Provence.",
           }),
           buildBreadcrumbNode([
             { name: 'Accueil', path: '/' },
@@ -132,7 +132,7 @@ export function PlannerPage() {
                       <p className="text-sm font-semibold">{profile.label}</p>
                       <p className={`mt-2 text-sm leading-6 ${isActive ? 'text-slate-200' : 'text-slate-500'}`}>{profile.note}</p>
                       <p className={`mt-2 text-xs font-medium ${isActive ? 'text-slate-100' : 'text-slate-500'}`}>
-                        Autonomie nominale {profile.nominalRangeKm} km · reserve {Math.round(profile.reserveRatio * 100)} %
+                        Autonomie nominale {profile.nominalRangeKm} km - reserve {Math.round(profile.reserveRatio * 100)} %
                       </p>
                     </button>
                   );
@@ -270,7 +270,7 @@ export function PlannerPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-slate-950">{spot.name}</h3>
                       <p className="mt-1 text-sm text-slate-500">
-                        {spot.distanceLabel} · {spot.duration} · {spot.distanceKmFromAix > 30 ? 'Sortie longue' : 'Sortie locale'}
+                        {spot.distanceLabel} - {spot.duration} - {spot.distanceKmFromAix > 30 ? 'Sortie longue' : 'Sortie locale'}
                       </p>
                     </div>
                     <Pill
@@ -333,7 +333,7 @@ export function PlannerPage() {
                     <div>
                       <p className="text-sm text-slate-500">Autonomie utile estimee</p>
                       <p className="mt-1 font-semibold text-slate-950">
-                        {batteryAssessment.usableRangeKm.toFixed(1)} km utiles · reserve {batteryAssessment.reserveKm.toFixed(1)} km
+                        {batteryAssessment.usableRangeKm.toFixed(1)} km utiles - reserve {batteryAssessment.reserveKm.toFixed(1)} km
                       </p>
                     </div>
                   </div>

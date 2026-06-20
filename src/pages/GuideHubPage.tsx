@@ -8,14 +8,14 @@ export function GuideHubPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageSeo
-        title="Guides trottinette autour d'Aix-en-Provence"
-        description="Guides pratiques pour preparer une sortie trottinette autour d'Aix-en-Provence : Cassis, recharge, Sainte-Victoire, Cote Bleue, Luberon et sorties proches."
+        title="Guides trottinette a Aix-en-Provence : recharge, soirs, week-end et longues sorties"
+        description="Guides pratiques pour preparer une sortie trottinette autour d'Aix-en-Provence : recharge, sorties du soir, week-end, mer et longues distances."
         path="/guides"
         jsonLd={buildCollectionSeoGraph({
           path: '/guides',
-          title: "Guides trottinette autour d'Aix-en-Provence",
+          title: "Guides trottinette a Aix-en-Provence : recharge, soirs, week-end et longues sorties",
           description:
-            "Guides pratiques pour preparer une sortie trottinette autour d'Aix-en-Provence : Cassis, recharge, Sainte-Victoire, Cote Bleue, Luberon et sorties proches.",
+            "Guides pratiques pour preparer une sortie trottinette autour d'Aix-en-Provence : recharge, sorties du soir, week-end, mer et longues distances.",
           items: editorialGuides.map((guide) => ({
             name: guide.shortTitle,
             path: getEditorialGuidePath(guide.slug),
@@ -24,7 +24,7 @@ export function GuideHubPage() {
       />
 
       <SectionKicker>Guides locaux</SectionKicker>
-      <SectionTitle description="Pages edito ciblees pour aller plus vite sur les questions les plus frequentes.">
+      <SectionTitle description="Pages edito ciblees pour repondre aux recherches locales les plus concretes.">
         Guides pour preparer une sortie trottinette autour d'Aix
       </SectionTitle>
 
@@ -40,6 +40,41 @@ export function GuideHubPage() {
           <Pill>retour alternatif</Pill>
           <Pill>balade locale</Pill>
         </div>
+      </section>
+
+      <section className="mt-6 grid gap-4 lg:grid-cols-3">
+        {[
+          {
+            title: 'Sorties proches',
+            slugs: ['sortie-trottinette-aix-centre', 'sortie-trottinette-aix-soir', 'sortie-trottinette-venelles-eguilles'],
+          },
+          {
+            title: 'Mer et week-end',
+            slugs: ['sortie-trottinette-cassis', 'sortie-trottinette-cote-bleue', 'sortie-trottinette-aix-weekend'],
+          },
+          {
+            title: 'Recharge et longues sorties',
+            slugs: ['recharge-trottinette-aix', 'recharge-trottinette-cassis-marseille', 'sortie-trottinette-avignon'],
+          },
+        ].map((cluster) => (
+          <section key={cluster.title} className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-soft">
+            <p className="text-sm font-semibold text-slate-950">{cluster.title}</p>
+            <div className="mt-4 space-y-3">
+              {editorialGuides
+                .filter((guide) => cluster.slugs.includes(guide.slug))
+                .map((guide) => (
+                  <Link
+                    key={guide.slug}
+                    to={getEditorialGuidePath(guide.slug)}
+                    className="block rounded-2xl bg-slate-50 p-4 transition hover:bg-sky-50/60"
+                  >
+                    <p className="font-semibold text-slate-950">{guide.shortTitle}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
+                  </Link>
+                ))}
+            </div>
+          </section>
+        ))}
       </section>
 
       <section className="mt-8 grid gap-4 lg:grid-cols-2">

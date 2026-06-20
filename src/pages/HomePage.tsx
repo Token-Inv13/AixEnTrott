@@ -37,16 +37,16 @@ export function HomePage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageSeo
-        title="Sorties en trottinette autour d'Aix-en-Provence"
-        description="Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence : sorties, carte, recharge, autonomie et conseils pratiques."
+        title="Aix en trott : sorties en trottinette autour d'Aix-en-Provence"
+        description="Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence avec un catalogue local, une carte, la recharge et des conseils pratiques."
         path="/"
         jsonLd={buildSeoGraph([
           ...buildWebsiteNodes(),
           buildWebPageNode({
             path: '/',
-            title: "Sorties en trottinette autour d'Aix-en-Provence",
+            title: "Aix en trott : sorties en trottinette autour d'Aix-en-Provence",
             description:
-              "Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence : sorties, carte, recharge, autonomie et conseils pratiques.",
+              "Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence avec un catalogue local, une carte, la recharge et des conseils pratiques.",
           }),
           buildHowToNode('/', 'Comment preparer une sortie en trottinette autour d Aix-en-Provence', howToSteps),
         ])}
@@ -237,7 +237,7 @@ export function HomePage() {
                   <div>
                     <p className="font-semibold text-slate-950">{spot.name}</p>
                     <p className="mt-1 text-sm text-slate-500">
-                      {spot.distanceLabel} · {spot.duration} · {areaLabel(spot.area)}
+                      {spot.distanceLabel} - {spot.duration} - {areaLabel(spot.area)}
                     </p>
                   </div>
                   <Pill>{formatRechargeStatus(spot.rechargeStatus)}</Pill>

@@ -207,7 +207,7 @@ export function buildHowToNode(path: string, name: string, steps: HowToStep[]) {
 }
 
 export function buildSpotSeoDescription(spot: Spot) {
-  return `${spot.name}, sortie en trottinette autour d'Aix-en-Provence. ${spot.description} Distance indicative ${spot.distanceLabel}, recharge ${spot.rechargeStatus === 'confirmed' ? 'connue' : spot.rechargeStatus === 'nearby' ? 'possible' : spot.rechargeStatus === 'verify' ? 'a verifier' : 'non connue'}.`;
+  return `${spot.name}, sortie en trottinette autour d'Aix-en-Provence. ${spot.description} Distance indicative ${spot.distanceLabel}, recharge ${spot.rechargeStatus === 'confirmed' ? 'confirmee' : spot.rechargeStatus === 'nearby' ? 'possible' : spot.rechargeStatus === 'verify' ? 'a verifier' : 'non connue'}.`;
 }
 
 export function buildSpotSeoGraph(spot: Spot) {
@@ -239,7 +239,7 @@ export function buildSpotSeoGraph(spot: Spot) {
         addressCountry: 'FR',
       },
       touristType: spot.routeType,
-      isAccessibleForFree: spot.budget === '0€',
+      isAccessibleForFree: /^0/.test(spot.budget),
     },
   ]);
 }
@@ -272,3 +272,4 @@ export function buildCollectionSeoGraph({
     buildItemListNode(path, items),
   ]);
 }
+

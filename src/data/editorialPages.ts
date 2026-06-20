@@ -659,6 +659,132 @@ export const editorialGuides: EditorialGuide[] = [
     ],
   },
   {
+    slug: 'sortie-trottinette-aix-soir',
+    title: 'Sortie trottinette Aix le soir : idees simples apres le travail',
+    shortTitle: 'Sortie trottinette Aix le soir',
+    description:
+      "Trouvez une sortie trottinette du soir autour d'Aix-en-Provence avec des idees proches, une marge batterie simple et peu de logistique.",
+    intro:
+      "Le besoin le plus frequent autour d Aix reste souvent le meme : rouler un peu en fin de journee sans transformer la sortie en expedition. Cette page sert a isoler les formats les plus simples a lancer.",
+    sections: [
+      {
+        title: 'Ce qui marche bien le soir autour d Aix',
+        paragraphs: [
+          "Les meilleurs formats du soir sont presque toujours proches, lisibles et sans pari excessif sur la recharge. L objectif est de rouler, souffler, puis rentrer sans pression inutile.",
+          "Aix centre, les parcs, la Torse, la Duranne ou certaines communes proches sont plus pertinentes que les grandes destinations mer ou relief.",
+        ],
+      },
+      {
+        title: 'Comment choisir vite sans trop relire',
+        paragraphs: [
+          "Commence par le catalogue avec les sorties 0 a 7 km, puis garde la carte seulement si tu hesites entre deux ambiances.",
+          "Le planner reste utile si ta batterie est deja entamee ou si tu pars d un autre point qu Aix centre.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Quelle distance viser pour une sortie du soir ?',
+        answer: 'Le plus simple reste souvent 0 a 7 km, avec une vraie marge pour le retour.',
+      },
+      {
+        question: 'Faut-il compter sur une recharge le soir ?',
+        answer: 'Non. Mieux vaut partir batterie pleine et garder la recharge comme solution secondaire.',
+      },
+    ],
+    relatedSpotIds: ['promenade-de-la-torse', 'parc-jourdan', 'parc-de-la-duranne', 'venelles'],
+    relatedGuideSlugs: ['sortie-trottinette-aix-centre', 'sortie-trottinette-venelles-eguilles'],
+    ctas: [
+      { label: 'Voir les sorties proches', to: '/sorties?distance=0%E2%80%933%20km', description: 'Comparer les formats les plus courts pour ce soir.' },
+      { label: 'Voir la carte', to: '/carte', description: 'Visualiser les points faciles a lancer autour d Aix.' },
+      { label: 'Ouvrir le planner', to: '/planner', description: 'Verifier la marge si la batterie est deja entamee.' },
+    ],
+  },
+  {
+    slug: 'sortie-trottinette-aix-weekend',
+    title: 'Sortie trottinette Aix week-end : idees locales sans logistique lourde',
+    shortTitle: 'Sortie trottinette Aix week-end',
+    description:
+      "Choisissez une sortie trottinette week-end autour d'Aix-en-Provence entre nature, village et bord de lac, avec une lecture simple de la distance.",
+    intro:
+      "Le week-end ouvre plus de temps, mais ce n est pas une raison pour basculer trop vite vers des sorties trop longues. Les meilleurs formats restent ceux qui gardent une marge utile et une destination claire.",
+    sections: [
+      {
+        title: 'Les bons formats week-end autour d Aix',
+        paragraphs: [
+          "Sainte-Victoire en version courte, Peyrolles, Venelles, Ventabren ou le Tholonet offrent souvent un meilleur rendement qu une destination tres lointaine.",
+          "Tu gagnes plus avec une sortie bien construite de demi-journee qu avec un aller-retour trop ambitieux vers la mer.",
+        ],
+      },
+      {
+        title: 'Quand passer sur une sortie preparee',
+        paragraphs: [
+          "Si tu veux Marseille, Cassis, la Cote Bleue ou le Luberon, traite le projet comme une vraie sortie longue avec retour anticipe.",
+          "Le planner sert ici de filtre rapide entre week-end simple et week-end prepare.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Quel est le bon niveau de distance pour un week-end simple ?',
+        answer: 'Souvent 7 a 30 km selon ton point de depart reel et ta marge batterie.',
+      },
+      {
+        question: 'Quelle erreur faut-il eviter le week-end ?',
+        answer: 'Confondre temps disponible et autonomie suffisante.',
+      },
+    ],
+    relatedSpotIds: ['barrage-de-bimont', 'lac-de-peyrolles', 'ventabren', 'le-tholonet-lac-zola'],
+    relatedGuideSlugs: ['balade-trottinette-sainte-victoire', 'balade-trottinette-peyrolles'],
+    ctas: [
+      { label: 'Voir les sorties week-end', to: '/sorties?moment=weekend', description: 'Comparer les idees locales pour une demi-journee ou plus.' },
+      { label: 'Voir la carte', to: '/carte', description: 'Contraster les zones nature et village autour d Aix.' },
+      { label: 'Ouvrir le planner', to: '/planner', description: 'Verifier si la sortie reste simple avec ta batterie.' },
+    ],
+  },
+  {
+    slug: 'balade-trottinette-etang-de-berre',
+    title: 'Balade trottinette etang de Berre : quand viser Saint-Chamas ou Martigues',
+    shortTitle: 'Balade trottinette etang de Berre',
+    description:
+      "Preparez une balade trottinette vers l'etang de Berre avec une lecture claire entre sortie locale preparee, vent, marge batterie et retour.",
+    intro:
+      "L etang de Berre attire pour l eau, l espace et les villages, mais la zone change vite de categorie depuis Aix. Cette page sert a distinguer ce qui reste raisonnable de ce qui demande une vraie logistique.",
+    sections: [
+      {
+        title: 'Quelle zone regarder en premier',
+        paragraphs: [
+          "Saint-Chamas peut servir de point d entree plus lisible, tandis que Martigues bascule souvent dans un format plus engage. Le vent reste un facteur cle sur toute la zone.",
+          "Il faut raisonner en destination retenue et non en grande idee d etang a parcourir largement.",
+        ],
+      },
+      {
+        title: 'Comment arbitrer le projet',
+        paragraphs: [
+          "Le planner donne vite le niveau de contrainte, puis la carte aide a comparer l ouest d Aix avec la Cote Bleue voisine.",
+          "Si tu veux surtout profiter de la balade sur place, rapproche le depart ou prevois un retour autrement.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'L etang de Berre est-il une sortie simple depuis Aix ?',
+        answer: 'Pas en general. Il faut la preparer selon la destination exacte et le vent du jour.',
+      },
+      {
+        question: 'Quel point verifier en premier ?',
+        answer: 'Le retour, avant meme la recharge.',
+      },
+    ],
+    relatedSpotIds: ['saint-chamas-etang-de-berre', 'martigues', 'la-fare-les-oliviers', 'carry-le-rouet'],
+    relatedGuideSlugs: ['sortie-trottinette-martigues', 'sortie-trottinette-salon-provence'],
+    ctas: [
+      { label: 'Voir la fiche Saint-Chamas', to: '/sorties/saint-chamas-etang-de-berre', description: 'Relire le point d entree le plus lisible sur la zone.' },
+      { label: 'Voir la carte', to: '/carte', description: 'Comparer l etang de Berre avec la Cote Bleue et l ouest d Aix.' },
+      { label: 'Ouvrir le planner', to: '/planner', description: 'Mesurer la marge avant de viser une sortie au bord de l eau.' },
+    ],
+  },
+  {
     slug: 'sortie-trottinette-avignon',
     title: 'Sortie trottinette Avignon : idee longue distance a organiser autrement',
     shortTitle: 'Sortie trottinette Avignon',
@@ -698,6 +824,48 @@ export const editorialGuides: EditorialGuide[] = [
       { label: 'Voir la fiche Avignon', to: '/sorties/avignon-ile-de-la-barthelasse', description: 'Relire la destination longue distance.' },
       { label: 'Ouvrir le planner', to: '/planner', description: 'Mesurer l ecart avec ton autonomie disponible.' },
       { label: 'Voir les conseils', to: '/conseils', description: 'Relire les erreurs a eviter sur les sorties longues.' },
+    ],
+  },
+  {
+    slug: 'recharge-trottinette-cassis-marseille',
+    title: 'Recharge trottinette Cassis Marseille : verifier avant de compter dessus',
+    shortTitle: 'Recharge trottinette Cassis Marseille',
+    description:
+      "Reperez des pistes de recharge trottinette vers Cassis ou Marseille sans confondre borne voiture, prise 220V et solution vraiment exploitable.",
+    intro:
+      "Sur Cassis ou Marseille, la recharge devient souvent un faux raccourci mental. Le vrai sujet n est pas d avoir une borne sur la carte, mais de confirmer une solution compatible avec le chargeur de la trottinette.",
+    sections: [
+      {
+        title: 'Ce qu il faut verifier en priorite',
+        paragraphs: [
+          "Une borne voiture ne suffit pas. Il faut une prise 220V ou Schuko explicitement accessible, avec des conditions d acces claires.",
+          "Sur les destinations mer, une recharge a verifier ne doit jamais porter tout le plan de retour a elle seule.",
+        ],
+      },
+      {
+        title: 'Comment utiliser le site sur ce sujet',
+        paragraphs: [
+          "Ouvre d abord la page recharge pour la logique de compatibilite, puis la fiche de sortie retenue pour voir si la recharge change vraiment la faisabilite.",
+          "Si tu restes en zone limite meme avec recharge, pense train, voiture ou retour partiel.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Une borne reperee sur une appli suffit-elle ?',
+        answer: 'Non. Elle indique un lieu, pas une compatibilite trottinette garantie.',
+      },
+      {
+        question: 'Quand la recharge devient-elle utile ?',
+        answer: 'Quand elle est confirmee et integree dans un plan avec marge, pas comme seul filet de securite.',
+      },
+    ],
+    relatedSpotIds: ['cassis', 'marseille-vieux-port-littoral', 'la-ciotat', 'carry-le-rouet'],
+    relatedGuideSlugs: ['recharge-trottinette-aix', 'sortie-trottinette-cassis'],
+    ctas: [
+      { label: 'Voir la recharge', to: '/recharge', description: 'Revenir aux statuts 220V, voiture, prive et a verifier.' },
+      { label: 'Voir la fiche Cassis', to: '/sorties/cassis', description: 'Croiser recharge et longue distance sur un cas concret.' },
+      { label: 'Voir la fiche Marseille', to: '/sorties/marseille-vieux-port-littoral', description: 'Comparer une autre destination mer avec les memes limites.' },
     ],
   },
 ];

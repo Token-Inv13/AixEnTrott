@@ -223,7 +223,7 @@ function buildSpotSeoGraph(spot) {
         addressCountry: 'FR',
       },
       touristType: spot.routeType,
-      isAccessibleForFree: spot.budget === '0€',
+      isAccessibleForFree: /^0/.test(spot.budget),
     },
   ]);
 }
@@ -367,16 +367,16 @@ function buildRouteConfigs() {
     {
       path: '/',
       seo: buildPageSeo({
-        title: "Sorties en trottinette autour d'Aix-en-Provence",
+        title: "Aix en trott : sorties en trottinette autour d'Aix-en-Provence",
         description:
-          "Preparez vos sorties en trottinette autour d'Aix-en-Provence : carte, idees de balades, recharge, autonomie et conseils utiles.",
+          "Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence avec un catalogue local, une carte, la recharge et des conseils pratiques.",
         jsonLd: buildSeoGraph([
           ...buildWebsiteNodes(),
           buildWebPageNode({
             path: '/',
-            title: "Sorties en trottinette autour d'Aix-en-Provence",
+            title: "Aix en trott : sorties en trottinette autour d'Aix-en-Provence",
             description:
-              "Preparez vos sorties en trottinette autour d'Aix-en-Provence : carte, idees de balades, recharge, autonomie et conseils utiles.",
+              "Preparez vos sorties en trottinette electrique autour d'Aix-en-Provence avec un catalogue local, une carte, la recharge et des conseils pratiques.",
           }),
           buildHowToNode('/', 'Comment preparer une sortie en trottinette autour d Aix-en-Provence', [
             { name: 'Choisir ton temps disponible', text: 'Repere si tu veux une sortie rapide, du soir, week-end ou une journee.', path: '/sorties' },

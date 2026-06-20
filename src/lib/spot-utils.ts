@@ -18,11 +18,11 @@ export function formatBudget(budget: Spot['budget']) {
 export function formatRechargeStatus(status: Spot['rechargeStatus']) {
   switch (status) {
     case 'confirmed':
-      return 'Recharge confirmée';
+      return 'Recharge confirmee';
     case 'nearby':
       return 'Recharge possible';
     case 'verify':
-      return 'Recharge à vérifier';
+      return 'Recharge a verifier';
     case 'none':
       return 'Aucune connue';
   }
@@ -31,15 +31,15 @@ export function formatRechargeStatus(status: Spot['rechargeStatus']) {
 export function formatCompatibility(point: ChargingPoint['compatibility']) {
   switch (point) {
     case 'confirmed-220v':
-      return 'Compatible 220V confirmée';
+      return 'Compatible 220V confirmee';
     case 'possible-220v':
-      return 'Prise 220V possible, à vérifier';
+      return 'Prise 220V possible, a verifier';
     case 'car-only':
       return 'Borne voiture uniquement';
     case 'private':
-      return 'Accès privé / abonnement';
+      return 'Acces prive / abonnement';
     case 'verify':
-      return 'À vérifier avant départ';
+      return 'A verifier avant depart';
   }
 }
 
@@ -50,9 +50,9 @@ export function formatCyclingInfrastructureStatus(status: Spot['cyclingInfrastru
     case 'partial':
       return 'Partiel';
     case 'limited':
-      return 'Limité';
+      return 'Limite';
     case 'unknown':
-      return 'À vérifier';
+      return 'A verifier';
   }
 }
 
@@ -61,11 +61,11 @@ export function formatRoadSafetyLevel(level: Spot['roadSafety']['level']) {
     case 'easy':
       return 'Facile';
     case 'moderate':
-      return 'Modéré';
+      return 'Modere';
     case 'caution':
       return 'Prudence';
     case 'unknown':
-      return 'À vérifier';
+      return 'A verifier';
   }
 }
 
@@ -74,9 +74,9 @@ export function formatDifficulty(difficulty: Spot['difficulty']) {
     case 'facile':
       return 'Facile';
     case 'intermédiaire':
-      return 'Intermédiaire';
+      return 'Intermediaire';
     case 'préparée':
-      return 'Préparée';
+      return 'Preparee';
   }
 }
 
@@ -123,7 +123,7 @@ export function formatAccess(access: ChargingPoint['access']) {
     case 'public':
       return 'Public';
     case 'private':
-      return 'Privé';
+      return 'Prive';
     case 'subscription':
       return 'Abonnement';
     case 'unknown':
@@ -132,11 +132,11 @@ export function formatAccess(access: ChargingPoint['access']) {
 }
 
 export function autonomyRecommendation(distanceKm: number) {
-  if (distanceKm <= 3) return '30 km d’autonomie suffisent dans la plupart des cas';
-  if (distanceKm <= 7) return '35 à 40 km d’autonomie recommandés';
-  if (distanceKm <= 15) return '45 à 55 km d’autonomie conseillés';
-  if (distanceKm <= 30) return '60 km ou plus avec marge de sécurité';
-  return 'Sortie à traiter comme une journée longue avec retour planifié';
+  if (distanceKm <= 3) return "30 km d'autonomie suffisent dans la plupart des cas";
+  if (distanceKm <= 7) return "35 a 40 km d'autonomie recommandes";
+  if (distanceKm <= 15) return "45 a 55 km d'autonomie conseilles";
+  if (distanceKm <= 30) return '60 km ou plus avec marge de securite';
+  return 'Sortie a traiter comme une journee longue avec retour planifie';
 }
 
 export function getDistanceBand(distanceKm: number) {
@@ -152,7 +152,7 @@ export function areaLabel(area: Spot['area']) {
     case 'aix':
       return 'Aix';
     case 'pays-aix':
-      return 'Pays d’Aix';
+      return "Pays d'Aix";
     case 'provence':
       return 'Provence';
     case 'marseille':
@@ -160,7 +160,7 @@ export function areaLabel(area: Spot['area']) {
     case 'luberon':
       return 'Luberon';
     case 'cote-bleue':
-      return 'Côte Bleue';
+      return 'Cote Bleue';
   }
 }
 
@@ -171,6 +171,6 @@ export function categoryLabel(category: Spot['category']) {
     case 'weekend':
       return 'Week-end';
     case 'journee':
-      return 'Journée';
+      return 'Journee';
   }
 }

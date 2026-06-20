@@ -41,11 +41,11 @@ export function SpotCard({
         <div>
           <h3 className="text-lg font-semibold text-slate-950">{spot.name}</h3>
           <p className="mt-1 text-sm text-slate-500">
-            {distanceLabel} {distanceValue.toFixed(1)} km · {spot.duration} · {areaLabel(spot.area)}
+            {distanceLabel} {distanceValue.toFixed(1)} km - {spot.duration} - {areaLabel(spot.area)}
           </p>
           {durationLabel ? <p className="mt-1 text-xs font-medium text-sky">Duree velo estimee : {durationLabel}</p> : null}
           <p className="mt-1 text-xs text-slate-500">
-            {formatDifficulty(spot.difficulty)} · {formatRouteType(spot.routeType).toLowerCase()} · {spot.cyclingInfrastructure.label.toLowerCase()} ·{' '}
+            {formatDifficulty(spot.difficulty)} - {formatRouteType(spot.routeType).toLowerCase()} - {spot.cyclingInfrastructure.label.toLowerCase()} -{' '}
             {destinationShortLabel(spot.address)}
           </p>
         </div>
