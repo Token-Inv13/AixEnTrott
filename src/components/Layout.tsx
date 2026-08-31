@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { openPrivacySettings } from '../lib/analytics';
+import { AnalyticsConsent } from './AnalyticsConsent';
 import { PwaStatusBanner } from './PwaStatusBanner';
 
 const navItems = [
@@ -70,10 +72,18 @@ export function Layout({ children }: { children: ReactNode }) {
                   {item.label}
                 </Link>
               ))}
+              <button
+                type="button"
+                onClick={openPrivacySettings}
+                className="font-medium text-slate-600 transition hover:text-slate-950"
+              >
+                Parametres de confidentialite
+              </button>
             </nav>
           </div>
         </div>
       </footer>
+      <AnalyticsConsent />
     </div>
   );
 }
