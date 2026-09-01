@@ -30,6 +30,37 @@
   isSimpleRide: boolean;
   difficulty: 'facile' | 'intermédiaire' | 'préparée';
   routeType: 'urbain' | 'nature' | 'village' | 'littoral' | 'mixte';
+  editorial?: SpotEditorial;
+};
+
+export type SpotEditorialSource = {
+  label: string;
+  url: string;
+};
+
+export type SpotEditorial = {
+  introduction: string[];
+  profile: {
+    environment: string;
+    terrain: string;
+    travelStyle: string;
+    bestFor: string;
+  };
+  routeSections: Array<{
+    title: string;
+    text: string;
+  }>;
+  access: string[];
+  watchOutFor: string[];
+  verificationNote: string;
+  sources: SpotEditorialSource[];
+  detailOverrides: {
+    routeNotes: string;
+    cyclingInfrastructure: Spot['cyclingInfrastructure'];
+    roadSafety: Spot['roadSafety'];
+    parkingAdvice: string;
+    bestTime: string;
+  };
 };
 
 type SpotInput = Omit<
@@ -59,11 +90,77 @@ const rawSpots: SpotInput[] = [
     duration: '45 min à 1 h 30',
     moods: ['calme', 'nature'],
     description:
-      'Une sortie très simple pour rouler jusqu’au parc puis marcher au bord de l’eau, entre passerelles, végétation fraîche et ambiance posée.',
-    tips: ['Parfait en fin de journée chaude.', 'Prends un petit cadenas si tu t’arrêtes longtemps.'],
+      'Une courte approche depuis Aix vers une promenade piétonne de huit hectares, à parcourir calmement au bord de la Torse entre la route Cézanne et la route de Nice.',
+    tips: [
+      'Utilise la trottinette pour l’approche urbaine, puis prévois de marcher dans la promenade.',
+      'Consulte les horaires saisonniers du parc avant une sortie en fin de journée.',
+      'Garde la trottinette avec toi pendant la pause plutôt que de la laisser sans surveillance.',
+    ],
     latitude: 43.5348,
     longitude: 5.4532,
     rechargeStatus: 'nearby',
+    editorial: {
+      introduction: [
+        'La Torse répond à un besoin simple : quitter le centre d’Aix pour une pause verte sans transformer la sortie en demi-journée. La distance d’approche reste courte et permet de conserver une marge batterie confortable.',
+        'La Ville décrit le site comme une liaison piétonne entre les quartiers sud-est et est. Le cheminement suit le ruisseau, franchit plusieurs passerelles et traverse un parc fréquenté par les joggeurs et les familles : l’usage le plus prudent consiste donc à rejoindre une entrée en trottinette, puis à continuer à pied.',
+        'Cette fiche ne cherche pas à gonfler artificiellement la sortie. Son intérêt tient à sa proximité, à ses horaires clairement publiés et à la possibilité de faire demi-tour facilement si le parc est fréquenté ou si la météo se dégrade.',
+      ],
+      profile: {
+        environment: 'Parc urbain champêtre le long du ruisseau de la Torse, avec passerelles, grands platanes et plan d’eau.',
+        terrain: 'Approche urbaine courte, puis cheminement piéton à parcourir à pied et à vérifier aux entrées.',
+        travelStyle: 'Sortie de proximité : quelques kilomètres d’approche, une marche dans le parc, puis retour direct.',
+        bestFor: 'Une pause de 45 à 90 minutes, une fin de journée calme ou une sortie avec très peu de logistique.',
+      },
+      routeSections: [
+        {
+          title: 'Approche depuis Aix',
+          text: 'Choisis une arrivée par la route Cézanne ou la route de Nice selon ton point de départ. Les derniers carrefours restent urbains et demandent davantage d’attention que le parc lui-même.',
+        },
+        {
+          title: 'Dans la promenade',
+          text: 'Le parcours municipal relie la route Cézanne à la route de Nice en suivant le cours d’eau. Comme il s’agit d’une liaison piétonne fréquentée, marche avec la trottinette et laisse la priorité complète aux promeneurs.',
+        },
+      ],
+      access: [
+        'Vérifie l’entrée la plus logique sur la carte avant de partir afin d’éviter un détour autour du parc.',
+        'Les horaires varient selon les mois, avec une fermeture plus précoce en hiver : ne pars pas sur l’hypothèse d’un accès permanent.',
+      ],
+      watchOutFor: [
+        'Présence régulière de joggeurs, familles et enfants sur un cheminement avant tout piéton.',
+        'Passerelles et abords du ruisseau à aborder à pied, particulièrement si le sol est humide.',
+        'Sortie courte mais parc fermé en dehors des horaires municipaux publiés.',
+      ],
+      verificationNote:
+        'Informations vérifiées à distance à partir des pages de la Ville d’Aix-en-Provence. Les horaires, accès et règles affichées aux entrées restent à vérifier sur place.',
+      sources: [
+        {
+          label: 'Ville d’Aix-en-Provence — Promenade de la Torse',
+          url: 'https://www.aixenprovence.fr/Promenade-de-la-Torse',
+        },
+        {
+          label: 'Ville d’Aix-en-Provence — Dépliant des espaces verts',
+          url: 'https://www.aixenprovence.fr/IMG/pdf/espacesverts_depliant2.pdf',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Approche urbaine vers une entrée du parc, puis cheminement piéton entre la route Cézanne et la route de Nice. Prévoir de marcher avec la trottinette dans la promenade.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Approche urbaine, promenade piétonne',
+          notes:
+            'La source municipale qualifie le site de liaison piétonne ; aucune continuité cyclable interne ne doit être supposée.',
+        },
+        roadSafety: {
+          level: 'easy',
+          notes:
+            'La distance est courte, mais les carrefours d’approche et la cohabitation avec les piétons imposent une allure lente et un passage à pied dans le parc.',
+        },
+        parkingAdvice:
+          'Évite de laisser la trottinette seule : garde-la avec toi pendant la marche ou utilise uniquement un point d’attache autorisé et visible.',
+        bestTime: 'Pendant les horaires d’ouverture, plutôt hors des périodes les plus fréquentées',
+      },
+    },
   },
   {
     id: 'jardin-des-peintres',
@@ -178,11 +275,87 @@ const rawSpots: SpotInput[] = [
     duration: '2 h à 4 h',
     moods: ['nature', 'calme'],
     description:
-      'La sortie nature de référence: route plus longue, vue sur Sainte-Victoire et vraie sensation de respiration loin de la ville.',
-    tips: ['Prends de l’eau, une casquette et de la marge batterie.', 'Le retour doit être anticipé.'],
+      'Une approche préparée vers le parking et le barrage de Bimont, avec panorama sur Sainte-Victoire et prolongements pédestres soumis aux règles du massif.',
+    tips: [
+      'Sépare clairement l’approche en trottinette de la visite pédestre du barrage et des sentiers.',
+      'Emporte de l’eau : aucune recharge ni ressource sur place ne doit être considérée comme acquise.',
+      'Entre juin et septembre, consulte la carte préfectorale d’accès aux massifs la veille au soir.',
+      'Ne descends pas sur les rives et ne prévois ni baignade ni canotage dans la retenue.',
+    ],
     latitude: 43.5317,
     longitude: 5.5714,
     rechargeStatus: 'none',
+    editorial: {
+      introduction: [
+        'Bimont est une destination nature forte à moins de quinze kilomètres indicatifs d’Aix, mais ce n’est pas une simple promenade urbaine. L’aller-retour théorique dépasse déjà vingt kilomètres avant toute variation de départ, de relief ou de détour.',
+        'Le point utile pour préparer la sortie est le parking visiteurs situé à proximité du barrage. Une fois sur place, la traversée de l’ouvrage ouvre sur des sentiers balisés vers Sainte-Victoire ou Zola ; ces prolongements relèvent d’une logique pédestre et ne doivent pas être présentés comme un itinéraire trottinette autorisé.',
+        'Le secteur est exposé aux règles d’accès des massifs forestiers en été. Le bon plan consiste à vérifier l’ouverture, la météo et la marge batterie avant le départ, puis à accepter de raccourcir la visite si les conditions changent.',
+      ],
+      profile: {
+        environment: 'Retenue artificielle, barrage et entrée du massif de Sainte-Victoire, avec vues ouvertes et sentiers très fréquentés.',
+        terrain: 'Approche routière vallonnée, puis ouvrage et chemins de massif à traiter comme des secteurs pédestres.',
+        travelStyle: 'Demi-journée préparée : rejoindre le parking, visiter le barrage à pied, puis revenir sans compter sur une recharge.',
+        bestFor: 'Un panorama marqué et une courte découverte pédestre, avec batterie suffisante et plan de retour déjà établi.',
+      },
+      routeSections: [
+        {
+          title: 'Approche par Saint-Marc-Jaumegarde',
+          text: 'Le trajet depuis Aix rejoint un secteur plus routier avant le parking du barrage. La distance calculée ne suffit pas à juger l’effort : compare aussi le profil batterie et les alternatives proposées par la carte.',
+        },
+        {
+          title: 'Parking et couronnement du barrage',
+          text: 'Le parking visiteurs sert de point de bascule. À partir de là, privilégie une visite à pied du barrage et respecte les portails, panneaux et éventuelles limitations temporaires.',
+        },
+        {
+          title: 'Sentiers vers Sainte-Victoire ou Zola',
+          text: 'Ces itinéraires sont balisés pour la randonnée et peuvent devenir techniques ou pentus. Ne les ajoute pas automatiquement à la sortie en trottinette et ne quitte pas les sentiers autorisés.',
+        },
+      ],
+      access: [
+        'Vise le parking visiteurs du barrage comme destination pratique, sans supposer qu’un autre accès au massif est ouvert.',
+        'Du 1er juin au 30 septembre, l’accès est déterminé quotidiennement selon le risque incendie ; consulte la carte officielle pour le lendemain.',
+      ],
+      watchOutFor: [
+        'Aucune recharge connue sur place et couverture réseau potentiellement irrégulière dans le massif.',
+        'Baignade, canotage et accès aux rives de la retenue interdits pour des raisons de sécurité et d’environnement.',
+        'Fréquentation importante autour du parking et du barrage, notamment les week-ends.',
+        'Accès ou portails susceptibles d’être limités temporairement pour travaux, sécurité ou risque incendie.',
+      ],
+      verificationNote:
+        'Informations vérifiées à distance auprès de Provence Tourisme, du Grand Site Concors Sainte-Victoire et de la Préfecture. L’ouverture du massif et les règles sur place peuvent évoluer.',
+      sources: [
+        {
+          label: 'Provence Tourisme — Lac de Bimont',
+          url: 'https://www.myprovence.fr/les-guides/loisirs/paysages-de-provence/saint-marc-jaumegarde/lac-de-bimont',
+        },
+        {
+          label: 'Grand Site Concors Sainte-Victoire — Barrages Zola et Bimont',
+          url: 'https://www.grandsitesaintevictoire.com/le-tholonet-barrages-zola-et-bimont/',
+        },
+        {
+          label: 'Préfecture des Bouches-du-Rhône — Accès aux massifs',
+          url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Approche routière jusqu’au parking visiteurs de Bimont. Au-delà, les sentiers et le couronnement du barrage sont à découvrir à pied, selon la signalisation et l’ouverture du massif.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Accès routier, puis domaine naturel',
+          notes:
+            'Aucune source officielle consultée ne confirme une voie cyclable continue depuis Aix ni l’autorisation de rouler sur les sentiers du barrage.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Relief, circulation d’approche, fréquentation du parking et règles du massif imposent une sortie préparée et une visite à pied sur place.',
+        },
+        parkingAdvice:
+          'Utilise le parking visiteurs comme repère, vérifie les panneaux à l’arrivée et ne laisse pas la trottinette sans surveillance pendant une randonnée.',
+        bestTime: 'Matin, après vérification de la météo et de l’accès officiel au massif',
+      },
+    },
   },
   {
     id: 'roques-hautes',
@@ -365,11 +538,92 @@ const rawSpots: SpotInput[] = [
     duration: '4 h à 7 h',
     moods: ['mer', 'village'],
     description:
-      'Sortie littorale simple à lire, utile si tu veux mêler mer, petites rues et marche sans entrer dans une grosse logistique.',
-    tips: ['Très bien avec un départ tôt.', 'Prends en compte le vent côtier.'],
+      'Une destination Côte Bleue à préparer avec un départ rapproché ou le train, puis une boucle locale entre gare, port, centre et corniche.',
+    tips: [
+      'Depuis Aix, prépare d’abord l’accès et le retour : la distance exclut une sortie simple avec une batterie de 30 km.',
+      'La gare se trouve en centre-ville ; vérifie les horaires TER et les conditions de transport de ta trottinette avant de partir.',
+      'Utilise le port ou la gare comme point de départ local, puis adapte la boucle au vent et à la fréquentation.',
+      'Dans les escaliers, passages étroits et secteurs piétons, descends et continue à pied.',
+    ],
     latitude: 43.3315,
     longitude: 5.1046,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Sausset-les-Pins est la plus lointaine des six fiches pilotes depuis Aix. À près de soixante-dix kilomètres indicatifs à l’aller, elle doit être pensée comme une destination à rejoindre autrement, puis à explorer localement.',
+        'La gare est située en centre-ville sur la ligne Marseille–Miramas. Elle permet d’organiser un départ rapproché autour du port sans consommer toute la batterie sur l’approche ; les horaires et l’acceptation de la trottinette doivent toutefois être vérifiés auprès du transporteur.',
+        'Sur place, la commune documente une balade de quatre kilomètres entre centre, port, anse du Petit Nid et corniche. Cette référence aide à lire les secteurs, mais elle comprend escaliers et chemins de terre : ce n’est pas une promesse d’itinéraire roulant continu.',
+      ],
+      profile: {
+        environment: 'Bourg littoral entre port de plaisance, centre ancien, criques, corniche et petites plages de la Côte Bleue.',
+        terrain: 'Voirie locale, portions de front de mer, escaliers et courts passages non revêtus selon la boucle choisie.',
+        travelStyle: 'Journée avec train, voiture ou autre retour alternatif, suivie d’une boucle locale courte.',
+        bestFor: 'Profiter du littoral sans tenter l’aller-retour complet depuis Aix en trottinette.',
+      },
+      routeSections: [
+        {
+          title: 'Gare et centre-ville',
+          text: 'La gare est proche du centre et constitue un point de départ lisible. Le port et l’office de tourisme peuvent ensuite servir de repères pour une boucle locale.',
+        },
+        {
+          title: 'Port et anse du Petit Nid',
+          text: 'Le parcours communal passe par le port, des rues du centre et l’anse du Petit Nid. Plusieurs escaliers et passages courts invitent à marcher avec la trottinette plutôt qu’à chercher une continuité forcée.',
+        },
+        {
+          title: 'Corniche et retour',
+          text: 'Le littoral est exposé au vent et peut être fréquenté. Fixe une heure de retour avant de prolonger la balade et garde la gare ou ton point de stationnement comme ancrage.',
+        },
+      ],
+      access: [
+        'La ligne TER Marseille–Miramas dessert Sausset-les-Pins ; la commune indique une gare en plein centre-ville.',
+        'La commune recense des parkings gratuits, dont plusieurs en centre-ville, ainsi qu’une zone bleue limitée à deux heures.',
+        'Vérifie le dernier retour, les travaux ferroviaires et les règles de transport de la trottinette avant le départ.',
+      ],
+      watchOutFor: [
+        'Vent côtier capable d’augmenter nettement la consommation au retour.',
+        'Port, plages et corniche très fréquentés en saison : priorité aux piétons et passage à pied dans les zones denses.',
+        'Boucle officielle pédestre comportant escaliers et chemin de terre, donc non transposable intégralement en trottinette.',
+        'Recharge indiquée comme à vérifier : ne la remplace pas par un plan de retour confirmé.',
+      ],
+      verificationNote:
+        'Informations vérifiées à distance auprès de la Ville de Sausset-les-Pins et de SNCF TER. Horaires, travaux, vent, circulation et règles de transport peuvent évoluer.',
+      sources: [
+        {
+          label: 'Ville de Sausset-les-Pins — Venir à Sausset',
+          url: 'https://ville-sausset-les-pins.fr/decouvrir-la-ville/se-deplacer/info-transport/',
+        },
+        {
+          label: 'Ville de Sausset-les-Pins — Sausset d’hier et d’aujourd’hui',
+          url: 'https://ville-sausset-les-pins.fr/tourisme/balades/sausset-d-hier-et-d-aujourdhui/',
+        },
+        {
+          label: 'SNCF TER — Gare de Sausset-les-Pins',
+          url: 'https://www.ter.sncf.com/sud-provence-alpes-cote-d-azur/se-deplacer/gares/-87753558',
+        },
+        {
+          label: 'Ville de Sausset-les-Pins — Stationnement',
+          url: 'https://ville-sausset-les-pins.fr/decouvrir-la-ville/se-deplacer/stationner/',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Rejoindre Sausset avec un retour alternatif, puis construire une boucle locale entre gare, port et corniche. Les escaliers et passages piétons de la balade communale se parcourent à pied.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Boucle locale discontinue',
+          notes:
+            'Les sources décrivent une promenade et une balade pédestre ; aucune continuité cyclable complète autour du port et de la corniche n’est garantie.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Distance depuis Aix, vent, circulation locale et forte fréquentation littorale exigent un départ rapproché et un retour confirmé.',
+        },
+        parkingAdvice:
+          'Privilégie la gare ou un parking public annoncé par la commune ; en zone bleue, respecte la limite de deux heures et vérifie la signalisation du jour.',
+        bestTime: 'Matin ou fin d’après-midi, avec horaires de retour et vent vérifiés',
+      },
+    },
   },
   {
     id: 'marseille-vieux-port-littoral',
@@ -382,11 +636,88 @@ const rawSpots: SpotInput[] = [
     duration: '3 h à 6 h',
     moods: ['mer', 'patrimoine', 'marché'],
     description:
-      'Sortie urbaine et marine à la fois, avec beaucoup de possibilités de flânerie. Le retour doit être anticipé, surtout si tu comptes charger.',
-    tips: ['Repère la recharge avant de partir.', 'Bonne sortie si tu aimes l’ambiance de centre-ville.'],
+      'Une sortie urbaine et littorale à construire depuis un départ rapproché, entre Vieux-Port, Catalans et Corniche, sans supposer une piste continue jusqu’au Prado.',
+    tips: [
+      'Rejoins Marseille avec un retour alternatif confirmé, puis utilise le Vieux-Port comme point de départ local.',
+      'Choisis avant de partir entre une boucle courte vers les Catalans ou une extension vers le vallon des Auffes et la Corniche.',
+      'Ralentis fortement autour du Vieux-Port, des plages et des secteurs piétons très fréquentés.',
+      'Vérifie la circulation, les événements et le vent avant d’allonger la sortie vers le Prado.',
+    ],
     latitude: 43.2965,
     longitude: 5.3698,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Le Vieux-Port permet de construire une sortie très différente des parcours autour d’Aix, mais les trente kilomètres indicatifs à l’aller excluent une boucle simple avec une autonomie courante. Le point de départ réaliste se situe à Marseille, après un trajet en train, en voiture ou avec une autre solution de retour déjà confirmée.',
+        'Depuis le port, plusieurs objectifs sont possibles : rejoindre les Catalans pour une boucle courte, poursuivre vers le vallon des Auffes ou prolonger sur la Corniche. Les pages officielles consultées signalent des aménagements cyclables sur ces secteurs, sans pour autant garantir une continuité protégée sur tout le littoral.',
+        'La valeur de cette sortie tient au choix du bon périmètre. Fixe une limite avant de partir, garde une réserve pour le retour au point de départ local et accepte de marcher dans les zones denses plutôt que de chercher à maintenir une allure continue.',
+      ],
+      profile: {
+        environment: 'Centre portuaire dense, front de mer, plages urbaines, anses et points de vue sur la rade de Marseille.',
+        terrain: 'Voirie urbaine, carrefours, portions cyclables localisées et sections partagées avec voitures ou piétons.',
+        travelStyle: 'Journée avec départ rapproché : rejoindre Marseille autrement, puis réaliser une boucle littorale dimensionnée à la batterie.',
+        bestFor: 'Une ambiance urbaine et maritime, avec un itinéraire court choisi à l’avance plutôt qu’une longue traversée improvisée.',
+      },
+      routeSections: [
+        {
+          title: 'Vieux-Port et sortie du centre',
+          text: 'Le Vieux-Port est un repère pratique, mais aussi un espace très fréquenté. Repère le sens de circulation, les zones piétonnes et les événements du jour avant de partir vers le sud.',
+        },
+        {
+          title: 'Catalans et vallon des Auffes',
+          text: 'Cette portion permet une sortie littorale plus compacte. Les abords de plage et les accès au vallon peuvent être denses ou étroits : descends de la trottinette lorsque la cohabitation devient difficile.',
+        },
+        {
+          title: 'Corniche et extension vers le Prado',
+          text: 'Une piste cyclable d’environ deux kilomètres est documentée entre les Catalans et le Prado, mais elle ne transforme pas l’ensemble du trajet en axe protégé. Le vent, les carrefours et la fréquentation doivent guider le point de demi-tour.',
+        },
+      ],
+      access: [
+        'Prévois un départ rapproché et un retour confirmé : la distance depuis Aix ne correspond pas à une sortie simple en trottinette.',
+        'Avant de quitter le Vieux-Port, enregistre ton point d’arrivée et l’horaire limite de retour vers la gare ou le stationnement choisi.',
+        'Consulte les informations de circulation de la Ville et les événements locaux susceptibles de modifier les accès au centre ou à la Corniche.',
+      ],
+      watchOutFor: [
+        'Circulation dense et nombreux carrefours dès que l’aménagement cyclable s’interrompt.',
+        'Forte fréquentation piétonne autour du Vieux-Port, des plages, des terrasses et des accès au vallon des Auffes.',
+        'Vent littoral pouvant augmenter la consommation et rendre le retour plus exigeant.',
+        'Recharge à vérifier : elle ne doit pas remplacer un horaire de retour ou une autonomie suffisante.',
+      ],
+      verificationNote:
+        'Informations vérifiées à distance auprès de l’Office de tourisme et de la Ville de Marseille. Les travaux, événements, aménagements et conditions de circulation peuvent évoluer.',
+      sources: [
+        {
+          label: 'Office de tourisme de Marseille — Pistes cyclables',
+          url: 'https://www.marseille-tourisme.com/organisez-votre-sejour/acces-et-infos-pratiques/se-deplacer/pistes-cyclables-marseille/',
+        },
+        {
+          label: 'Office de tourisme de Marseille — Corniche Kennedy',
+          url: 'https://www.marseille-tourisme.com/decouvrez-marseille/culture-et-patrimoine/sites-et-monuments/la-corniche-kennedy/',
+        },
+        {
+          label: 'Ville de Marseille — Circulation et stationnement',
+          url: 'https://www.marseille.fr/deplacements/circulation-et-stationnement',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Départ local depuis le Vieux-Port, puis boucle à limiter aux Catalans, au vallon des Auffes ou à une portion de la Corniche selon la batterie, le vent et la circulation.',
+        cyclingInfrastructure: {
+          status: 'partial',
+          label: 'Aménagements partiels sur le littoral',
+          notes:
+            'Des pistes existent autour du Vieux-Port et sur une partie de la Corniche, mais les sources ne permettent pas de garantir une continuité protégée sur toute la sortie.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Circulation, carrefours, piétons et ruptures d’aménagement imposent une allure basse, un itinéraire court et des passages à pied dans les zones denses.',
+        },
+        parkingAdvice:
+          'Choisis à l’avance une gare ou un stationnement autorisé comme point d’ancrage et ne laisse pas la trottinette sans surveillance sur le Vieux-Port ou les plages.',
+        bestTime: 'Matin ou période creuse, après vérification du vent, de la circulation et des événements',
+      },
+    },
   },
   {
     id: 'sources-de-l-infernet',
@@ -535,11 +866,88 @@ const rawSpots: SpotInput[] = [
     duration: '1 h 30 à 3 h',
     moods: ['village', 'nature', 'patrimoine'],
     description:
-      'Sortie de colline pratique pour changer d’ambiance, avec un village lisible et un trajet à garder indicatif.',
-    tips: ['Prévois une marge batterie.', 'L’arrivée au village se fait mieux tôt.'],
+      'Une destination de colline à préparer pour son vieux village perché, ses calades et son panorama, avec une arrivée qui se termine plus naturellement à pied.',
+    tips: [
+      'Garde une marge pour la montée finale et le retour vers Aix, surtout avec du vent.',
+      'Repère une arrivée en périphérie du vieux village plutôt que de chercher à rouler dans les calades.',
+      'Visite les ruelles et les abords du château à pied : plusieurs passages sont pavés, étroits ou en escalier.',
+      'Ne combine pas automatiquement le village et l’aqueduc de Roquefavour, qui demandent deux approches distinctes.',
+    ],
     latitude: 43.5527,
     longitude: 5.2938,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Ventabren offre un vrai changement d’échelle à l’ouest d’Aix : on quitte l’environnement urbain pour une commune étendue, puis un village ancien regroupé sur une colline. La distance indicative place déjà la sortie dans une logique de demi-journée avec marge.',
+        'La visite se concentre autour de la Grand’Rue, des calades, de la place de l’église et des ruines du château de la Reine Jeanne. Ces rues pavées et souvent en escalier font du vieux centre une destination à parcourir à pied, pas un circuit roulant à tout prix.',
+        'L’aqueduc de Roquefavour appartient bien au territoire de Ventabren, mais il se situe à l’écart du village. L’ajouter le même jour change le trajet, le temps et la batterie : mieux vaut le traiter comme une extension séparée à recalculer.',
+      ],
+      profile: {
+        environment: 'Plaine résidentielle et agricole à l’approche, puis vieux village perché, calades, fontaines et panorama vers l’étang de Berre.',
+        terrain: 'Approche routière suivie d’une montée vers le village ; rues pavées, étroites et parfois en escalier dans le centre ancien.',
+        travelStyle: 'Demi-journée village : rejoindre une entrée lisible, poursuivre à pied dans le centre et garder de l’énergie pour le retour.',
+        bestFor: 'Patrimoine, panorama et ambiance provençale sans viser une destination littorale très éloignée.',
+      },
+      routeSections: [
+        {
+          title: 'Approche depuis Aix',
+          text: 'Le choix de route compte davantage que la ligne droite affichée sur la carte. Compare l’itinéraire vélo proposé, évite les grands axes lorsque l’alternative est plus lisible et conserve une réserve pour la montée finale.',
+        },
+        {
+          title: 'Entrée du vieux village',
+          text: 'Cherche un point d’arrêt autorisé avant les ruelles les plus étroites. La Grand’Rue monte en calade vers la place de l’église et se visite plus sereinement à pied avec la trottinette tenue à la main.',
+        },
+        {
+          title: 'Moulin, château et panorama',
+          text: 'Les abords du moulin et des ruines prolongent la visite en hauteur. Vérifie la signalisation locale et n’engage pas une descente tardive sans éclairage ni batterie suffisante.',
+        },
+      ],
+      access: [
+        'Ventabren est une commune étendue : vérifie que la destination cartographique vise bien le vieux village et non un quartier bas.',
+        'Choisis un arrêt périphérique légal et visible, puis termine la visite à pied dans les calades.',
+        'Si tu prolonges vers un espace naturel ou l’Arbois entre juin et septembre, consulte les conditions quotidiennes d’accès aux massifs.',
+      ],
+      watchOutFor: [
+        'Montée finale et retour plus énergivore que ne le suggère la seule distance.',
+        'Rues pavées, escaliers et espaces étroits du centre ancien, peu adaptés à une circulation continue.',
+        'Vent possible sur les secteurs ouverts et exposition au soleil sur l’approche.',
+        'Recharge à vérifier : ne compte pas sur une prise au village pour sécuriser le retour.',
+      ],
+      verificationNote:
+        'Informations vérifiées à distance à partir des pages de la Commune de Ventabren et de la réglementation préfectorale des massifs. Le trajet routier et le stationnement restent à confirmer le jour du départ.',
+      sources: [
+        {
+          label: 'Commune de Ventabren — Tourisme et vieux village',
+          url: 'https://www.ventabren.fr/vivre-decouvrir/tourisme/',
+        },
+        {
+          label: 'Commune de Ventabren — Patrimoine',
+          url: 'https://www.ventabren.fr/vivre-decouvrir/patrimoine/',
+        },
+        {
+          label: 'Préfecture des Bouches-du-Rhône — Accès aux massifs',
+          url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Approche routière vers le vieux village, arrêt en périphérie puis visite à pied des calades, de la place de l’église et des abords du château. Roquefavour constitue une extension séparée.',
+        cyclingInfrastructure: {
+          status: 'unknown',
+          label: 'Continuité à confirmer',
+          notes:
+            'Aucune source officielle consultée ne confirme une voie cyclable continue entre Aix et le vieux village de Ventabren.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'L’approche routière, la montée finale et les calades imposent un itinéraire vérifié, une allure modérée et une fin de visite à pied.',
+        },
+        parkingAdvice:
+          'Arrête-toi sur un emplacement autorisé en périphérie du centre ancien et garde la trottinette avec toi pendant la visite des ruelles.',
+        bestTime: 'Matin ou fin d’après-midi, avec assez de jour pour le retour',
+      },
+    },
   },
   {
     id: 'coudoux',
@@ -909,11 +1317,88 @@ const rawSpots: SpotInput[] = [
     duration: '1 h 30 à 3 h',
     moods: ['nature', 'calme', 'patrimoine'],
     description:
-      'Boucle très intéressante pour un week-end doux, avec un itinéraire à garder indicatif autour du canal et du lac.',
-    tips: ['Départ matinal conseillé.', 'Vérifie les portions partagées avec les voitures.'],
+      'Une approche courte vers Le Tholonet, suivie d’une découverte pédestre exigeante vers le barrage Zola, à distinguer d’un itinéraire continu en trottinette.',
+    tips: [
+      'Utilise le parking des Infernets comme repère de départ pédestre si la signalisation du jour l’autorise.',
+      'La boucle officielle vers Zola et Bimont annonce environ 9 km et 400 m de dénivelé : ne la confonds pas avec la distance d’approche.',
+      'Prévois de l’eau, des chaussures adaptées et un retour avant la chaleur plutôt qu’une recharge sur place.',
+      'Entre juin et septembre, consulte impérativement les conditions préfectorales d’accès au massif.',
+    ],
     latitude: 43.5169,
     longitude: 5.5258,
     rechargeStatus: 'none',
+    editorial: {
+      introduction: [
+        'Le Tholonet est proche d’Aix, mais le lac Zola ne se résume pas aux huit kilomètres indicatifs d’approche. La sortie combine une route vers le village et une découverte du massif dont le relief, les chemins et les règles d’accès changent complètement l’effort réel.',
+        'Le Grand Site décrit une randonnée au départ du parking des Infernets vers les barrages Zola et Bimont, avec environ neuf kilomètres, trois heures et quatre cents mètres de dénivelé. Cette référence permet de préparer la partie pédestre ; elle ne constitue pas une autorisation de parcourir les sentiers en trottinette.',
+        'La formule la plus lisible consiste à rejoindre Le Tholonet ou le parking autorisé, sécuriser la trottinette sans la laisser isolée, puis choisir une marche adaptée au temps et à la chaleur. Une visite courte du village reste une alternative si le massif est fermé ou si la batterie est limite.',
+      ],
+      profile: {
+        environment: 'Village du Tholonet, route Cézanne, garrigue, vallons et patrimoine hydraulique au pied de Sainte-Victoire.',
+        terrain: 'Approche routière vallonnée, puis randonnée avec descentes raides, remontées et passages non adaptés à une trottinette urbaine.',
+        travelStyle: 'Sortie mixte : trajet d’approche, arrêt au Tholonet ou aux Infernets, puis découverte à pied selon les accès.',
+        bestFor: 'Associer patrimoine, paysage et marche sans présenter le tour des barrages comme une boucle roulante facile.',
+      },
+      routeSections: [
+        {
+          title: 'Approche du Tholonet',
+          text: 'La route depuis Aix rejoint un secteur fréquenté et vallonné. Vérifie le trajet proposé, garde une marge pour le retour et ne suppose pas qu’un bas-côté ou un aménagement cyclable accompagne toute l’approche.',
+        },
+        {
+          title: 'Parking des Infernets et départ pédestre',
+          text: 'Le parking des Infernets est le départ documenté par le Grand Site. Lis les panneaux à l’arrivée et considère ce point comme la fin de la partie roulante si les chemins ne sont pas explicitement autorisés.',
+        },
+        {
+          title: 'Barrage Zola et extension vers Bimont',
+          text: 'La randonnée descend vers Zola puis remonte fortement vers Bimont. Les pentes, les chemins et la durée rendent cette extension incompatible avec une simple estimation d’autonomie basée sur la route.',
+        },
+      ],
+      access: [
+        'Le parking des Infernets est le départ officiel de la randonnée vers les barrages ; vérifie sa disponibilité et la signalisation locale le jour même.',
+        'Dans le village, certaines zones de stationnement sont limitées dans le temps : le disque et les panneaux sur place font foi.',
+        'Du 1er juin au 30 septembre, consulte la carte préfectorale quotidienne avant toute entrée dans le massif.',
+      ],
+      watchOutFor: [
+        'Relief nettement plus exigeant sur la partie pédestre que ne l’indique la distance depuis Aix.',
+        'Descente abrupte, chemin bétonné et remontées signalées sur la boucle officielle vers Zola et Bimont.',
+        'Réseau mobile incertain, chaleur et absence de recharge connue dans le secteur naturel.',
+        'Baignade interdite dans les retenues et accès susceptible d’être fermé en période de risque incendie.',
+      ],
+      verificationNote:
+        'Informations vérifiées à distance auprès du Grand Site Concors Sainte-Victoire, de la Commune du Tholonet et de la Préfecture. Accès, stationnement et état des chemins restent à confirmer sur place.',
+      sources: [
+        {
+          label: 'Grand Site Concors Sainte-Victoire — Le Tholonet, Zola et Bimont',
+          url: 'https://www.grandsitesaintevictoire.com/le-tholonet-barrages-zola-et-bimont/',
+        },
+        {
+          label: 'Commune du Tholonet — Stationnement',
+          url: 'https://letholonet.fr/environnement/mobilite/stationnement/',
+        },
+        {
+          label: 'Préfecture des Bouches-du-Rhône — Accès aux massifs',
+          url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Approche routière jusqu’au Tholonet ou au parking des Infernets, puis découverte pédestre du barrage Zola. L’extension vers Bimont relève d’une randonnée exigeante distincte.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Approche routière, sentiers pédestres',
+          notes:
+            'Aucune source officielle consultée ne confirme une continuité cyclable vers Zola ni l’autorisation de rouler sur la boucle de randonnée.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Circulation d’approche, relief, fortes descentes et règles du massif imposent de séparer clairement trajet en trottinette et randonnée à pied.',
+        },
+        parkingAdvice:
+          'Vérifie les places et limitations au village ou aux Infernets ; n’abandonne pas la trottinette sans surveillance pendant la randonnée.',
+        bestTime: 'Matin, hors forte chaleur et après confirmation de l’ouverture du massif',
+      },
+    },
   },
   {
     id: 'palette-route-cezanne',
@@ -1112,18 +1597,20 @@ function routeNotesForRouteType(routeType: Spot['routeType']) {
 
 function enrichSpot(spot: SpotInput): Spot {
   const routeType = routeTypeForSpot(spot);
-  const cyclingInfrastructure = cyclingInfrastructureForRouteType(routeType);
-  const roadSafety = roadSafetyForRouteType(routeType);
+  const detailOverrides = spot.editorial?.detailOverrides;
+  const cyclingInfrastructure =
+    detailOverrides?.cyclingInfrastructure ?? cyclingInfrastructureForRouteType(routeType);
+  const roadSafety = detailOverrides?.roadSafety ?? roadSafetyForRouteType(routeType);
 
   return {
     ...spot,
     address: `${spot.name}, ${destinationLabels[spot.area]}`,
     googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${spot.latitude},${spot.longitude}`,
-    routeNotes: routeNotesForRouteType(routeType),
+    routeNotes: detailOverrides?.routeNotes ?? routeNotesForRouteType(routeType),
     cyclingInfrastructure,
     roadSafety,
-    parkingAdvice: parkingAdviceForRouteType(routeType),
-    bestTime: bestTimeForSpot(spot),
+    parkingAdvice: detailOverrides?.parkingAdvice ?? parkingAdviceForRouteType(routeType),
+    bestTime: detailOverrides?.bestTime ?? bestTimeForSpot(spot),
     isSimpleRide: spot.distanceKmFromAix <= 7,
     difficulty: difficultyForDistance(spot.distanceKmFromAix),
     routeType,

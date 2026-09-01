@@ -384,6 +384,27 @@ function renderSpotCard(spot) {
   </article>`;
 }
 
+function renderSpotEditorial(spot) {
+  const editorial = spot.editorial;
+  if (!editorial) return '';
+
+  const profileItems = [
+    ['Environnement', editorial.profile.environment],
+    ['Terrain', editorial.profile.terrain],
+    ['Type de sortie', editorial.profile.travelStyle],
+    ['Idéale pour', editorial.profile.bestFor],
+  ];
+
+  return `<article class="mt-6 rounded-[2rem] border border-slate-200 bg-slate-50 p-6">
+    <h2 class="text-2xl font-semibold text-slate-950">Pourquoi choisir cette sortie ?</h2>
+    <div class="mt-4 space-y-3">${editorial.introduction.map((paragraph) => `<p class="text-base leading-7 text-slate-600">${escapeHtml(paragraph)}</p>`).join('')}</div>
+    <dl class="mt-6 grid gap-3 md:grid-cols-2">${profileItems.map(([label, value]) => `<div class="rounded-[1.25rem] bg-white p-4"><dt class="text-xs font-semibold uppercase tracking-[0.12em] text-sky">${escapeHtml(label)}</dt><dd class="mt-2 text-sm leading-6 text-slate-600">${escapeHtml(value)}</dd></div>`).join('')}</dl>
+    <section class="mt-6"><h3 class="text-lg font-semibold text-slate-950">Secteurs à connaître</h3><div class="mt-3 grid gap-3 lg:grid-cols-3">${editorial.routeSections.map((section) => `<article class="rounded-[1.25rem] bg-white p-4"><h4 class="font-semibold text-slate-950">${escapeHtml(section.title)}</h4><p class="mt-2 text-sm leading-6 text-slate-600">${escapeHtml(section.text)}</p></article>`).join('')}</div></section>
+    <div class="mt-6 grid gap-5 lg:grid-cols-2"><section><h3 class="text-lg font-semibold text-slate-950">Accès et départ</h3><ul class="mt-3 space-y-2 text-sm leading-6 text-slate-600">${editorial.access.map((item) => `<li class="rounded-[1.25rem] bg-white p-3">${escapeHtml(item)}</li>`).join('')}</ul></section><section><h3 class="text-lg font-semibold text-slate-950">Points de vigilance</h3><ul class="mt-3 space-y-2 text-sm leading-6 text-slate-600">${editorial.watchOutFor.map((item) => `<li class="rounded-[1.25rem] bg-white p-3">${escapeHtml(item)}</li>`).join('')}</ul></section></div>
+    <details class="mt-6 rounded-[1.25rem] bg-white p-4"><summary class="cursor-pointer font-semibold text-slate-950">Sources et vérification</summary><p class="mt-3 text-sm leading-6 text-slate-600">${escapeHtml(editorial.verificationNote)}</p><ul class="mt-3 space-y-2 text-sm">${editorial.sources.map((source) => `<li><a href="${escapeHtml(source.url)}" class="font-semibold text-sky">${escapeHtml(source.label)}</a></li>`).join('')}</ul></details>
+  </article>`;
+}
+
 function renderGuideCard(guide) {
   const guidePath = getEditorialGuidePath(guide.slug);
   return `<article class="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft">
@@ -570,6 +591,7 @@ function buildSpotDetailStaticContent(spot) {
   return renderPageContainer(
     renderHeading(spot.name, spot.description, 'Fiche sortie'),
     `<section class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4"><article class="rounded-[1.5rem] bg-white p-5 shadow-soft"><h2 class="text-sm font-semibold text-slate-500">Distance aller indicative</h2><p class="mt-2 text-xl font-semibold text-slate-950">${escapeHtml(spot.distanceKmFromAix)} km</p></article><article class="rounded-[1.5rem] bg-white p-5 shadow-soft"><h2 class="text-sm font-semibold text-slate-500">Duree</h2><p class="mt-2 text-xl font-semibold text-slate-950">${escapeHtml(spot.duration)}</p></article><article class="rounded-[1.5rem] bg-white p-5 shadow-soft"><h2 class="text-sm font-semibold text-slate-500">Budget</h2><p class="mt-2 text-xl font-semibold text-slate-950">${escapeHtml(spot.budget)}</p></article><article class="rounded-[1.5rem] bg-white p-5 shadow-soft"><h2 class="text-sm font-semibold text-slate-500">Recharge</h2><p class="mt-2 text-xl font-semibold text-slate-950">${escapeHtml(getRechargeLabel(spot.rechargeStatus))}</p></article></section>
+    ${renderSpotEditorial(spot)}
     <section class="mt-6 grid gap-4 lg:grid-cols-2"><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Itineraire et securite</h2><p class="mt-4 text-sm leading-6 text-slate-600"><strong>Adresse :</strong> ${escapeHtml(spot.address)}</p><p class="mt-3 text-sm leading-6 text-slate-600"><strong>Trajet :</strong> ${escapeHtml(spot.routeNotes)}</p><p class="mt-3 text-sm leading-6 text-slate-600"><strong>Pistes cyclables :</strong> ${escapeHtml(spot.cyclingInfrastructure.label)}. ${escapeHtml(spot.cyclingInfrastructure.notes)}</p><p class="mt-3 text-sm leading-6 text-slate-600"><strong>Vigilance :</strong> ${escapeHtml(spot.roadSafety.notes)}</p></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Conseils pratiques</h2><p class="mt-4 text-sm leading-6 text-slate-600"><strong>Meilleur moment :</strong> ${escapeHtml(spot.bestTime)}</p><p class="mt-3 text-sm leading-6 text-slate-600"><strong>Stationnement :</strong> ${escapeHtml(spot.parkingAdvice)}</p><ul class="mt-4 space-y-2 text-sm leading-6 text-slate-600">${spot.tips.map((tip) => `<li>${escapeHtml(tip)}</li>`).join('')}</ul><p class="mt-4 text-sm font-semibold text-amber-800">Distance indicative, pistes cyclables et recharge a verifier avant depart.</p></article></section>
     ${relatedSpots.length ? `<section class="mt-8"><h2 class="text-2xl font-semibold text-slate-950">Autres sorties a comparer</h2><div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-4">${relatedSpots.map(renderSpotCard).join('')}</div></section>` : ''}
     ${relatedGuides.length ? `<section class="mt-8"><h2 class="text-2xl font-semibold text-slate-950">Guides associes</h2><div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">${relatedGuides.map(renderGuideCard).join('')}</div></section>` : ''}`,

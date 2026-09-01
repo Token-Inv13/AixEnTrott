@@ -140,6 +140,80 @@ export function SortieDetailPage() {
           </div>
           <p className="mt-3 text-xs leading-5 text-slate-500">Trajet velo indicatif, a confirmer selon le revetement et les amenagements.</p>
 
+          {spot.editorial ? (
+            <article className="mt-6 rounded-[1.5rem] border border-slate-200 bg-slate-50/70 p-5 sm:p-6">
+              <h2 className="text-xl font-semibold text-slate-950">Pourquoi choisir cette sortie ?</h2>
+              <div className="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+                {spot.editorial.introduction.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+
+              <dl className="mt-6 grid gap-3 sm:grid-cols-2">
+                {[
+                  ['Environnement', spot.editorial.profile.environment],
+                  ['Terrain', spot.editorial.profile.terrain],
+                  ['Type de sortie', spot.editorial.profile.travelStyle],
+                  ['Idéale pour', spot.editorial.profile.bestFor],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/80">
+                    <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">{label}</dt>
+                    <dd className="mt-2 text-sm leading-6 text-slate-600">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <section className="mt-6">
+                <h3 className="text-base font-semibold text-slate-950">Secteurs à connaître</h3>
+                <div className="mt-3 grid gap-3 lg:grid-cols-3">
+                  {spot.editorial.routeSections.map((section) => (
+                    <div key={section.title} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200/80">
+                      <h4 className="font-semibold text-slate-950">{section.title}</h4>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">{section.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <div className="mt-6 grid gap-5 lg:grid-cols-2">
+                <section>
+                  <h3 className="text-base font-semibold text-slate-950">Accès et départ</h3>
+                  <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
+                    {spot.editorial.access.map((item) => (
+                      <li key={item} className="rounded-2xl bg-white p-3 ring-1 ring-slate-200/80">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <h3 className="text-base font-semibold text-slate-950">Points de vigilance</h3>
+                  <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
+                    {spot.editorial.watchOutFor.map((item) => (
+                      <li key={item} className="rounded-2xl bg-white p-3 ring-1 ring-slate-200/80">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+
+              <details className="mt-6 rounded-2xl bg-white p-4 ring-1 ring-slate-200/80">
+                <summary className="cursor-pointer text-sm font-semibold text-slate-950">Sources et vérification</summary>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{spot.editorial.verificationNote}</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  {spot.editorial.sources.map((source) => (
+                    <li key={source.url}>
+                      <a className="font-semibold text-sky hover:underline" href={source.url} target="_blank" rel="noreferrer">
+                        {source.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </article>
+          ) : null}
+
           <RouteMethodNotice className="mt-4" />
 
           <RouteOriginPanel
