@@ -244,6 +244,20 @@ function buildSpotSeoGraph(spot) {
 
 function buildGuideSeoGraph(guide) {
   const pathName = getEditorialGuidePath(guide.slug);
+  const faqNode = guide.faq.length
+    ? {
+        '@type': 'FAQPage',
+        '@id': `${buildSiteUrl(pathName)}#faq`,
+        mainEntity: guide.faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
 
   return buildSeoGraph([
     ...buildWebsiteNodes(),
@@ -257,18 +271,7 @@ function buildGuideSeoGraph(guide) {
       { name: 'Guides', path: '/guides' },
       { name: guide.shortTitle, path: pathName },
     ]),
-    {
-      '@type': 'FAQPage',
-      '@id': `${buildSiteUrl(pathName)}#faq`,
-      mainEntity: guide.faq.map((item) => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: item.answer,
-        },
-      })),
-    },
+    ...(faqNode ? [faqNode] : []),
   ]);
 }
 
@@ -565,17 +568,24 @@ function buildPrivacyStaticContent() {
 function buildGuideDetailStaticContent(guide) {
   const relatedSpots = guide.relatedSpotIds.map((id) => spotById.get(id)).filter(Boolean);
   const relatedGuides = guide.relatedGuideSlugs.map((slug) => guideBySlug.get(slug)).filter(Boolean);
+  const faqContent = guide.faq.length
+    ? `<section class="mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Questions frequentes</h2>${guide.faq.map((item) => `<article class="mt-5"><h3 class="font-semibold text-slate-950">${escapeHtml(item.question)}</h3><p class="mt-2 text-sm leading-6 text-slate-600">${escapeHtml(item.answer)}</p></article>`).join('')}</section>`
+    : '';
+  const sourcesContent = guide.sources?.length
+    ? `<section class="mt-8 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Sources a verifier</h2><p class="mt-2 text-sm leading-6 text-slate-600">Ces sources cadrent les faits externes. Horaires, acces et regles peuvent evoluer.</p><div class="mt-4 grid gap-4 md:grid-cols-2">${guide.sources.map((source) => `<a href="${escapeHtml(source.url)}" class="rounded-[1.5rem] bg-slate-50 p-5"><strong class="text-sky">${escapeHtml(source.label)}</strong>${source.note ? `<span class="mt-2 block text-sm leading-6 text-slate-600">${escapeHtml(source.note)}</span>` : ''}</a>`).join('')}</div></section>`
+    : '';
   return renderPageContainer(
     renderHeading(guide.title, guide.intro, 'Guide local'),
     `<article class="mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">${guide.sections
       .map(
-        (section) => `<section class="mt-6 first:mt-0"><h2 class="text-2xl font-semibold text-slate-950">${escapeHtml(section.title)}</h2>${section.paragraphs.map((paragraph) => `<p class="mt-3 text-base leading-7 text-slate-600">${escapeHtml(paragraph)}</p>`).join('')}</section>`,
+        (section) => `<section class="mt-6 first:mt-0"><h2 class="text-2xl font-semibold text-slate-950">${escapeHtml(section.title)}</h2>${section.paragraphs.map((paragraph) => `<p class="mt-3 text-base leading-7 text-slate-600">${escapeHtml(paragraph)}</p>`).join('')}${section.items?.length ? `<ul class="mt-4 space-y-2 pl-5 text-sm leading-6 text-slate-600">${section.items.map((item) => `<li class="list-disc pl-1">${escapeHtml(item)}</li>`).join('')}</ul>` : ''}</section>`,
       )
       .join('')}</article>
-    <section class="mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Questions frequentes</h2>${guide.faq.map((item) => `<article class="mt-5"><h3 class="font-semibold text-slate-950">${escapeHtml(item.question)}</h3><p class="mt-2 text-sm leading-6 text-slate-600">${escapeHtml(item.answer)}</p></article>`).join('')}</section>
-    <section class="mt-8"><h2 class="text-2xl font-semibold text-slate-950">Preparer cette sortie</h2><div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">${guide.ctas.map((cta) => `<a href="${escapeHtml(cta.to)}" class="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft"><strong class="text-slate-950">${escapeHtml(cta.label)}</strong><span class="mt-2 block text-sm leading-6 text-slate-600">${escapeHtml(cta.description)}</span></a>`).join('')}</div></section>
+    ${faqContent}
+    <section class="mt-8"><h2 class="text-2xl font-semibold text-slate-950">Preparer cette sortie</h2><div class="mt-4 grid gap-4 ${guide.ctas.length === 3 ? 'md:grid-cols-3' : 'sm:grid-cols-2'}">${guide.ctas.map((cta) => `<a href="${escapeHtml(cta.to)}" class="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-soft"><strong class="text-slate-950">${escapeHtml(cta.label)}</strong><span class="mt-2 block text-sm leading-6 text-slate-600">${escapeHtml(cta.description)}</span></a>`).join('')}</div></section>
     ${relatedSpots.length ? `<section class="mt-8"><h2 class="text-2xl font-semibold text-slate-950">Sorties liees</h2><div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">${relatedSpots.map(renderSpotCard).join('')}</div></section>` : ''}
-    ${relatedGuides.length ? `<section class="mt-8"><h2 class="text-2xl font-semibold text-slate-950">Guides lies</h2><div class="mt-4 grid gap-4 md:grid-cols-2">${relatedGuides.map(renderGuideCard).join('')}</div></section>` : ''}`,
+    ${relatedGuides.length ? `<section class="mt-8"><h2 class="text-2xl font-semibold text-slate-950">Guides lies</h2><div class="mt-4 grid gap-4 md:grid-cols-2">${relatedGuides.map(renderGuideCard).join('')}</div></section>` : ''}
+    ${sourcesContent}`,
   );
 }
 

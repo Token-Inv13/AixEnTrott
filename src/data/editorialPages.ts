@@ -1,6 +1,13 @@
 export type EditorialGuideSection = {
   title: string;
   paragraphs: string[];
+  items?: string[];
+};
+
+export type EditorialGuideSource = {
+  label: string;
+  url: string;
+  note?: string;
 };
 
 export type EditorialGuideFaq = {
@@ -25,6 +32,7 @@ export type EditorialGuide = {
   relatedSpotIds: string[];
   relatedGuideSlugs: string[];
   ctas: EditorialGuideCta[];
+  sources?: EditorialGuideSource[];
 };
 
 export const editorialGuides: EditorialGuide[] = [
@@ -198,44 +206,92 @@ export const editorialGuides: EditorialGuide[] = [
   },
   {
     slug: 'sortie-trottinette-cote-bleue',
-    title: 'Sortie trottinette Cote Bleue : comment viser le bon format de bord de mer',
-    shortTitle: 'Sortie trottinette Cote Bleue',
+    title: 'Cote Bleue en trottinette : choisir sa zone et organiser le retour',
+    shortTitle: 'Guide trottinette Cote Bleue',
     description:
-      "Preparez une sortie trottinette sur la Cote Bleue avec les bons reperes entre distance, recharge et retour a anticiper.",
+      "Comparez Niolon, La Redonne, Carry-le-Rouet et Sausset-les-Pins pour preparer une sortie trottinette sur la Cote Bleue avec un retour realiste.",
     intro:
-      "La Cote Bleue attire par son cadre, mais les sorties y deviennent vite longues depuis Aix. Le sujet n est pas seulement la beaute du bord de mer, mais le format realiste de trajet et la securisation du retour.",
+      "La Cote Bleue n est pas une destination unique. Entre calanques encaisses, villages-gares et fronts de mer plus urbains, le bon choix depend surtout du relief accepte, du mode d approche et du plan de retour.",
     sections: [
       {
-        title: 'Les secteurs a regarder',
+        title: 'Choisir une ambiance avant de choisir une distance',
         paragraphs: [
-          "Carry-le-Rouet, Sausset-les-Pins, Ensuès-la-Redonne ou Niolon n impliquent pas tous le meme engagement. Il faut choisir en fonction du temps disponible et non d une envie trop large de littoral.",
-          "Les solutions train ou voiture peuvent faire partie d un bon plan, surtout si tu veux privilegier la balade sur place.",
+          "Niolon et Ensuès-la-Redonne conviennent a une sortie tournee vers les calanques, avec des acces parfois raides et peu d espace pour improviser. Carry-le-Rouet et Sausset-les-Pins offrent un cadre plus urbain, plus simple pour fractionner la balade et faire demi-tour.",
+          "Ce guide aide a choisir une base. Les fiches associees servent ensuite a verifier chaque destination, pas a supposer qu une liaison continue existe entre tous les secteurs.",
+        ],
+        items: [
+          'Niolon ou La Redonne : panorama et relief, avec une approche locale a privilegier.',
+          'Carry-le-Rouet : port et services, pour une sortie plus compacte.',
+          'Sausset-les-Pins : front de mer plus ouvert, mais vent a integrer au retour.',
         ],
       },
       {
-        title: 'Le bon niveau de prudence',
+        title: 'Distinguer sentier littoral et voie roulable',
         paragraphs: [
-          "Sur ce type de destination, une trottinette donnee pour 30 km ne doit pas te faire croire a une sortie simple. Il faut raisonner avec marge batterie reelle.",
-          "Le catalogue te sert ici a distinguer les envies mer qui restent jouables de celles qui demandent une vraie logistique.",
+          "Le sentier du littoral et le GR51 sont presentes comme des parcours de randonnee pedestre par l office de tourisme. Leur presence sur une carte ne signifie donc pas qu ils soient adaptes ou autorises a la trottinette.",
+          "Pour rouler, reste sur des voies dont l acces et le revetement ont ete verifies. Les petites routes d approche peuvent aussi etre frequentees : un secteur agreable a pied n est pas automatiquement confortable en engin motorise.",
+        ],
+      },
+      {
+        title: 'Le train peut rapprocher le depart, pas garantir le trajet',
+        paragraphs: [
+          "Plusieurs communes de la Cote Bleue disposent d une gare. Cela permet d envisager une sortie locale plutot qu un aller-retour integral depuis Aix, a condition de verifier les horaires, les correspondances et les conditions de transport de la trottinette pour le jour choisi.",
+          "Les regles TER indiquent que les trottinettes pliees peuvent etre admises sous conditions d encombrement. Ce point reste a confirmer avant chaque voyage : il ne doit pas etre traite comme une garantie de retour.",
+        ],
+      },
+      {
+        title: 'Construire un retour resistant au vent',
+        paragraphs: [
+          "Sur le littoral, un vent defavorable peut augmenter la consommation et rendre le dernier troncon plus exigeant. Garde la partie la plus simple pour la fin et fixe un seuil de demi-tour avant de partir.",
+        ],
+        items: [
+          'Verifier vent, temperature et acces aux massifs le matin meme.',
+          'Conserver une marge batterie pour les remontees vers la gare ou le stationnement.',
+          'Prevoir une heure limite de retour independante de la batterie affichee.',
+          'Ne pas faire reposer le retour sur une prise non confirmee.',
+        ],
+      },
+      {
+        title: 'Strategie conseillee',
+        paragraphs: [
+          "Choisis une seule zone, rapproche le point de depart si necessaire, puis compare l autonomie dans le planner. La carte sert ensuite a reperer les fiches et a cadrer le secteur, sans remplacer une verification de la voie sur place.",
         ],
       },
     ],
     faq: [
       {
-        question: 'La Cote Bleue est-elle une sortie du soir ?',
-        answer: 'Pas depuis Aix dans la plupart des cas. Il faut plutot la voir comme une sortie preparee.',
+        question: 'Peut-on relier toutes les destinations de la Cote Bleue en trottinette ?',
+        answer: 'Il ne faut pas le supposer. Les fiches de zone, le relief et les voies roulables doivent etre controles avant de construire une liaison.',
       },
       {
-        question: 'Que verifier en premier ?',
-        answer: 'Le trajet aller-retour indicatif, le vent et le plan de retour.',
+        question: 'Quelle zone choisir pour un premier essai ?',
+        answer: 'Carry-le-Rouet ou Sausset-les-Pins offrent un cadre plus urbain pour une boucle locale. Niolon et La Redonne demandent davantage d attention au relief et aux acces.',
       },
     ],
     relatedSpotIds: ['carry-le-rouet', 'sausset-les-pins', 'ensues-la-redonne', 'niolon'],
     relatedGuideSlugs: ['sortie-trottinette-cassis', 'sortie-trottinette-la-ciotat'],
     ctas: [
-      { label: 'Voir la carte', to: '/carte', description: 'Comparer les points mer les plus pertinents.' },
-      { label: 'Voir le planner', to: '/planner', description: 'Tester si la sortie reste compatible avec ta marge.' },
-      { label: 'Voir la recharge', to: '/recharge', description: 'Ne pas compter sur une borne sans prise verifiee.' },
+      { label: 'Comparer les quatre fiches', to: '/sorties?mood=mer', description: 'Choisir une base littorale avant de tracer une sortie.' },
+      { label: 'Evaluer la marge batterie', to: '/planner', description: 'Tester un depart local et un scenario de retour.' },
+      { label: 'Ouvrir la carte', to: '/carte', description: 'Situer les gares, les destinations et ton point de depart.' },
+      { label: 'Verifier la recharge', to: '/recharge', description: 'Garder la recharge comme solution confirmee, jamais supposee.' },
+    ],
+    sources: [
+      {
+        label: 'Office de tourisme de Marseille - La Cote Bleue',
+        url: 'https://www.marseille-tourisme.com/decouvrez-marseille/autour-de-marseille/la-cote-bleue/',
+        note: 'Communes desservies, gares et distinction avec le sentier littoral pedestre.',
+      },
+      {
+        label: 'TER Sud - Voyager avec un velo ou une trottinette',
+        url: 'https://www.ter.sncf.com/sud-provence-alpes-cote-d-azur/services-contacts/voyager-avec-velo/a-bord',
+        note: 'Conditions de transport a verifier avant le voyage.',
+      },
+      {
+        label: 'Prefecture des Bouches-du-Rhone - Acces aux massifs',
+        url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        note: 'Conditions saisonnieres a consulter le jour du depart.',
+      },
     ],
   },
   {
@@ -366,44 +422,87 @@ export const editorialGuides: EditorialGuide[] = [
   },
   {
     slug: 'sortie-trottinette-venelles-eguilles',
-    title: 'Sortie trottinette Venelles Eguilles : alternatives proches autour d Aix',
-    shortTitle: 'Sortie trottinette Venelles Eguilles',
+    title: 'Venelles ou Eguilles en trottinette : quelle sortie choisir depuis Aix ?',
+    shortTitle: 'Venelles ou Eguilles',
     description:
-      "Trouvez des sorties trottinette proches autour de Venelles, Eguilles et Ventabren pour un format simple, local et plus lisible.",
+      "Comparez Venelles et Eguilles pour choisir une sortie trottinette au nord ou a l ouest d'Aix selon le relief, l'ambiance et votre autonomie.",
     intro:
-      "Quand tu veux rouler autour d Aix sans partir loin, les communes proches sont souvent les meilleures options. Elles permettent de sortir vite, de garder une marge batterie confortable et de rester sur un plan simple.",
+      "Venelles et Eguilles sont proches d Aix sur la carte, mais ne proposent pas la meme sortie. Venelles oriente vers un trajet plus fonctionnel au nord ; Eguilles vers un village perche et une approche plus sensible au relief a l ouest.",
     sections: [
       {
-        title: 'Pourquoi ces secteurs sont utiles',
+        title: 'Le choix rapide',
         paragraphs: [
-          "Venelles, Eguilles, Ventabren ou Rognes donnent acces a des sorties proches qui restent interessantes sans exiger une logistique lourde.",
-          "Ce sont de bons territoires pour varier les ambiances tout en gardant la meme base de preparation.",
+          "Choisis Venelles si tu recherches une destination proche, une ambiance residentielle et un trajet que tu peux interrompre facilement. Choisis Eguilles si le village, le panorama et une sortie plus marquee par les pentes comptent davantage.",
+        ],
+        items: [
+          'Venelles : direction nord, profil periurbain et points de demi-tour faciles a fixer.',
+          'Eguilles : direction ouest, village en hauteur et reserve batterie a garder pour le relief.',
         ],
       },
       {
-        title: 'Quand les choisir',
+        title: 'Venelles : lire les amenagements sans supposer une continuite',
         paragraphs: [
-          "Si tu hesites entre une longue sortie et un projet plus simple, ces zones sont souvent le meilleur arbitrage. Tu roules davantage que dans Aix centre, sans basculer tout de suite dans le long format.",
-          "Le catalogue et la carte suffisent souvent pour trancher rapidement entre elles.",
+          "La commune a engage un plan velo sur plusieurs annees et mentionne de nouveaux amenagements, dont une liaison cyclable realisee avenue Maurice Plantier. Cela ne prouve pas qu un parcours continu et adapte relie Aix a tous les points de Venelles.",
+          "Le bon usage consiste a verifier le troncon d approche, puis a construire une boucle locale courte autour d un point connu plutot qu a suivre aveuglement une suggestion d itineraire.",
+        ],
+      },
+      {
+        title: 'Eguilles : privilegier le village, anticiper la montee',
+        paragraphs: [
+          "L office de tourisme communal decrit un village de ruelles, d escaliers et de reliefs entoures de collines. Le coeur ancien se prete donc davantage a une pause ou a une exploration a pied qu a une traversee rapide en trottinette.",
+          "La consommation au retour dependra de ton sens de circulation et de ton point de depart. Garde une marge avant d aborder le village, meme si la distance brute parait proche.",
+        ],
+      },
+      {
+        title: 'Comparer selon ton autonomie et ton envie',
+        paragraphs: [
+          "Avec une batterie entamee ou un horaire serre, Venelles offre generalement un scenario plus facile a raccourcir. Pour une sortie patrimoine et panorama, Eguilles est plus distinctive mais demande une preparation plus attentive du relief et des voies d approche.",
+        ],
+        items: [
+          'Envie de rouler sans longue pause : Venelles.',
+          'Envie de visiter un village et marcher un peu : Eguilles.',
+          'Vent fort, chaleur ou autonomie incertaine : reduire le rayon et fixer un demi-tour precoce.',
+        ],
+      },
+      {
+        title: 'Decision en trois controles',
+        paragraphs: [
+          "Entre ton depart dans la carte, compare les deux fiches, puis teste la destination retenue dans le planner. Avant de partir, confirme le revetement et les restrictions du trajet reel : ce guide compare des profils, il ne certifie pas une voie cyclable continue.",
         ],
       },
     ],
     faq: [
       {
-        question: 'Ces sorties conviennent-elles au soir ?',
-        answer: 'Oui pour plusieurs d entre elles, selon ton point de depart et ton autonomie restante.',
+        question: 'Venelles est-elle toujours plus facile qu Eguilles ?',
+        answer: 'Non. Le point de depart, le trajet retenu et le vent peuvent changer le niveau reel. Venelles est surtout plus simple a raccourcir dans le scenario propose ici.',
       },
       {
-        question: 'Quelle page consulter en plus ?',
-        answer: 'La carte pour voir laquelle est la plus proche de ton depart du jour.',
+        question: 'Peut-on traverser le centre ancien d Eguilles en trottinette ?',
+        answer: 'Il faut respecter la signalisation et les zones pietonnes. Pour profiter des ruelles et des escaliers, une pause a pied est le choix le plus lisible.',
       },
     ],
-    relatedSpotIds: ['venelles', 'eguilles', 'ventabren', 'rognes'],
-    relatedGuideSlugs: ['sortie-trottinette-aix-centre', 'balade-trottinette-peyrolles'],
+    relatedSpotIds: ['venelles', 'eguilles'],
+    relatedGuideSlugs: ['sortie-trottinette-aix-centre', 'sortie-trottinette-aix-weekend'],
     ctas: [
-      { label: 'Voir les sorties proches', to: '/sorties?distance=3%E2%80%937%20km', description: 'Comparer les formats proches autour d Aix.' },
-      { label: 'Voir la carte', to: '/carte', description: 'Visualiser rapidement les communes voisines.' },
-      { label: 'Voir le planner', to: '/planner', description: 'Ajouter une marge simple avant de partir.' },
+      { label: 'Situer les deux directions', to: '/carte', description: 'Comparer le nord et l ouest depuis ton depart reel.' },
+      { label: 'Choisir selon ta batterie', to: '/planner', description: 'Tester Venelles puis Eguilles avec la meme marge.' },
+    ],
+    sources: [
+      {
+        label: 'Ville de Venelles - Plan velo',
+        url: 'https://venelles.fr/voici-le-plan-velo-pour-venelles/',
+        note: 'Programme communal d amenagements et de services, planifie sur plusieurs annees.',
+      },
+      {
+        label: 'Ville de Venelles - Travaux et amenagements',
+        url: 'https://venelles.fr/infos-pratiques/travaux-et-amenagements/les-chantiers/',
+        note: 'Etat des amenagements a verifier avant le depart.',
+      },
+      {
+        label: 'Mairie d Eguilles - Office de tourisme',
+        url: 'https://mairie-eguilles.fr/les-services-municip/office-du-tourisme/',
+        note: 'Description du village, de ses ruelles et de son environnement vallonne.',
+      },
     ],
   },
   {
@@ -492,44 +591,95 @@ export const editorialGuides: EditorialGuide[] = [
   },
   {
     slug: 'sortie-trottinette-la-ciotat',
-    title: 'Sortie trottinette La Ciotat : destination mer a traiter avec marge',
-    shortTitle: 'Sortie trottinette La Ciotat',
+    title: 'Preparer une sortie en trottinette a La Ciotat depuis Aix',
+    shortTitle: 'Preparer La Ciotat depuis Aix',
     description:
-      "Organisez une sortie trottinette vers La Ciotat avec une lecture claire de la distance, de la recharge et du retour a preparer.",
+      "Train, voiture ou depart local : organisez une sortie trottinette a La Ciotat depuis Aix avec une autonomie et un retour realistes.",
     intro:
-      "La Ciotat fait partie des destinations mer les plus enviees, mais elle demande la meme rigueur que Cassis ou Marseille. Il faut l envisager comme une sortie longue, pas comme une promenade sans contrainte.",
+      "Pour profiter de La Ciotat, le premier choix n est pas la promenade sur place mais le mode d approche. Depuis Aix, un depart local ou multimodal protege la batterie et laisse plus de temps pour le littoral qu un aller-retour integral trop ambitieux.",
     sections: [
       {
-        title: 'Le vrai sujet de cette sortie',
+        title: 'Choisir le transport avant le parcours local',
         paragraphs: [
-          "Le probleme n est pas seulement de rejoindre La Ciotat, mais de garder encore assez de batterie pour profiter du lieu et revenir.",
-          "Si la balade sur place est ta priorite, il peut etre plus intelligent de rapprocher le depart que de consommer toute l energie sur l approche.",
+          "Trois scenarios sont lisibles : voiture puis boucle locale, train puis sortie autour de la gare et du centre, ou trajet integral uniquement avec une autonomie et un retour alternatifs verifies. Le troisieme ne doit pas etre le choix par defaut.",
+        ],
+        items: [
+          'Voiture : maitriser l heure de retour et conserver la batterie pour le littoral.',
+          'Train : verifier les correspondances, l horaire retour et les conditions d embarquement.',
+          'Depart integral depuis Aix : reserver aux projets prepares avec marge et solution de repli.',
         ],
       },
       {
-        title: 'Comment la rendre plus realiste',
+        title: 'Train : verifier la chaine complete',
         paragraphs: [
-          "Le planner permet de savoir vite si tu es en zone compatible, limite ou a eviter. Ensuite, la fiche et la recharge servent a valider les details utiles.",
-          "Sur ce type de destination, mieux vaut une sortie courte sur place bien construite qu un aller-retour trop ambitieux.",
+          "Les recherches SNCF Connect entre Aix-en-Provence et La Ciotat peuvent proposer une correspondance, souvent via Marseille. Horaires, quais et travaux changent : consulte le trajet exact dans les deux sens le jour de la sortie.",
+          "Les conditions TER pour une trottinette pliee dependent notamment de l encombrement et de l espace disponible. Elles doivent etre relues avant le voyage ; ce guide ne garantit pas l acceptation a bord.",
+        ],
+      },
+      {
+        title: 'Garder une reserve entre la gare et le littoral',
+        paragraphs: [
+          "La gare n est pas le point final de la sortie. Ajoute le trajet vers la zone que tu veux visiter, la circulation locale, les detours et le retour a la gare dans ton budget batterie.",
+          "Le guide velo et randonnee de l office de tourisme donne des reperes locaux utiles, mais chaque voie doit encore etre controlee selon la reglementation applicable a la trottinette.",
+        ],
+      },
+      {
+        title: 'La Ciotat, Cassis ou Marseille ?',
+        paragraphs: [
+          "La Ciotat se prete bien a une journee centree sur une boucle littorale locale. Cassis ajoute une forte contrainte entre la gare et le centre, tandis que Marseille offre davantage de solutions de transport mais un environnement urbain plus dense.",
+          "Le meilleur choix depend donc moins du nombre de kilometres annonce que de la liaison d approche, de la circulation souhaitee et de la solidite du retour.",
+        ],
+      },
+      {
+        title: 'Checklist avant depart',
+        paragraphs: [
+          "Teste d abord un depart local dans le planner, puis ouvre la fiche La Ciotat pour les informations de destination. La recharge eventuelle reste un bonus : une prise doit etre confirmee et accessible avec ton propre chargeur.",
+        ],
+        items: [
+          'Billets, correspondances et dernier retour verifies dans les deux sens.',
+          'Conditions de transport de la trottinette relues.',
+          'Point de depart local et stationnement ou gare reperes.',
+          'Marge conservee pour le retour, le vent et les detours.',
         ],
       },
     ],
     faq: [
       {
-        question: 'La Ciotat est-elle une sortie simple depuis Aix ?',
-        answer: 'Non. Il faut la classer parmi les sorties longues a forte contrainte batterie.',
+        question: 'Le train accepte-t-il toujours une trottinette ?',
+        answer: 'Non. Les conditions, dimensions, espaces disponibles et perturbations doivent etre verifies avant chaque voyage.',
       },
       {
-        question: 'Quel est le meilleur plan B ?',
-        answer: 'Un retour alternatif ou un depart rapproche plutot qu une confiance excessive dans la recharge.',
+        question: 'Faut-il calculer seulement la distance sur le littoral ?',
+        answer: 'Non. Il faut inclure gare ou stationnement, approche du centre, balade, detours et retour au point de depart.',
+      },
+      {
+        question: 'Pourquoi choisir La Ciotat plutot que Cassis ?',
+        answer: 'La Ciotat peut convenir a une sortie locale plus etendue. Cassis concentre davantage la contrainte sur la liaison entre gare, relief et centre.',
       },
     ],
     relatedSpotIds: ['la-ciotat', 'cassis', 'marseille-vieux-port-littoral'],
     relatedGuideSlugs: ['sortie-trottinette-cassis', 'sortie-trottinette-cote-bleue'],
     ctas: [
-      { label: 'Voir la fiche La Ciotat', to: '/sorties/la-ciotat', description: 'Relire les infos principales de la destination.' },
-      { label: 'Ouvrir le planner', to: '/planner', description: 'Verifier si ton autonomie couvre vraiment le projet.' },
-      { label: 'Voir la recharge', to: '/recharge', description: 'Ne compter que sur des prises compatibles verifiees.' },
+      { label: 'Preparer un depart local', to: '/planner', description: 'Estimer la boucle utile sans consommer la batterie sur toute l approche.' },
+      { label: 'Ouvrir la fiche La Ciotat', to: '/sorties/la-ciotat', description: 'Verifier la destination une fois le mode d approche choisi.' },
+      { label: 'Comparer sur la carte', to: '/carte', description: 'Situer La Ciotat, Cassis et Marseille depuis ton depart.' },
+    ],
+    sources: [
+      {
+        label: 'La Ciotat Tourisme - Guide velo et randonnee',
+        url: 'https://www.destinationlaciotat.com/app/uploads/laciotat/2024/06/Guide-velo-rando-FR-2024.pdf',
+        note: 'Reperes locaux a confronter aux regles applicables a la trottinette.',
+      },
+      {
+        label: 'SNCF Connect - Horaires Aix-en-Provence vers La Ciotat',
+        url: 'https://www.sncf-connect.com/train/horaires/aix-en-provence/la-ciotat',
+        note: 'Horaires et correspondances variables a verifier pour chaque date.',
+      },
+      {
+        label: 'TER Sud - Voyager avec un velo ou une trottinette',
+        url: 'https://www.ter.sncf.com/sud-provence-alpes-cote-d-azur/services-contacts/voyager-avec-velo/a-bord',
+        note: 'Conditions de transport sans garantie de place a bord.',
+      },
     ],
   },
   {
@@ -702,44 +852,89 @@ export const editorialGuides: EditorialGuide[] = [
   },
   {
     slug: 'sortie-trottinette-aix-weekend',
-    title: 'Sortie trottinette Aix week-end : idees locales sans logistique lourde',
-    shortTitle: 'Sortie trottinette Aix week-end',
+    title: 'Organiser un week-end en trottinette autour d Aix-en-Provence',
+    shortTitle: 'Week-end en trottinette a Aix',
     description:
-      "Choisissez une sortie trottinette week-end autour d'Aix-en-Provence entre nature, village et bord de lac, avec une lecture simple de la distance.",
+      "Composez un week-end en trottinette autour d'Aix avec plusieurs sorties realistes, une marge batterie et des alternatives selon la meteo.",
     intro:
-      "Le week-end ouvre plus de temps, mais ce n est pas une raison pour basculer trop vite vers des sorties trop longues. Les meilleurs formats restent ceux qui gardent une marge utile et une destination claire.",
+      "Un bon week-end ne consiste pas a empiler les kilometres. Il combine un programme principal, une sortie courte de repli et assez de marge pour adapter le depart a la chaleur, au mistral ou a une batterie moins performante que prevu.",
     sections: [
       {
-        title: 'Les bons formats week-end autour d Aix',
+        title: 'Repartir l effort sur deux jours',
         paragraphs: [
-          "Sainte-Victoire en version courte, Peyrolles, Venelles, Ventabren ou le Tholonet offrent souvent un meilleur rendement qu une destination tres lointaine.",
-          "Tu gagnes plus avec une sortie bien construite de demi-journee qu avec un aller-retour trop ambitieux vers la mer.",
+          "Reserve la sortie la plus engagee au moment ou la batterie, la meteo et ta disponibilite sont les mieux connues. L autre demi-journee peut rester locale : centre ancien a pied, parc, Torse ou courte boucle vers la peripherie.",
+          "Cette repartition evite de transformer chaque jour en test d autonomie et laisse le temps de recharger completement entre deux departs.",
+        ],
+        items: [
+          'Programme principal : une destination nature ou village, choisie la veille.',
+          'Programme de repli : une boucle courte proche d Aix, lancable sans logistique.',
+          'Temps tampon : recharge complete, pause chaleur et retour avant la nuit.',
         ],
       },
       {
-        title: 'Quand passer sur une sortie preparee',
+        title: 'Centre-ville, peripherie ou destination ?',
         paragraphs: [
-          "Si tu veux Marseille, Cassis, la Cote Bleue ou le Luberon, traite le projet comme une vraie sortie longue avec retour anticipe.",
-          "Le planner sert ici de filtre rapide entre week-end simple et week-end prepare.",
+          "Le centre et les parcs conviennent a une reprise, une fin de journee ou une batterie partiellement chargee. Le Tholonet, Venelles, Eguilles ou Ventabren demandent deja de verifier l approche et le retour. Bimont, Peyrolles ou les destinations plus lointaines meritent un creneau dedie.",
+          "Marseille, Cassis, La Ciotat, la Cote Bleue ou le Luberon ne sont pas des extensions spontanees du programme : rapproche le depart ou organise un retour alternatif.",
+        ],
+      },
+      {
+        title: 'Budget batterie du week-end',
+        paragraphs: [
+          "Entre l autonomie disponible dans le planner et teste chaque sortie separement. Une recharge nocturne ne corrige ni le relief, ni le vent, ni l usure de la batterie pendant la journee.",
+          "Pour une sortie longue, reserve une marge au retour et n integre une recharge intermediaire que si une prise 220V ou Schuko, son acces et le temps de charge sont confirmes.",
+        ],
+      },
+      {
+        title: 'Adapter le programme a la meteo et aux massifs',
+        paragraphs: [
+          "En periode chaude, pars tot et choisis un format raccourcissable. Le mistral peut augmenter l effort au retour, notamment sur les secteurs exposes. En ete, l acces aux massifs des Bouches-du-Rhone peut aussi etre limite selon le niveau de danger incendie.",
+        ],
+        items: [
+          'Verifier la meteo et le vent avant chaque depart, pas une seule fois pour tout le week-end.',
+          'Consulter les conditions d acces aux massifs le jour meme.',
+          'Emporter eau, casque, antivol, chargeur et moyen de paiement.',
+        ],
+      },
+      {
+        title: 'Utiliser Aix en trott dans le bon ordre',
+        paragraphs: [
+          "Commence par le planner pour eliminer les projets incompatibles avec l autonomie du jour. Utilise ensuite la carte pour comparer les directions, puis ouvre la fiche de la destination retenue. La page recharge intervient en dernier, comme verification logistique et non comme promesse.",
         ],
       },
     ],
     faq: [
       {
-        question: 'Quel est le bon niveau de distance pour un week-end simple ?',
-        answer: 'Souvent 7 a 30 km selon ton point de depart reel et ta marge batterie.',
+        question: 'Faut-il planifier les deux jours a l avance ?',
+        answer: 'Prepare deux options, mais decide le programme final selon la batterie, la meteo et les restrictions du jour.',
       },
       {
-        question: 'Quelle erreur faut-il eviter le week-end ?',
-        answer: 'Confondre temps disponible et autonomie suffisante.',
+        question: 'Peut-on enchainer deux longues sorties ?',
+        answer: 'Seulement si chaque sortie conserve sa propre marge et si la recharge entre les deux est complete. Une longue sortie plus une boucle locale reste souvent plus robuste.',
+      },
+      {
+        question: 'Ou placer une sortie mer dans le week-end ?',
+        answer: 'Dans un creneau dedie, avec depart rapproche ou retour alternatif. Elle ne doit pas etre ajoutee apres une autre sortie deja consommatrice.',
       },
     ],
     relatedSpotIds: ['barrage-de-bimont', 'lac-de-peyrolles', 'ventabren', 'le-tholonet-lac-zola'],
-    relatedGuideSlugs: ['balade-trottinette-sainte-victoire', 'balade-trottinette-peyrolles'],
+    relatedGuideSlugs: ['sortie-trottinette-aix-soir', 'recharge-trottinette-aix'],
     ctas: [
-      { label: 'Voir les sorties week-end', to: '/sorties?moment=weekend', description: 'Comparer les idees locales pour une demi-journee ou plus.' },
-      { label: 'Voir la carte', to: '/carte', description: 'Contraster les zones nature et village autour d Aix.' },
-      { label: 'Ouvrir le planner', to: '/planner', description: 'Verifier si la sortie reste simple avec ta batterie.' },
+      { label: 'Construire le programme principal', to: '/planner', description: 'Comparer l autonomie disponible avec une destination precise.' },
+      { label: 'Choisir une option de repli', to: '/sorties?distance=0%E2%80%933%20km', description: 'Garder une boucle courte autour d Aix sous la main.' },
+      { label: 'Comparer les directions', to: '/carte', description: 'Visualiser les sorties nature, village et lac.' },
+    ],
+    sources: [
+      {
+        label: 'Office de tourisme d Aix-en-Provence - Transports doux',
+        url: 'https://www.aixenprovencetourism.com/acces-transports/transports-doux/',
+        note: 'Reperes generaux sur les mobilites douces autour d Aix.',
+      },
+      {
+        label: 'Prefecture des Bouches-du-Rhone - Acces aux massifs',
+        url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        note: 'Restrictions saisonnieres a verifier le jour de la sortie.',
+      },
     ],
   },
   {
@@ -828,44 +1023,80 @@ export const editorialGuides: EditorialGuide[] = [
   },
   {
     slug: 'recharge-trottinette-cassis-marseille',
-    title: 'Recharge trottinette Cassis Marseille : verifier avant de compter dessus',
-    shortTitle: 'Recharge trottinette Cassis Marseille',
+    title: 'Recharge et autonomie pour une sortie vers Marseille ou Cassis',
+    shortTitle: 'Autonomie Marseille ou Cassis',
     description:
-      "Reperez des pistes de recharge trottinette vers Cassis ou Marseille sans confondre borne voiture, prise 220V et solution vraiment exploitable.",
+      "Comparez Marseille et Cassis pour preparer l'autonomie, le point de depart, une recharge verifiee et une strategie de retour depuis Aix.",
     intro:
-      "Sur Cassis ou Marseille, la recharge devient souvent un faux raccourci mental. Le vrai sujet n est pas d avoir une borne sur la carte, mais de confirmer une solution compatible avec le chargeur de la trottinette.",
+      "Marseille et Cassis posent un probleme different des sorties locales : il faut conserver de l energie pour circuler sur place et garantir le retour. Une borne visible sur une carte ne resout pas ce budget tant qu une prise compatible et son acces ne sont pas confirmes.",
     sections: [
       {
-        title: 'Ce qu il faut verifier en priorite',
+        title: 'Calculer trois budgets, pas un seul aller-retour',
         paragraphs: [
-          "Une borne voiture ne suffit pas. Il faut une prise 220V ou Schuko explicitement accessible, avec des conditions d acces claires.",
-          "Sur les destinations mer, une recharge a verifier ne doit jamais porter tout le plan de retour a elle seule.",
+          "Separe l approche, la circulation locale et le retour. Ajoute ensuite une marge de securite pour le relief, le vent, les detours et la baisse de rendement de la batterie. Le resultat reste une estimation indicative a verifier.",
+        ],
+        items: [
+          'Approche : depuis Aix, une gare, un parking ou un autre point de depart.',
+          'Usage local : port, littoral, detours et recherche d un stationnement sur.',
+          'Retour : trajet jusqu au train, a la voiture ou au domicile, avec reserve.',
         ],
       },
       {
-        title: 'Comment utiliser le site sur ce sujet',
+        title: 'Marseille : plus de solutions, plus de circulation',
         paragraphs: [
-          "Ouvre d abord la page recharge pour la logique de compatibilite, puis la fiche de sortie retenue pour voir si la recharge change vraiment la faisabilite.",
-          "Si tu restes en zone limite meme avec recharge, pense train, voiture ou retour partiel.",
+          "Marseille offre plusieurs points d approche et davantage de services, mais les distances internes et la circulation peuvent consommer du temps et de la batterie. Choisis un secteur precis plutot que de compter sur une grande boucle urbaine improvisee.",
+          "Un retour en transport peut etre envisage, mais ses horaires et les conditions d embarquement de la trottinette doivent etre verifies avant le depart.",
+        ],
+      },
+      {
+        title: 'Cassis : integrer la liaison gare-centre et le relief',
+        paragraphs: [
+          "L office de tourisme indique que la gare se situe a environ trois kilometres du centre, avec une liaison en pente et une navette selon les horaires. Une arrivee en train ne supprime donc pas le budget batterie local.",
+          "Le centre et le port peuvent aussi imposer de marcher dans les secteurs pietons ou reglementes. Au retour, conserve l energie necessaire pour rejoindre la gare ou ton point de stationnement.",
+        ],
+      },
+      {
+        title: 'Une borne voiture n est pas une prise trottinette',
+        paragraphs: [
+          "La base nationale IRVE recense des infrastructures de recharge pour vehicules electriques. Elle ne garantit pas une prise domestique 220V ou Schuko utilisable avec un chargeur de trottinette.",
+          "Avant d inclure une recharge, confirme le connecteur, l autorisation, les horaires, la duree disponible et la possibilite de rester pres de la trottinette. Sans confirmation, considere la recharge indisponible.",
+        ],
+      },
+      {
+        title: 'Strategie de retour',
+        paragraphs: [
+          "Si le planner classe la sortie comme trop longue, rapproche le depart avant de chercher une prise. Si elle reste limite, fixe un seuil de demi-tour et un retour alternatif. La page recharge sert a controler une solution deja identifiee ; le guide general recharge autour d Aix reste la reference pour comprendre les statuts.",
+        ],
+        items: [
+          'Scenario A : depart local, boucle courte, retour au meme point.',
+          'Scenario B : approche multimodale, horaire retour verrouille, marge gare incluse.',
+          'Scenario C : recharge confirmee, mais retour encore possible sans charge complete.',
         ],
       },
     ],
-    faq: [
-      {
-        question: 'Une borne reperee sur une appli suffit-elle ?',
-        answer: 'Non. Elle indique un lieu, pas une compatibilite trottinette garantie.',
-      },
-      {
-        question: 'Quand la recharge devient-elle utile ?',
-        answer: 'Quand elle est confirmee et integree dans un plan avec marge, pas comme seul filet de securite.',
-      },
-    ],
-    relatedSpotIds: ['cassis', 'marseille-vieux-port-littoral', 'la-ciotat', 'carry-le-rouet'],
-    relatedGuideSlugs: ['recharge-trottinette-aix', 'sortie-trottinette-cassis'],
+    faq: [],
+    relatedSpotIds: ['cassis', 'marseille-vieux-port-littoral'],
+    relatedGuideSlugs: ['recharge-trottinette-aix', 'sortie-trottinette-cassis', 'sortie-trottinette-marseille'],
     ctas: [
-      { label: 'Voir la recharge', to: '/recharge', description: 'Revenir aux statuts 220V, voiture, prive et a verifier.' },
-      { label: 'Voir la fiche Cassis', to: '/sorties/cassis', description: 'Croiser recharge et longue distance sur un cas concret.' },
-      { label: 'Voir la fiche Marseille', to: '/sorties/marseille-vieux-port-littoral', description: 'Comparer une autre destination mer avec les memes limites.' },
+      { label: 'Tester le point de depart', to: '/planner', description: 'Comparer un depart depuis Aix avec un depart rapproche.' },
+      { label: 'Controler une solution de recharge', to: '/recharge', description: 'Distinguer prise 220V, borne voiture et acces a verifier.' },
+    ],
+    sources: [
+      {
+        label: 'Cassis Tourisme - Venir a Cassis',
+        url: 'https://www.ot-cassis.com/infos-pratiques/venir-a-cassis-transports/',
+        note: 'Distance et liaison entre la gare, les Gorguettes et le centre.',
+      },
+      {
+        label: 'Cassis Tourisme - Se deplacer a Cassis',
+        url: 'https://www.ot-cassis.com/infos-pratiques/se-deplacer-a-cassis/',
+        note: 'Navettes, zones pietonnes et contraintes locales a verifier.',
+      },
+      {
+        label: 'Base nationale des IRVE',
+        url: 'https://transport.data.gouv.fr/datasets/base-nationale-des-irve-data-gouv-infrastructures-de-recharge-pour-vehicules-electriques-donnees-statiques',
+        note: 'Registre des bornes pour vehicules electriques, distinct d un inventaire de prises 220V pour trottinettes.',
+      },
     ],
   },
 ];

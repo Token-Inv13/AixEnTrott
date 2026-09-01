@@ -20,19 +20,22 @@ export function GuideDetailPage() {
   const relatedGuides = guide.relatedGuideSlugs
     .map((relatedSlug) => editorialGuides.find((item) => item.slug === relatedSlug))
     .filter((item): item is (typeof editorialGuides)[number] => Boolean(item));
+  const ctaGridClass = guide.ctas.length === 3 ? 'md:grid-cols-3' : 'sm:grid-cols-2';
 
-  const faqSchema = {
-    '@type': 'FAQPage',
-    '@id': `https://aixentrott.fr${getEditorialGuidePath(guide.slug)}#faq`,
-    mainEntity: guide.faq.map((item) => ({
-      '@type': 'Question',
-      name: item.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: item.answer,
-      },
-    })),
-  };
+  const faqSchema = guide.faq.length
+    ? {
+        '@type': 'FAQPage',
+        '@id': `https://aixentrott.fr${getEditorialGuidePath(guide.slug)}#faq`,
+        mainEntity: guide.faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -52,7 +55,7 @@ export function GuideDetailPage() {
             { name: 'Guides', path: '/guides' },
             { name: guide.shortTitle, path: getEditorialGuidePath(guide.slug) },
           ]),
-          faqSchema,
+          ...(faqSchema ? [faqSchema] : []),
         ])}
       />
 
@@ -65,7 +68,7 @@ export function GuideDetailPage() {
         <h1 className="mt-2 max-w-4xl text-3xl font-semibold tracking-tight text-slate-950">{guide.title}</h1>
         <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">{guide.intro}</p>
 
-        <div className="mt-6 grid gap-3 md:grid-cols-3">
+        <div className={`mt-6 grid gap-3 ${ctaGridClass}`}>
           {guide.ctas.map((cta) => (
             <Link
               key={cta.label}
@@ -88,21 +91,32 @@ export function GuideDetailPage() {
                 {section.paragraphs.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
+                {section.items?.length ? (
+                  <ul className="space-y-2 pl-5 text-sm leading-6 text-slate-600">
+                    {section.items.map((item) => (
+                      <li key={item} className="list-disc pl-1 marker:text-sky">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
             </article>
           ))}
 
-          <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
-            <h2 className="text-xl font-semibold text-slate-950">Questions utiles</h2>
-            <div className="mt-4 space-y-3">
-              {guide.faq.map((item) => (
-                <article key={item.question} className="rounded-2xl bg-slate-50 p-4">
-                  <h3 className="text-sm font-semibold text-slate-950">{item.question}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{item.answer}</p>
-                </article>
-              ))}
-            </div>
-          </section>
+          {guide.faq.length ? (
+            <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+              <h2 className="text-xl font-semibold text-slate-950">Questions utiles</h2>
+              <div className="mt-4 space-y-3">
+                {guide.faq.map((item) => (
+                  <article key={item.question} className="rounded-2xl bg-slate-50 p-4">
+                    <h3 className="text-sm font-semibold text-slate-950">{item.question}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{item.answer}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </div>
 
         <div className="space-y-4">
@@ -145,6 +159,29 @@ export function GuideDetailPage() {
                     <p className="font-semibold text-slate-950">{relatedGuide.shortTitle}</p>
                     <p className="mt-2 text-sm leading-6 text-slate-600">{relatedGuide.description}</p>
                   </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          {guide.sources?.length ? (
+            <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+              <h2 className="text-lg font-semibold text-slate-950">Sources a verifier</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Ces sources cadrent les faits externes. Horaires, acces et regles peuvent evoluer.
+              </p>
+              <div className="mt-4 space-y-3">
+                {guide.sources.map((source) => (
+                  <a
+                    key={source.url}
+                    href={source.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block rounded-2xl bg-slate-50 p-4 transition hover:bg-sky-50/60"
+                  >
+                    <p className="break-words text-sm font-semibold text-sky">{source.label}</p>
+                    {source.note ? <p className="mt-2 text-sm leading-6 text-slate-600">{source.note}</p> : null}
+                  </a>
                 ))}
               </div>
             </section>
