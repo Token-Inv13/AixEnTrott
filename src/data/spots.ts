@@ -665,11 +665,81 @@ const rawSpots: SpotInput[] = [
     duration: '2 h à 4 h',
     moods: ['nature', 'patrimoine'],
     description:
-      'Le bon compromis entre route et paysage si tu veux approcher Sainte-Victoire sans partir sur une journée trop ambitieuse.',
-    tips: ['Vérifie la chaleur et le vent.', 'Sortie plus agréable tôt le matin.'],
+      'Une approche courte vers Le Tholonet pour voir Sainte-Victoire depuis la route et le village, avant une éventuelle marche préparée dans le Grand Site.',
+    tips: [
+      'Reste sur les voies autorisées et traite les sentiers du massif comme des parcours pédestres.',
+      'Entre juin et septembre, consulte la carte préfectorale d’accès aux massifs la veille au soir.',
+      'Le relief, la chaleur et la circulation sur la RD17 justifient un départ tôt et une marge batterie.',
+    ],
     latitude: 43.5298,
     longitude: 5.5231,
     rechargeStatus: 'none',
+    editorial: {
+      introduction: [
+        'Cette fiche propose une approche de Sainte-Victoire par Le Tholonet, sans la confondre avec la randonnée du lac Zola ni avec une visite du parc de Roques-Hautes. L’intérêt est d’abord paysager : quitter Aix, rejoindre le village et observer progressivement la montagne depuis les routes ouvertes.',
+        'Le Grand Site réunit des espaces naturels protégés, des routes, des aires d’accueil et des sentiers. La présence d’itinéraires de randonnée ou de VTT ne vaut pas autorisation générale pour une trottinette électrique : au-delà du secteur routier, prévois de marcher et respecte les panneaux du jour.',
+        'La sortie reste proche d’Aix, mais elle n’est pas anodine. La RD17 est partagée avec les voitures, le relief consomme davantage de batterie et l’accès aux massifs peut être limité ou interdit quotidiennement en été selon le risque incendie.',
+      ],
+      profile: {
+        environment: 'Village au pied de Sainte-Victoire, route départementale panoramique et lisière d’un Grand Site de France.',
+        terrain: 'Approche routière vallonnée ; les secteurs naturels et sentiers sont à considérer comme pédestres sauf indication locale explicite.',
+        travelStyle: 'Aller-retour ciblé jusqu’au Tholonet, pause paysagère, puis marche courte éventuelle depuis un accès officiellement ouvert.',
+        bestFor: 'Voir Sainte-Victoire sans engager la longue boucle de Zola ou une randonnée exigeante dans le massif.',
+      },
+      routeSections: [
+        {
+          title: 'Sortie d’Aix',
+          text: 'Prépare une liaison vers la route Cézanne en évitant de supposer une piste continue. Les carrefours urbains et la circulation augmentent avant que le paysage ne s’ouvre.',
+        },
+        {
+          title: 'Le Tholonet',
+          text: 'Utilise le village comme objectif routier et point de pause. Garde les accès riverains libres et ne transforme pas un bas-côté ou une entrée de propriété en stationnement improvisé.',
+        },
+        {
+          title: 'Lisière du massif',
+          text: 'Si tu prolonges la découverte, choisis uniquement un accès ouvert et balisé, sécurise la trottinette et poursuis à pied. Cette fiche ne recommande aucun sentier en trottinette.',
+        },
+      ],
+      access: [
+        'Vérifie la destination exacte avant de partir : village du Tholonet, aire officielle ou simple point de vue ne répondent pas à la même logistique.',
+        'Du 1er juin au 30 septembre, consulte la carte préfectorale publiée vers 18 h pour connaître l’ouverture du lendemain.',
+      ],
+      watchOutFor: [
+        'Trafic sur la RD17, virages, dénivelé et absence de continuité cyclable garantie depuis Aix.',
+        'Fermeture possible du massif en été et règles locales affichées aux entrées toute l’année.',
+        'Chaleur, vent et absence de recharge connue sur cette sortie courte mais vallonnée.',
+      ],
+      verificationNote:
+        'Préparation réalisée à distance à partir des informations de la Métropole et de la Préfecture. L’ouverture, le stationnement, la signalisation et l’autorisation de circulation doivent être contrôlés le jour du départ.',
+      sources: [
+        {
+          label: 'Métropole Aix-Marseille-Provence — Grand Site Concors Sainte-Victoire',
+          url: 'https://ampmetropole.fr/missions/environnement/nature-foret-et-paysage/concors-sainte-victoire-un-grand-site-de-france/',
+        },
+        {
+          label: 'Préfecture des Bouches-du-Rhône — Accès aux massifs forestiers',
+          url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Approche routière d’Aix vers Le Tholonet, limitée à des voies ouvertes ; toute prolongation sur un sentier du Grand Site doit être préparée comme une marche distincte.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Route partagée, continuité non garantie',
+          notes:
+            'Aucune source ne permet d’affirmer une liaison cyclable protégée et continue entre Aix, Le Tholonet et les accès naturels.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Virages, circulation, pente et fréquentation touristique imposent une allure prudente et une arrivée avant les heures chargées.',
+        },
+        parkingAdvice:
+          'Utilise uniquement une aire autorisée et ouverte ; ne bloque ni bas-côté, ni portail, ni accès de secours au massif.',
+        bestTime: 'Tôt le matin, hors forte chaleur et après confirmation de l’ouverture du massif',
+      },
+    },
   },
   {
     id: 'lac-de-peyrolles',
@@ -1310,11 +1380,81 @@ const rawSpots: SpotInput[] = [
     duration: '2 h à 4 h',
     moods: ['nature', 'calme'],
     description:
-      'Décor minéral surprenant et assez atypique, intéressant pour une sortie plus nature en fin d’après-midi.',
-    tips: ['Vérifie la chaleur et l’état du terrain.', 'Bonne option si tu veux quelque chose de différent.'],
+      'Une destination de marche à Vitrolles, le long de la Cadière jusqu’à son exsurgence au pied du plateau de l’Arbois, à rejoindre par un départ local.',
+    tips: [
+      'Utilise l’avenue Jean-Monnet et le secteur du Petit Lac comme repères, puis poursuis à pied.',
+      'La baignade est interdite sur le parcours présenté par le Département.',
+      'Vérifie l’accès au massif de l’Arbois en été avant toute prolongation au-delà de la source.',
+    ],
     latitude: 43.4558,
     longitude: 5.2487,
     rechargeStatus: 'none',
+    editorial: {
+      introduction: [
+        'Les Sources de l’Infernet ne sont pas une simple route panoramique : la destination correspond à une balade pédestre qui suit la Cadière depuis Vitrolles vers une exsurgence située au pied du plateau de l’Arbois. Le contraste entre quartier urbain, sous-bois humide et terres rouges fait l’intérêt du lieu.',
+        'Le Département indique un départ avenue Jean-Monnet, un parking au niveau du panneau « Le Petit Lac » et une promenade facile d’environ trois kilomètres. Pour Aix en trott, le scénario cohérent consiste à rejoindre ce départ local par un moyen adapté, puis à marcher avec ou après avoir sécurisé la trottinette.',
+        'La promenade traverse des secteurs fréquentés et sensibles. La baignade est interdite, les caillebotis et abords de l’eau se parcourent à pied, et toute montée vers le plateau doit être vérifiée séparément selon l’ouverture estivale des massifs.',
+      ],
+      profile: {
+        environment: 'Rivière urbaine, ripisylve ombragée, prairie puis reliefs ocre-rouge au pied du plateau de Vitrolles.',
+        terrain: 'Chemin de promenade avec passages humides et caillebotis ; prolongations plus naturelles à ne pas assimiler à une voie roulable.',
+        travelStyle: 'Départ local à Vitrolles, approche très courte en trottinette si elle est autorisée, puis découverte essentiellement à pied.',
+        bestFor: 'Une marche fraîche et dépaysante, distincte d’une sortie sur le plateau exposé de l’Arbois.',
+      },
+      routeSections: [
+        {
+          title: 'Prés de Croze',
+          text: 'Le portique du chemin vert avenue Jean-Monnet marque le départ décrit par le Département. Repère le stationnement autorisé avant d’entrer sur la promenade.',
+        },
+        {
+          title: 'Le long de la Cadière',
+          text: 'Le chemin suit la rivière sous les arbres puis traverse une prairie. Ralentis dès les abords du parcours et marche sur les passages étroits ou fréquentés.',
+        },
+        {
+          title: 'Vallon de l’Infernet',
+          text: 'La terre rouge et la source se trouvent plus en amont. Les caillebotis, rochers et abords de vasques exigent une progression pédestre ; ne cherche pas une boucle motorisée sur le plateau.',
+        },
+      ],
+      access: [
+        'Prévois un départ local à Vitrolles plutôt qu’un aller-retour intégral depuis Aix, dont la distance réelle dépend fortement de l’itinéraire.',
+        'Le repère officiel est le parking proche du panneau « Le Petit Lac » ; vérifie sur place sa disponibilité et les règles d’attache de la trottinette.',
+      ],
+      watchOutFor: [
+        'Baignade formellement interdite le long du parcours présenté par le Département.',
+        'Sol potentiellement humide, caillebotis, racines et cohabitation avec les marcheurs.',
+        'Accès au plateau et aux massifs soumis à vérification quotidienne en période de risque incendie.',
+      ],
+      verificationNote:
+        'Le point de départ, la distance pédestre et l’interdiction de baignade proviennent du Département. L’état du chemin, le stationnement et les accès au plateau restent à contrôler sur place.',
+      sources: [
+        {
+          label: 'Département des Bouches-du-Rhône — La Cadière et la source de l’Infernet',
+          url: 'https://www.departement13.fr/vivre-en-provence/redecouvrir-la-provence/idees-de-balades/en-vadrouille/la-cadiere-source-de',
+        },
+        {
+          label: 'Préfecture des Bouches-du-Rhône — Accès aux massifs forestiers',
+          url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Départ local avenue Jean-Monnet à Vitrolles, puis promenade pédestre le long de la Cadière vers la source ; aucune continuité trottinette n’est annoncée sur le chemin naturel.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Approche locale puis chemin pédestre',
+          notes:
+            'Le parcours institutionnel est présenté comme une balade à pied et comporte des caillebotis ; il ne constitue pas une piste cyclable continue.',
+        },
+        roadSafety: {
+          level: 'moderate',
+          notes:
+            'La vigilance porte surtout sur l’arrivée urbaine, les passages humides, les promeneurs et la transition vers le terrain naturel.',
+        },
+        parkingAdvice:
+          'Utilise le stationnement autorisé près du Petit Lac s’il est ouvert, sans laisser la trottinette isolée ni gêner l’entrée du chemin.',
+        bestTime: 'Matin ou fin de journée sèche, après contrôle de l’accès au massif en été',
+      },
+    },
   },
   {
     id: 'grottes-de-cales',
@@ -1361,11 +1501,85 @@ const rawSpots: SpotInput[] = [
     duration: '4 h à 7 h',
     moods: ['patrimoine', 'nature', 'village'],
     description:
-      'Sortie lointaine à envisager comme une journée complète: fleuve, ponts, remparts et ambiance de ville historique.',
-    tips: ['Prévois le retour avant de partir.', 'Bon candidat pour train + trottinette.'],
+      'Une journée combinée jusqu’à Avignon, puis une exploration locale entre remparts, Rhône et île de la Barthelasse, avec retour réservé avant le départ.',
+    tips: [
+      'Ne prévois pas Aix–Avignon intégralement en trottinette : organise train ou voiture puis un départ local.',
+      'Vérifie les règles du transporteur pour une trottinette pliée et les horaires de retour le jour choisi.',
+      'La navette fluviale est saisonnière ; confirme ses horaires et l’acceptation de l’engin avant de compter dessus.',
+    ],
     latitude: 43.9641,
     longitude: 4.8137,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Avignon et la Barthelasse forment une sortie de destination, pas une liaison directe conseillée depuis Aix. Les près de quatre-vingts kilomètres indicatifs rendent indispensable un transport principal en train ou en voiture, suivi d’une boucle locale dimensionnée à la batterie restante.',
+        'L’île apporte une respiration immédiate face aux remparts. Avignon Tourisme présente une boucle cyclable d’environ treize kilomètres et une navette fluviale gratuite entre le quai de la Ligne et la Barthelasse, mais les horaires sont saisonniers et l’acceptation d’une trottinette doit être confirmée.',
+        'Le centre historique se prête davantage à la marche qu’à une traversée rapide. L’objectif est donc de séparer les étapes : arrivée, stationnement ou sortie de gare, visite lente des abords, boucle insulaire si les conditions le permettent, puis retour à l’heure prévue.',
+      ],
+      profile: {
+        environment: 'Centre patrimonial dense, quais du Rhône, ponts et campagne insulaire à quelques minutes des remparts.',
+        terrain: 'Centre urbain à parcourir lentement, puis boucle globalement plane sur la Barthelasse avec revêtement à vérifier.',
+        travelStyle: 'Journée multimodale : transport jusqu’à Avignon, exploration locale courte, retour réservé et aucune dépendance à une recharge improvisée.',
+        bestFor: 'Associer patrimoine et paysage fluvial sans engager un aller-retour routier irréaliste depuis Aix.',
+      },
+      routeSections: [
+        {
+          title: 'Arrivée à Avignon',
+          text: 'Choisis Avignon Centre ou un stationnement périphérique comme véritable point de départ. Aix TGV et Avignon TGV ne se confondent pas avec les centres-villes : intègre les correspondances.',
+        },
+        {
+          title: 'Remparts et quai de la Ligne',
+          text: 'Circule à allure basse aux abords touristiques et passe à pied dans les zones denses. Le quai de la Ligne est le repère de la navette vers l’île.',
+        },
+        {
+          title: 'Boucle de la Barthelasse',
+          text: 'La boucle officielle à vélo donne une échelle locale, pas une autorisation automatique pour tous les engins. Vérifie le revêtement, les crues éventuelles et garde assez d’autonomie pour revenir à la gare.',
+        },
+      ],
+      access: [
+        'Compare le train depuis Aix-centre via Marseille avec un départ depuis Aix TGV ; horaires, prix et correspondances changent selon la date.',
+        'Si tu emportes la trottinette, contrôle les dimensions, le pliage et les règles du train choisi avant d’acheter le billet.',
+      ],
+      watchOutFor: [
+        'Affluence piétonne dans le centre historique et sur les quais, notamment pendant les événements.',
+        'Horaires variables de la navette fluviale et absence de garantie concernant le transport d’une trottinette.',
+        'Retour longue distance à verrouiller avant la boucle locale ; recharge 220 V non confirmée sur cette fiche.',
+      ],
+      verificationNote:
+        'La boucle de la Barthelasse et la navette sont documentées par Avignon Tourisme ; les correspondances ferroviaires proviennent de SNCF Connect. Vérifie les horaires, règles bagages, crues et accès le jour du voyage.',
+      sources: [
+        {
+          label: 'Avignon Tourisme — Navette fluviale vers la Barthelasse',
+          url: 'https://avignon-tourisme.com/offres/navette-fluviale-bac-a-traille-avignon-fr-4143900/',
+        },
+        {
+          label: 'Avignon Tourisme — Guide de destination et balade de la Barthelasse',
+          url: 'https://avignon-tourisme.com/app/uploads/avignon/2025/02/Avignon-Votre-Destination-2025.pdf',
+        },
+        {
+          label: 'SNCF Connect — Horaires Aix-en-Provence–Avignon',
+          url: 'https://www.sncf-connect.com/train/horaires/aix-en-provence/avignon',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Transport principal jusqu’à Avignon, puis boucle locale entre le centre, le quai de la Ligne et la Barthelasse ; ne pas interpréter la distance depuis Aix comme un trajet conseillé en trottinette.',
+        cyclingInfrastructure: {
+          status: 'partial',
+          label: 'Boucle locale documentée, continuités à confirmer',
+          notes:
+            'Avignon Tourisme documente une boucle à vélo sur la Barthelasse, mais les liaisons depuis la gare et les règles applicables aux trottinettes restent à vérifier.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Piétons, quais, traversées, circulation urbaine et logistique de retour exigent un parcours local court et une allure adaptée.',
+        },
+        parkingAdvice:
+          'Ancre la sortie à la gare ou à un parking autorisé choisi à l’avance ; ne laisse pas la trottinette sans surveillance pendant la visite du centre.',
+        bestTime: 'Journée hors forte affluence, avec aller et retour réservés avant le départ',
+      },
+    },
   },
   {
     id: 'luberon-roussillon',
@@ -1378,11 +1592,85 @@ const rawSpots: SpotInput[] = [
     duration: '4 h à 7 h',
     moods: ['village', 'nature', 'patrimoine'],
     description:
-      'Village d’ocre très marquant visuellement, à traiter comme une escapade Provence plutôt qu’une simple balade de proximité.',
-    tips: ['Prépare un retour ou une liaison ferroviaire.', 'L’ocre et le vent sec peuvent compter.'],
+      'Une escapade locale autour du village d’ocre, à rejoindre en voiture ou transport combiné avant une découverte lente et principalement pédestre.',
+    tips: [
+      'Stationne à l’entrée du village et garde le centre ancien pour la marche.',
+      'Le Sentier des Ocres comporte du sable et des marches : n’y engage pas la trottinette.',
+      'Privilégie matin, printemps ou automne pour limiter chaleur et fréquentation.',
+    ],
     latitude: 43.9007,
     longitude: 5.2927,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Roussillon vaut pour la relation entre le village et le paysage d’ocre, mais sa distance depuis Aix impose un départ local. Cette fiche ne propose pas de relier les deux villes en trottinette : elle aide à organiser une courte exploration une fois arrivé dans le Luberon.',
+        'Les parkings aménagés se trouvent à l’entrée du village et le centre est principalement piéton. Le Sentier des Ocres est lui aussi une visite à pied, avec sable, marches et conditions d’ouverture propres ; la trottinette doit rester en dehors de ce parcours.',
+        'La bonne échelle est une demi-journée : arrivée matinale, stationnement autorisé, marche dans les ruelles, éventuelle visite du sentier, puis retour avant les heures chargées. La poussière, la chaleur et le risque incendie peuvent modifier le programme.',
+      ],
+      profile: {
+        environment: 'Village perché aux façades colorées, falaises d’ocre et paysages du Parc naturel régional du Luberon.',
+        terrain: 'Routes d’approche vallonnées, parkings périphériques, ruelles et Sentier des Ocres à parcourir à pied.',
+        travelStyle: 'Transport jusqu’au secteur, courte liaison locale éventuelle, puis visite pédestre structurée autour de l’ocre.',
+        bestFor: 'Une demi-journée visuelle et patrimoniale avec peu de kilomètres roulés sur place.',
+      },
+      routeSections: [
+        {
+          title: 'Arrivée au village',
+          text: 'Choisis un parking officiel à l’entrée et vérifie ses conditions du jour. Les routes départementales d’accès ne constituent pas une piste protégée.',
+        },
+        {
+          title: 'Centre de Roussillon',
+          text: 'Les places, le beffroi et les ruelles se découvrent lentement. Passe à pied dès que la largeur, la pente ou la fréquentation rendent la circulation inadaptée.',
+        },
+        {
+          title: 'Sentier des Ocres',
+          text: 'Traite le site comme une visite pédestre séparée. Les boucles comportent du sable et de nombreuses marches, avec fermeture temporaire possible pour pluie ou sécurité.',
+        },
+      ],
+      access: [
+        'Depuis Aix, privilégie la voiture ou un itinéraire combiné préparé ; aucune liaison ferroviaire directe jusqu’au village n’est annoncée.',
+        'Les parkings sont payants selon les périodes et le centre est principalement piéton : confirme tarifs et accès avant l’arrivée.',
+      ],
+      watchOutFor: [
+        'Pentes, rues étroites et fréquentation élevée dans le village, particulièrement en été.',
+        'Poussière d’ocre, sable et marches sur le sentier, avec vêtements et chaussures adaptés.',
+        'Restrictions d’accès aux espaces forestiers du Vaucluse en période de risque incendie.',
+      ],
+      verificationNote:
+        'Les conditions de visite et de stationnement proviennent de Destination Luberon. Horaires, tarifs, fermeture du Sentier des Ocres et accès aux massifs doivent être vérifiés avant le déplacement.',
+      sources: [
+        {
+          label: 'Destination Luberon — Visiter Roussillon',
+          url: 'https://www.destinationluberon.com/page/roussillon+50993.html',
+        },
+        {
+          label: 'Destination Luberon — Sentier des Ocres',
+          url: 'https://www.destinationluberon.com/page/sentier-des-ocres+51011.html',
+        },
+        {
+          label: 'Préfecture de Vaucluse — Réglementation d’accès aux massifs forestiers',
+          url: 'https://www.vaucluse.gouv.fr/index.php/Actions-de-l-Etat/Transition-ecologique-et-prevention-des-risques/Foret/Defense-des-Forets-contre-l-Incendie-DFCI/La-reglementation-de-l-acces-aux-massifs-forestiers/Reglementation-de-l-acces-aux-massifs-forestiers',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Départ local depuis un parking périphérique, visite du centre à pied et Sentier des Ocres traité comme une activité pédestre distincte.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Accès routier, centre surtout piéton',
+          notes:
+            'Aucune continuité protégée depuis Aix n’est établie ; les espaces majeurs de la visite se parcourent principalement à pied.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Routes d’approche, pente, ruelles étroites et affluence imposent un départ local et des passages à pied.',
+        },
+        parkingAdvice:
+          'Utilise un parking aménagé à l’entrée du village, contrôle le tarif et sécurise la trottinette avant la visite pédestre.',
+        bestTime: 'Matin au printemps ou en automne ; en été, éviter les heures chaudes et chargées',
+      },
+    },
   },
   {
     id: 'luberon-gordes',
@@ -1395,11 +1683,81 @@ const rawSpots: SpotInput[] = [
     duration: '4 h à 7 h',
     moods: ['village', 'patrimoine', 'nature'],
     description:
-      'Village perché emblématique, plus ambitieux mais très satisfaisant si tu veux une vraie sortie longue avec paysage de carte postale.',
-    tips: ['Meilleur avec une journée large.', 'Logistique de retour à anticiper sérieusement.'],
+      'Une visite de village perché à organiser depuis un départ local, avec arrivée matinale, stationnement périphérique et centre historique parcouru à pied.',
+    tips: [
+      'Ne traite pas Aix–Gordes comme un aller-retour normal en trottinette.',
+      'Arrive tôt, surtout en été ou le mardi matin, jour de marché.',
+      'Les sites annexes comme Sénanque ou les Bories demandent une logistique distincte, pas une extension improvisée.',
+    ],
     latitude: 43.9119,
     longitude: 5.2009,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Gordes est la plus verticale des deux fiches du Luberon de ce lot. Le village domine la vallée, ses rues sont pentues et les parkings entourent le centre : l’intérêt n’est pas d’accumuler des kilomètres, mais de gérer proprement l’arrivée et la marche dans le bourg.',
+        'Destination Luberon signale une circulation réglementée en saison, des places limitées au cœur du village et des parkings payants autour du centre. Depuis Aix, un transport principal en voiture ou une combinaison préparée est donc plus réaliste qu’un parcours intégral en trottinette.',
+        'Le mardi matin et la haute saison renforcent l’affluence. Une fois stationné, garde la trottinette sécurisée et visite le château, les ruelles et les points de vue à pied ; Sénanque et le Village des Bories ne doivent être ajoutés qu’avec un plan séparé.',
+      ],
+      profile: {
+        environment: 'Village minéral perché, belvédères sur la vallée et routes sinueuses du Luberon.',
+        terrain: 'Forte pente autour du bourg, chaussées partagées et centre ancien adapté à la marche.',
+        travelStyle: 'Arrivée locale tôt le matin, stationnement périphérique, visite pédestre et retour sans compter sur une recharge non confirmée.',
+        bestFor: 'Une demi-journée patrimoniale concentrée plutôt qu’une longue boucle roulée entre plusieurs sites.',
+      },
+      routeSections: [
+        {
+          title: 'Approche de Gordes',
+          text: 'Les routes montent vers le village et restent partagées. Conserve une marge batterie importante si tu effectues une courte approche locale en trottinette.',
+        },
+        {
+          title: 'Parkings périphériques',
+          text: 'Choisis un parking officiel avant l’arrivée et vérifie horaires et tarifs. Évite de chercher une place dans les rues centrales pendant l’affluence.',
+        },
+        {
+          title: 'Centre perché',
+          text: 'Les calades, escaliers, passages serrés et points de vue se découvrent à pied. Ne roule pas au milieu des visiteurs et garde la trottinette sous contrôle.',
+        },
+      ],
+      access: [
+        'Depuis Aix, privilégie un départ local après transport en voiture ; les bus régionaux impliquent des correspondances dont l’acceptation des trottinettes n’est pas garantie.',
+        'Le mardi matin et l’été, arrive avant le pic de fréquentation et confirme les règles de circulation saisonnières.',
+      ],
+      watchOutFor: [
+        'Dénivelé marqué et consommation batterie supérieure à une distance équivalente sur terrain plat.',
+        'Circulation touristique, rues étroites et stationnement contraint autour du centre.',
+        'Accès aux massifs du Vaucluse susceptible d’être limité en été selon le risque incendie.',
+      ],
+      verificationNote:
+        'Les éléments de mobilité, de marché et de stationnement reposent sur Destination Luberon. Confirme les tarifs, les restrictions saisonnières et l’ouverture des espaces naturels avant le départ.',
+      sources: [
+        {
+          label: 'Destination Luberon — Visiter Gordes',
+          url: 'https://www.destinationluberon.com/decouvrir/villes-et-villages/gordes',
+        },
+        {
+          label: 'Préfecture de Vaucluse — Réglementation d’accès aux massifs forestiers',
+          url: 'https://www.vaucluse.gouv.fr/index.php/Actions-de-l-Etat/Transition-ecologique-et-prevention-des-risques/Foret/Defense-des-Forets-contre-l-Incendie-DFCI/La-reglementation-de-l-acces-aux-massifs-forestiers/Reglementation-de-l-acces-aux-massifs-forestiers',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Transport jusqu’au secteur de Gordes, éventuelle approche locale sur route partagée, puis centre ancien parcouru à pied depuis un parking officiel.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Routes partagées et centre pentu',
+          notes:
+            'Les sources décrivent l’accès et le stationnement, sans garantir de piste cyclable continue jusqu’au village.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Pente, virages, trafic touristique et nombreux piétons rendent la visite roulée inadaptée dans le centre.',
+        },
+        parkingAdvice:
+          'Choisis un parking périphérique officiel et évite les rues centrales ; sécurise la trottinette avant de poursuivre à pied.',
+        bestTime: 'Début de matinée hors mardi de marché, avec préférence pour le printemps ou l’automne',
+      },
+    },
   },
   {
     id: 'luberon-bonnieux',
@@ -1429,11 +1787,81 @@ const rawSpots: SpotInput[] = [
     duration: '1 h à 2 h',
     moods: ['village', 'nature'],
     description:
-      'Boucle simple vers un village perché à l’ouest d’Aix, utile pour une sortie courte avec un peu de respiration.',
-    tips: ['Privilégie une heure calme.', 'Le retour est plus agréable avant la nuit.'],
+      'Une sortie vallonnée vers un village-belvédère proche d’Aix, avec centre étroit, panorama et retour à préparer selon la batterie.',
+    tips: [
+      'Garde une marge pour la montée finale vers le centre perché.',
+      'Le stationnement en zone bleue et la fréquentation du cœur de village peuvent évoluer : lis la signalisation.',
+      'Les sentiers repérés par la commune ne sont pas automatiquement autorisés aux trottinettes électriques.',
+    ],
     latitude: 43.5719,
     longitude: 5.3552,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Éguilles se distingue des autres villages proches par son implantation en hauteur et son panorama sur les plaines du Pays d’Aix. La distance reste raisonnable, mais la montée et le retour exposé au vent demandent plus de marge qu’une boucle urbaine plate.',
+        'Le cœur ancien rassemble ruelles étroites, bâtiments en pierre et points de vue. La trottinette est utile pour l’approche, puis la marche devient plus adaptée à mesure que les rues se resserrent et que les piétons sont nombreux.',
+        'La commune met à disposition une carte interactive avec sentiers et services. Utilise-la comme outil de préparation, sans déduire qu’un sentier de randonnée est ouvert aux engins motorisés ; vérifie aussi la signalisation de stationnement au moment de la visite.',
+      ],
+      profile: {
+        environment: 'Village provençal perché à l’ouest d’Aix, rues anciennes et vues vers Sainte-Victoire et l’étang de Berre.',
+        terrain: 'Liaison périurbaine vallonnée, montée finale sensible à l’autonomie et centre à parcourir lentement.',
+        travelStyle: 'Aller-retour depuis Aix pour une pause panoramique, ou départ local si la batterie disponible est limitée.',
+        bestFor: 'Une sortie de deux heures mêlant effort modéré, village et point de vue sans logistique longue distance.',
+      },
+      routeSections: [
+        {
+          title: 'Liaison ouest',
+          text: 'Compare plusieurs itinéraires avant le départ et évite de supposer que la route la plus directe est la plus calme. Les aménagements peuvent être discontinus.',
+        },
+        {
+          title: 'Montée au village',
+          text: 'Réduis l’allure dans les derniers virages et conserve de la batterie pour le retour. Passe à pied si la pente, la largeur ou les piétons l’exigent.',
+        },
+        {
+          title: 'Centre et panorama',
+          text: 'Garde la visite compacte autour du centre ancien et des points de vue. Les chemins naturels repérés autour du village doivent être vérifiés séparément.',
+        },
+      ],
+      access: [
+        'La distance affichée part du centre d’Aix ; calcule le trajet réel depuis ton adresse et prévois une solution de demi-tour.',
+        'Si tu viens en voiture, utilise un stationnement autorisé hors des rues les plus étroites et respecte les zones à durée limitée.',
+      ],
+      watchOutFor: [
+        'Montée, vent et chaleur pouvant réduire l’autonomie utile.',
+        'Rues anciennes étroites, livraisons, piétons et visibilité limitée dans certains virages.',
+        'Aucune recharge 220 V confirmée ni continuité cyclable garantie sur cette fiche.',
+      ],
+      verificationNote:
+        'Le profil du village et les repères de découverte sont issus de la mairie et du Département. Les itinéraires, travaux, stationnement et accès naturels restent à vérifier le jour du départ.',
+      sources: [
+        {
+          label: 'Mairie d’Éguilles — Office de tourisme',
+          url: 'https://mairie-eguilles.fr/les-services-municip/office-du-tourisme/',
+        },
+        {
+          label: 'Département des Bouches-du-Rhône — Balade à Éguilles',
+          url: 'https://departement13.fr/vivre-en-provence/redecouvrir-la-provence/idees-de-balades/en-vadrouille/eguilles-balade-estivale',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Liaison vallonnée depuis Aix vers le centre d’Éguilles, avec approche à comparer sur carte et fin de visite principalement à pied dans le village.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Aménagements discontinus à confirmer',
+          notes:
+            'La commune recense des sentiers et services, mais aucune source ne garantit une piste continue depuis Aix ni l’accès des trottinettes aux chemins naturels.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'La montée, les virages et le centre étroit demandent une vitesse basse et une batterie conservée pour le retour.',
+        },
+        parkingAdvice:
+          'Respecte les zones réglementées et choisis un point d’attache autorisé, visible, hors des passages étroits du centre.',
+        bestTime: 'Matin ou fin d’après-midi hors forte chaleur, avec retour avant la nuit',
+      },
+    },
   },
   {
     id: 'ventabren',
@@ -1608,11 +2036,85 @@ const rawSpots: SpotInput[] = [
     duration: '1 h à 2 h',
     moods: ['nature', 'village'],
     description:
-      'Boucle courte à l’est d’Aix, utile pour sortir de la ville sans viser une logistique compliquée.',
-    tips: ['Bien pour une sortie en lumière douce.', 'La circulation locale peut compter.'],
+      'Une sortie proche vers Meyreuil, à organiser soit autour du village, soit comme approche du domaine de Valbrillant avant le sentier pédestre du Défens.',
+    tips: [
+      'Choisis avant le départ entre le village et Valbrillant : les deux objectifs ne forment pas une petite boucle automatique.',
+      'Le sentier du Défens est pédestre, vallonné et soumis aux règles estivales des massifs.',
+      'La commune distingue le vieux village, le Plan de Meyreuil et le Canet : vérifie le point d’arrivée exact.',
+    ],
     latitude: 43.4878,
     longitude: 5.5118,
     rechargeStatus: 'none',
+    editorial: {
+      introduction: [
+        'Meyreuil n’est pas un centre unique posé au bord d’une route : la commune se répartit entre le village en hauteur, le Plan plus commerçant et le quartier du Canet. Une sortie claire commence donc par le choix d’un seul objectif, plutôt que par une boucle improvisée entre ces secteurs.',
+        'Le domaine communal de Valbrillant donne accès au sentier pédestre du Défens, une boucle d’environ cinq kilomètres consacrée au passé minier et aux panoramas. Ce parcours comporte une montée sur l’ancien terril et doit rester une marche ; la trottinette sert seulement à l’approche si le stationnement et les règles locales le permettent.',
+        'Depuis Aix, la proximité peut donner une fausse impression de simplicité. Les axes d’arrivée sont partagés, le relief apparaît vite et les accès forestiers sont réglementés en été. Un aller-retour ciblé au village reste différent d’une demi-journée à Valbrillant.',
+      ],
+      profile: {
+        environment: 'Commune à plusieurs noyaux, campagne du bassin de l’Arc, village en hauteur et ancien paysage minier reboisé.',
+        terrain: 'Approche périurbaine partagée ; sentier du Défens pédestre avec montées, marches et pistes forestières.',
+        travelStyle: 'Sortie courte au village ou approche de Valbrillant suivie d’une marche patrimoniale, sans cumuler les deux par défaut.',
+        bestFor: 'Comprendre le paysage minier du Pays d’Aix tout en gardant une logistique de proximité.',
+      },
+      routeSections: [
+        {
+          title: 'Choisir le bon Meyreuil',
+          text: 'Saisis une destination précise : village, Plan ou domaine de Valbrillant. La distance et le relief changent sensiblement selon ce choix.',
+        },
+        {
+          title: 'Domaine de Valbrillant',
+          text: 'Le départ du sentier du Défens se situe près du domaine. Le Département mentionne un parking non aménagé : vérifie sa disponibilité et n’en déduis pas un stationnement garanti.',
+        },
+        {
+          title: 'Sentier du Défens',
+          text: 'La boucle gravit l’ancien terril et comporte des marches. Sécurise l’engin puis poursuis à pied ; les quads et motos y sont interdits et les autres règles sont à lire sur place.',
+        },
+      ],
+      access: [
+        'Depuis Aix, calcule l’itinéraire vers le noyau choisi plutôt que vers le simple nom de la commune.',
+        'Pour Valbrillant, contrôle l’ouverture du massif, le stationnement réel et la possibilité de garder la trottinette sous surveillance.',
+      ],
+      watchOutFor: [
+        'Axes périurbains partagés et carrefours différents selon l’arrivée par le Plan, le village ou le Canet.',
+        'Montée, marches et terrain forestier sur le sentier, qui ne constitue pas une voie pour trottinette.',
+        'Réglementation préfectorale de juin à septembre et fermeture possible selon le risque incendie.',
+      ],
+      verificationNote:
+        'La structure de la commune et le sentier du Défens sont documentés par la mairie, avec un complément du Département. Les conditions du parking, du sentier et des accès forestiers doivent être revérifiées.',
+      sources: [
+        {
+          label: 'Mairie de Meyreuil — Balades et sentier du Défens',
+          url: 'https://www.ville-meyreuil.fr/fr/tourisme/balades',
+        },
+        {
+          label: 'Département des Bouches-du-Rhône — Histoire minière à Meyreuil',
+          url: 'https://www.departement13.fr/vivre-en-provence/redecouvrir-la-provence/idees-de-balades/en-vadrouille/meyreuil-vue-sur-lhistoire',
+        },
+        {
+          label: 'Préfecture des Bouches-du-Rhône — Accès aux massifs forestiers',
+          url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Choisir une arrivée précise à Meyreuil ; pour le Défens, rejoindre localement Valbrillant puis effectuer la boucle uniquement à pied.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Approche routière, sentier pédestre',
+          notes:
+            'Aucune continuité cyclable protégée n’est établie entre Aix et les différents noyaux ; le sentier municipal du Défens est présenté comme pédestre.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Carrefours périurbains, dénivelé et diversité des points d’arrivée imposent de vérifier le tracé au lieu de suivre une destination générique.',
+        },
+        parkingAdvice:
+          'À Valbrillant, le stationnement signalé comme non aménagé doit être contrôlé ; ailleurs, utilise seulement une place autorisée et visible.',
+        bestTime: 'Matin, après vérification de l’accès au massif si le Défens est prévu',
+      },
+    },
   },
   {
     id: 'gardanne',
@@ -1642,11 +2144,85 @@ const rawSpots: SpotInput[] = [
     duration: '2 h à 4 h',
     moods: ['village', 'nature'],
     description:
-      'Village pratique pour une sortie un peu plus éloignée mais encore raisonnable en autonomie si le retour est prévu.',
-    tips: ['Vérifie le vent avant de partir.', 'Idéal pour une boucle de demi-journée.'],
+      'Une demi-journée vers un village perché du bassin minier, avec centre ancien escarpé et plan vélo communal encore à lire comme un réseau en construction.',
+    tips: [
+      'La distance aller indicative dépasse vingt kilomètres : prévois une autonomie confortable ou un départ local.',
+      'Le centre ancien est pentu ; termine la visite à pied autour du cours Victor-Leydet.',
+      'Vérifie les accès aux collines et les travaux de mobilité avant de tracer une boucle.',
+    ],
     latitude: 43.4518,
     longitude: 5.5631,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Fuveau est plus éloigné qu’il n’y paraît sur une carte du Pays d’Aix. Un aller-retour indicatif approche déjà la capacité de nombreuses batteries, avant même de compter la pente, le vent ou un détour : un départ local ou une solution de retour doit rester possible.',
+        'Le village s’organise autour d’un piton médiéval, de ruelles escarpées et du cours Victor-Leydet. L’Office de tourisme valorise aussi des espaces agricoles et un passé minier ; la visite gagne à rester compacte dans le centre plutôt qu’à chercher une longue boucle non vérifiée dans les collines.',
+        'La commune dispose d’un plan vélo et annonce des actions sur le stationnement et les liaisons, mais leur réalisation et leur continuité doivent être contrôlées. Cette fiche ne transforme pas un projet communal en piste disponible de bout en bout.',
+      ],
+      profile: {
+        environment: 'Village perché du bassin de Provence, centre ancien, paysages agricoles et mémoire minière.',
+        terrain: 'Longue liaison depuis Aix, relief sensible dans le village et aménagements cyclables ponctuels à confirmer.',
+        travelStyle: 'Demi-journée préparée avec grande autonomie, ou arrivée locale suivie d’une boucle courte autour du centre.',
+        bestFor: 'Un village vivant et patrimonial lorsque la batterie et le retour sont planifiés avant le départ.',
+      },
+      routeSections: [
+        {
+          title: 'Liaison depuis Aix',
+          text: 'La distance réelle dépend fortement du point de départ et des routes retenues. Compare le calcul d’itinéraire et refuse les axes trop rapides ou sans espace latéral.',
+        },
+        {
+          title: 'Cours Victor-Leydet',
+          text: 'Utilise le cours et l’office de tourisme comme repères centraux. Ralentis dans les zones commerçantes et ne gêne pas les terrasses ni les accès.',
+        },
+        {
+          title: 'Ruelles du piton',
+          text: 'La pente et l’étroitesse rendent la marche préférable dans le noyau ancien. Les collines et sentiers alentour demandent une vérification spécifique.',
+        },
+      ],
+      access: [
+        'Les transports relèvent de la Métropole ; consulte l’offre du jour si tu envisages un retour combiné et vérifie l’acceptation de la trottinette.',
+        'Pour un départ local, repère un stationnement autorisé près du centre sans compter sur une borne voiture comme recharge 220 V.',
+      ],
+      watchOutFor: [
+        'Autonomie nécessaire pour une liaison longue et vallonnée, avec effet du mistral ou de la chaleur.',
+        'Ruelles pentues, piétons et visibilité réduite dans le centre ancien.',
+        'Accès aux massifs et réalisation des aménagements du plan vélo susceptibles d’évoluer.',
+      ],
+      verificationNote:
+        'Le patrimoine, les mobilités et le plan vélo proviennent de l’Office de tourisme et de la mairie. Les travaux, horaires de transport, accès aux collines et recharge doivent être contrôlés avant la sortie.',
+      sources: [
+        {
+          label: 'Office de tourisme de Fuveau — Patrimoine du village',
+          url: 'https://www.fuveau-tourisme.com/patrimoine/',
+        },
+        {
+          label: 'Mairie de Fuveau — Déplacements et mobilité',
+          url: 'https://www.mairiedefuveau.fr/vivre-a-fuveau/deplacements-et-mobilite-2/',
+        },
+        {
+          label: 'Mairie de Fuveau — Plan vélo communal',
+          url: 'https://www.mairiedefuveau.fr/wp-content/uploads/2024/04/Fuveau_Plan_Velo_Plan-daction_26092022.pdf',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Liaison longue à calculer depuis le point réel de départ, puis boucle courte dans Fuveau ; les ruelles du piton se parcourent principalement à pied.',
+        cyclingInfrastructure: {
+          status: 'partial',
+          label: 'Plan vélo et aménagements ponctuels',
+          notes:
+            'Le plan communal documente des actions et projets, sans prouver une continuité achevée entre Aix et le centre de Fuveau.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'La longueur, les axes partagés et la pente du village imposent une autonomie large et un itinéraire choisi avant le départ.',
+        },
+        parkingAdvice:
+          'Repère un stationnement autorisé près du centre ou de l’office de tourisme et sécurise l’engin avant les ruelles escarpées.',
+        bestTime: 'Matin par temps stable, avec solution de retour confirmée avant le départ',
+      },
+    },
   },
   {
     id: 'trets',
@@ -1676,11 +2252,85 @@ const rawSpots: SpotInput[] = [
     duration: '1 h 30 à 3 h',
     moods: ['village', 'nature'],
     description:
-      'Sortie de transition entre ville et périphérie, utile pour rouler sans viser un grand dénivelé ni une longue logistique.',
-    tips: ['Pratique pour une boucle courte.', 'Garde un oeil sur les carrefours.'],
+      'Une sortie périurbaine à scinder entre Calas et le vieux Cabriès, avec quelques voies douces récentes mais des départementales encore structurantes.',
+    tips: [
+      'Choisis Calas ou le vieux Cabriès comme objectif principal : les relier ajoute trafic et relief.',
+      'Les voies vertes annoncées sont des maillons locaux, pas une continuité garantie depuis Aix.',
+      'Surveille particulièrement les traversées proches de la RD543 et les heures de circulation scolaire.',
+    ],
     latitude: 43.4542,
     longitude: 5.3677,
     rechargeStatus: 'nearby',
+    editorial: {
+      introduction: [
+        'Cabriès-Calas demande de sortir du modèle du village unique. Calas est un hameau commerçant traversé par des axes importants, tandis que le vieux Cabriès se trouve plus haut et possède une autre logique d’accès. Une boucle utile doit choisir sa priorité.',
+        'La commune documente plusieurs améliorations récentes : voie verte au chemin des Espigau, cheminements autour de René-Cassin et liaisons piétonnes ou cyclables à Calas. Ces aménagements restent des segments locaux ; ils ne garantissent pas un trajet protégé continu depuis Aix.',
+        'La valeur de cette fiche tient à la préparation des carrefours et du point d’arrêt. Calas convient à une boucle périurbaine courte, tandis que Cabriès ajoute pente et rues de village ; cumuler les deux n’est pertinent qu’avec une batterie suffisante et un tracé contrôlé.',
+      ],
+      profile: {
+        environment: 'Hameau de Calas, vieux village de Cabriès, quartiers résidentiels et axes départementaux entre Aix et Marseille.',
+        terrain: 'Relief modéré autour de Calas, montée plus nette vers Cabriès et alternance de voies locales avec des carrefours circulés.',
+        travelStyle: 'Boucle ciblée sur un seul noyau, avec utilisation prudente des maillons doux réellement présents.',
+        bestFor: 'Comprendre une commune multipolaire et tester une sortie périurbaine sans prétendre disposer d’une voie verte continue.',
+      },
+      routeSections: [
+        {
+          title: 'Arrivée à Calas',
+          text: 'La RD543 structure la traversée et peut concentrer le trafic. Approche le centre par une heure calme et utilise les aménagements locaux seulement là où ils sont clairement identifiés.',
+        },
+        {
+          title: 'Maillons de mobilité douce',
+          text: 'Le chemin des Espigau, René-Cassin et les liaisons vers les Pradelles forment des segments utiles. Vérifie leur état et leurs raccordements avant de les intégrer.',
+        },
+        {
+          title: 'Vieux Cabriès',
+          text: 'Le village perché ajoute une montée et des rues plus étroites. Termine à pied si la fréquentation ou la largeur ne permettent pas une circulation sereine.',
+        },
+      ],
+      access: [
+        'Calcule séparément l’itinéraire vers Calas et celui vers Cabriès ; une destination générique peut envoyer vers un mauvais noyau.',
+        'La commune a créé des places autour de Calas, mais leur disponibilité n’est pas garantie : respecte la signalisation et les riverains.',
+      ],
+      watchOutFor: [
+        'RD543, ronds-points et trafic de transit dans la traversée de Calas.',
+        'Ruptures entre les nouveaux aménagements et les routes départementales encore partagées.',
+        'Différence de relief et de distance entre Calas, Cabriès et les quartiers intermédiaires.',
+      ],
+      verificationNote:
+        'Les aménagements et stationnements cités sont décrits par la commune. Leur mise en service, leurs raccordements et les conditions de circulation doivent être vérifiés sur place.',
+      sources: [
+        {
+          label: 'Ville de Cabriès — Amélioration de la voirie et de la mobilité',
+          url: 'https://www.cabries.fr/amelioration-de-la-voirie-et-de-la-mobilite-a-cabries/',
+        },
+        {
+          label: 'Ville de Cabriès — Aménagement de la traversée de Calas',
+          url: 'https://www.cabries.fr/amenagement-du-centre-ville-de-calas/',
+        },
+        {
+          label: 'Ville de Cabriès — Stationnements supplémentaires à Calas',
+          url: 'https://www.cabries.fr/des-stationnements-supplementaires-a-calas/',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Choisir Calas ou Cabriès comme destination principale, puis relier uniquement les maillons doux confirmés sans supposer une continuité depuis Aix.',
+        cyclingInfrastructure: {
+          status: 'partial',
+          label: 'Voies vertes et cheminements locaux partiels',
+          notes:
+            'Plusieurs segments sont documentés par la commune, mais les raccordements aux axes départementaux restent à contrôler.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'La RD543, les ronds-points et les changements de noyau imposent une lecture précise du trajet et une heure peu chargée.',
+        },
+        parkingAdvice:
+          'Utilise les places autorisées de Calas ou un arrêt périphérique à Cabriès, sans bloquer commerces, trottoirs ni accès résidentiels.',
+        bestTime: 'Matin de week-end ou heure creuse, hors entrées et sorties scolaires',
+      },
+    },
   },
   {
     id: 'simiane-collongue',
@@ -1727,11 +2377,81 @@ const rawSpots: SpotInput[] = [
     duration: '3 h à 6 h',
     moods: ['nature', 'village', 'mer'],
     description:
-      'Sortie plus lointaine autour de l’étang, avec de l’espace et une ambiance de promenade à traiter comme une vraie journée.',
-    tips: ['Prévois une marge de retour.', 'Le bord de l’eau peut être venteux.'],
+      'Une journée régionale à Saint-Chamas entre gare, ports et rive de l’étang, avec la Petite Camargue réservée à une découverte naturelle préparée.',
+    tips: [
+      'Privilégie un départ local ou un trajet ferroviaire préparé plutôt qu’un aller-retour complet depuis Aix.',
+      'Sépare la boucle urbaine des espaces naturels de la Petite Camargue et de la Poudrerie.',
+      'Le vent sur l’étang et les horaires de retour doivent être vérifiés avant de t’éloigner de la gare.',
+    ],
     latitude: 43.5427,
     longitude: 5.0401,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Saint-Chamas offre une lecture de l’étang très différente de Martigues. Ici, la sortie relie une petite ville, des ports, des ouvrages patrimoniaux et deux grands espaces naturels, la Petite Camargue au sud et la Poudrerie au nord.',
+        'La gare permet d’envisager un départ local, mais le trajet depuis Aix implique généralement une correspondance et les conditions de transport de la trottinette doivent être vérifiées. Une arrivée en voiture reste également possible si le stationnement est choisi avant le départ.',
+        'La boucle utile reste volontairement mesurée : gare, centre, port du Pertuis et rive accessible. La Petite Camargue, classée Natura 2000, et la Poudrerie ont leurs propres accès et usages ; elles ne doivent pas être assimilées à des pistes ouvertes aux trottinettes.',
+      ],
+      profile: {
+        environment: 'Petite ville sur l’étang de Berre, ports, patrimoine hydraulique et zones humides protégées.',
+        terrain: 'Boucle locale urbaine et littorale assez lisible, complétée par des espaces naturels dont les accès sont à vérifier séparément.',
+        travelStyle: 'Transport jusqu’à Saint-Chamas, parcours compact près de l’eau et retour organisé depuis la gare ou le stationnement initial.',
+        bestFor: 'Découvrir l’étang dans une ambiance de bourg et de zone humide, sans chercher à en faire le tour.',
+      },
+      routeSections: [
+        {
+          title: 'Gare et centre',
+          text: 'La gare constitue un point d’ancrage pratique pour une sortie combinée. Repère l’horaire de retour et la liaison vers le centre avant de commencer la boucle.',
+        },
+        {
+          title: 'Ports et rive',
+          text: 'Le port du Pertuis et les abords de l’étang donnent une boucle locale. Adapte l’allure aux piétons, aux activités portuaires et aux changements de revêtement.',
+        },
+        {
+          title: 'Espaces naturels',
+          text: 'Petite Camargue et Poudrerie sont des destinations distinctes, soumises à leurs horaires, itinéraires et protections. Ne les traverse pas en trottinette sans autorisation explicite.',
+        },
+      ],
+      access: [
+        'SNCF Connect recense des trajets avec correspondance depuis Aix ; vérifie le service du jour et les règles applicables à la trottinette pliée.',
+        'En voiture, choisis un stationnement autorisé proche du centre ou de la gare et évite les accès de secours ou portuaires.',
+      ],
+      watchOutFor: [
+        'Vent sur l’étang, qui peut augmenter fortement la consommation au retour.',
+        'Cohabitation avec piétons, pêcheurs et activités portuaires sur les secteurs proches de l’eau.',
+        'Accès et protection des espaces naturels, dont les règles ne se déduisent pas de la simple présence d’un chemin.',
+      ],
+      verificationNote:
+        'Le profil naturel et patrimonial provient du guide municipal ; la desserte ferroviaire est vérifiée via SNCF Connect. Horaires, règles de transport et accès aux sites naturels restent à confirmer.',
+      sources: [
+        {
+          label: 'Ville de Saint-Chamas — Guide pratique',
+          url: 'https://www.saint-chamas.com/ad_attachment/bulletins_municipal/SAINT%20CHAM%27INFOS%202025%20-%20Guide%20Pratique-3.pdf',
+        },
+        {
+          label: 'SNCF Connect — Horaires Aix-en-Provence–Miramas via Saint-Chamas',
+          url: 'https://www.sncf-connect.com/train/horaires/aix-en-provence/miramas',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Arrivée locale par gare ou voiture, puis boucle limitée au centre, aux ports et aux rives accessibles ; espaces naturels traités séparément selon leurs règles.',
+        cyclingInfrastructure: {
+          status: 'partial',
+          label: 'Liaisons locales partielles à confirmer',
+          notes:
+            'La présence de bandes ou cheminements autour de la gare ne garantit ni un tour continu de l’étang ni l’accès aux sites naturels.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Vent, traversées urbaines, activités portuaires et retour ferroviaire imposent une boucle courte et préparée.',
+        },
+        parkingAdvice:
+          'Utilise la gare ou un parking autorisé comme point de retour fixe et ne laisse pas l’engin isolé dans un espace naturel.',
+        bestTime: 'Matin par vent faible, avec retour ferroviaire ou routier confirmé',
+      },
+    },
   },
   {
     id: 'la-fare-les-oliviers',
@@ -1744,11 +2464,85 @@ const rawSpots: SpotInput[] = [
     duration: '2 h à 4 h',
     moods: ['village', 'nature'],
     description:
-      'Boucle intermédiaire facile à comprendre, adaptée à une sortie simple si tu gardes un retour prudent.',
-    tips: ['Mieux par temps stable.', 'Le stationnement doit rester simple et légal.'],
+      'Une destination de plaine et de village à l’ouest d’Aix, avec longue liaison, axes de transit et réseau cyclable encore partiel.',
+    tips: [
+      'La distance depuis Aix rend le retour plus exigeant que ne le suggère le relief de plaine.',
+      'Évite de bâtir l’itinéraire autour de la RD113 sans analyse des carrefours et contre-allées.',
+      'Les collines voisines sont soumises aux restrictions estivales : ne prolonge pas la sortie sans contrôle.',
+    ],
     latitude: 43.5508,
     longitude: 5.2136,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'La Fare-les-Oliviers se situe dans la basse vallée de l’Arc, entre collines et grands axes. Le profil paraît moins pentu que celui d’un village perché, mais la distance depuis Aix et la circulation de transit rendent l’aller-retour exigeant pour une trottinette de moyenne autonomie.',
+        'La commune travaille sur un plan local de mobilité, un réseau cyclable intercommunal et la sécurité de plusieurs secteurs, notamment autour de la RD113. Ces documents montrent précisément que les continuités ne doivent pas être considérées comme acquises.',
+        'La sortie la plus réaliste est un départ local ou un aller simple assorti d’un retour confirmé. Dans le village, reste sur une boucle courte ; les collines et les chemins ne doivent pas être ajoutés sans vérification des accès et de la réglementation incendie.',
+      ],
+      profile: {
+        environment: 'Village de la basse vallée de l’Arc, plaine agricole, coteaux d’oliviers et axes routiers structurants.',
+        terrain: 'Liaison longue mais moins montagneuse, avec carrefours, routes de transit et centre aux trottoirs parfois étroits.',
+        travelStyle: 'Départ local ou sortie préparée avec retour alternatif, puis boucle compacte dans le village.',
+        bestFor: 'Une découverte de l’ouest du Pays d’Aix lorsque la priorité est la logistique plutôt que le dénivelé.',
+      },
+      routeSections: [
+        {
+          title: 'Approche de la vallée',
+          text: 'La distance consomme une grande part de l’autonomie avant l’arrivée. Compare les variantes et garde une option de retour si le vent se lève.',
+        },
+        {
+          title: 'Axes de transit',
+          text: 'La RD113 et certains carrefours font l’objet de réflexions de sécurité. Ne les interprète pas comme des secteurs déjà pacifiés ou équipés en continu.',
+        },
+        {
+          title: 'Boucle de village',
+          text: 'Une fois arrivé, limite le parcours aux rues compatibles avec une allure lente et un arrêt légal. Les collines au nord relèvent d’une sortie naturelle distincte.',
+        },
+      ],
+      access: [
+        'Si tu pars d’Aix, compare autonomie utile, vent et possibilité de transport retour avant de valider la sortie.',
+        'Un départ local peut se faire depuis un stationnement autorisé choisi sur la carte, sans compter sur une recharge publique 220 V.',
+      ],
+      watchOutFor: [
+        'Circulation rapide et carrefours sur les axes départementaux autour de la commune.',
+        'Trottoirs étroits et aménagements cyclables encore incomplets signalés dans les travaux de concertation.',
+        'Risque incendie et accès réglementé aux massifs entre juin et septembre.',
+      ],
+      verificationNote:
+        'Les points de mobilité et de sécurité reposent sur les documents publics de la commune. Leur caractère prospectif impose de vérifier ce qui est effectivement réalisé avant le trajet.',
+      sources: [
+        {
+          label: 'Ville de La Fare-les-Oliviers — Plan local de mobilité et sécurité routière',
+          url: 'https://www.lafarelesoliviers.com/wp-content/uploads/2025/10/Mantesada-98.pdf',
+        },
+        {
+          label: 'Ville de La Fare-les-Oliviers — Ateliers de sécurité routière',
+          url: 'https://www.lafarelesoliviers.com/wp-content/uploads/2025/12/CR-ateliers-CCSRM-25-11-2025.pdf',
+        },
+        {
+          label: 'Préfecture des Bouches-du-Rhône — Accès aux massifs forestiers',
+          url: 'https://www.bouches-du-rhone.gouv.fr/Actions-de-l-Etat/Agriculture-foret-et-developpement-rural/Foret/Acces-aux-massifs/Acces-aux-massifs-forestiers-des-Bouches-du-Rhone2',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Longue liaison à préparer depuis Aix ou départ local, puis boucle courte dans La Fare ; éviter toute dépendance à un aménagement annoncé mais non vérifié.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Réseau en projet ou discontinu',
+          notes:
+            'Les documents communaux recensent besoins et projets ; ils ne prouvent pas une piste continue déjà disponible.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Distance, RD113, carrefours et trafic de transit imposent un itinéraire préparé et une solution de repli.',
+        },
+        parkingAdvice:
+          'Choisis un stationnement légal en périphérie du centre et respecte les accès, trottoirs et zones de livraison.',
+        bestTime: 'Matin par météo stable, hors pointe et après contrôle du vent',
+      },
+    },
   },
   {
     id: 'la-barben',
@@ -1829,11 +2623,85 @@ const rawSpots: SpotInput[] = [
     duration: '4 h à 7 h',
     moods: ['mer', 'patrimoine', 'village'],
     description:
-      'Ville d’eau et de port à envisager comme une vraie journée littorale, avec un retour clairement anticipé.',
-    tips: ['Bonne sortie par temps doux.', 'Le bord de mer peut être exposé au vent.'],
+      'Une exploration urbaine des trois quartiers centraux de Martigues, à organiser depuis un départ local plutôt que comme une liaison intégrale depuis Aix.',
+    tips: [
+      'Ancre la sortie autour de Ferrières, L’Île et Jonquières sans ajouter automatiquement les plages ou la Côte Bleue.',
+      'La navette maritime est destinée aux déplacements du centre : vérifie l’acceptation de la trottinette avant de l’utiliser.',
+      'Les bornes pour voitures signalées près du centre ne garantissent pas une prise 220 V accessible.',
+    ],
     latitude: 43.4075,
     longitude: 5.0556,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Martigues se prête à une sortie urbaine centrée sur l’eau. Ferrières, L’Île et Jonquières sont reliés par des ponts, des quais et une navette maritime ; cette structure suffit à construire une boucle locale sans chercher le littoral ouvert de Carro ou de La Couronne.',
+        'Depuis Aix, la distance impose une voiture, un transport combiné ou un retour alternatif. Les deux gares ferroviaires citées par l’office de tourisme se situent à Croix-Sainte et Lavéra, hors du cœur immédiat, et nécessitent une liaison urbaine supplémentaire.',
+        'Le centre concentre piétons, marchés, ponts et circulation. La meilleure expérience consiste à choisir l’office de tourisme ou Ferrières comme repère, parcourir peu de kilomètres et passer à pied dans les quais les plus animés.',
+      ],
+      profile: {
+        environment: 'Ville portuaire intérieure, canaux, ponts et trois quartiers centraux autour du chenal de Caronte.',
+        terrain: 'Parcours urbain globalement court, avec ponts, quais, carrefours et zones piétonnes ou fréquentées.',
+        travelStyle: 'Arrivée locale, boucle culturelle entre les trois centres, puis retour depuis le même point d’ancrage.',
+        bestFor: 'Une journée de ville et de canaux, distincte d’une sortie nature sur l’étang ou d’une longue route côtière.',
+      },
+      routeSections: [
+        {
+          title: 'Ferrières',
+          text: 'La plage urbaine, le jardin et les quais constituent une entrée lisible. Repère les stationnements vélos indiqués sur le plan officiel sans supposer qu’ils conviennent à toutes les trottinettes.',
+        },
+        {
+          title: 'L’Île',
+          text: 'Le quartier central concentre ponts, canaux et visiteurs. Marche dans les passages étroits et garde l’engin sous contrôle lors des arrêts.',
+        },
+        {
+          title: 'Jonquières',
+          text: 'La liaison complète la boucle urbaine, mais les carrefours et les heures de marché peuvent modifier le trajet. Reviens au point de départ sans prolonger vers le littoral par défaut.',
+        },
+      ],
+      access: [
+        'L’office de tourisme, quai des Anglais, offre un repère central avec transports urbains et stationnement vélo à proximité.',
+        'Si tu arrives en train, vérifie la gare choisie, la correspondance urbaine et les règles de transport de la trottinette avant le départ.',
+      ],
+      watchOutFor: [
+        'Ponts, carrefours, marchés et forte présence piétonne dans les quartiers centraux.',
+        'Navette maritime et transports urbains dont l’acceptation de la trottinette n’est pas confirmée par les sources consultées.',
+        'Bornes électriques destinées aux voitures, sans prise domestique garantie pour ton chargeur.',
+      ],
+      verificationNote:
+        'Le plan, les trois quartiers, les transports et le stationnement vélo sont documentés par l’Office de tourisme de Martigues. Vérifie événements, marchés, travaux et règles des transports le jour de la visite.',
+      sources: [
+        {
+          label: 'Office de tourisme de Martigues — Accès et services du centre',
+          url: 'https://www.martigues-tourisme.com/institutions-du-tourisme/office-de-tourisme-et-des-loisirs-de-martigues.html',
+        },
+        {
+          label: 'Office de tourisme de Martigues — Se déplacer à Martigues',
+          url: 'https://www.martigues-tourisme.com/bus-train-taxis-martigues.html',
+        },
+        {
+          label: 'Office de tourisme de Martigues — Plan du centre-ville',
+          url: 'https://www.martigues-tourisme.com/medias/documents/documentation/documentation-PLANVILLE-FR.pdf',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Départ local dans le centre, boucle urbaine Ferrières–L’Île–Jonquières et retour au même point ; ne pas prolonger automatiquement vers les plages ou Carro.',
+        cyclingInfrastructure: {
+          status: 'partial',
+          label: 'Aménagements et stationnements ponctuels',
+          notes:
+            'Le plan officiel recense voie verte et stationnements vélos, sans garantir une continuité protégée entre tous les quartiers.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Les ponts, carrefours, marchés et piétons demandent une allure basse et des passages à pied dans le centre.',
+        },
+        parkingAdvice:
+          'Choisis un parking autorisé ou un point d’attache visible près de l’office de tourisme ; évite les quais et accès portuaires.',
+        bestTime: 'Matin hors jour de marché et hors événement majeur dans le centre',
+      },
+    },
   },
   {
     id: 'niolon',
@@ -1846,11 +2714,85 @@ const rawSpots: SpotInput[] = [
     duration: '4 h à 7 h',
     moods: ['mer', 'nature'],
     description:
-      'Petit secteur littoral à réserver à une sortie préparée, avec de belles vues mais une logistique à surveiller.',
-    tips: ['Le train peut simplifier le retour.', 'Prévois un stationnement très simple.'],
+      'Un petit port escarpé de la Côte Bleue à rejoindre de préférence par le train, avec découverte locale courte et sentier littoral réservé à la marche.',
+    tips: [
+      'La gare de Niolon est le point d’ancrage le plus lisible ; vérifie horaires et règles de transport de la trottinette.',
+      'Le sentier vers La Redonne comporte des passages difficiles et se parcourt à pied, sans trottinette.',
+      'L’accès routier motorisé est réglementé en saison et le stationnement est limité.',
+    ],
     latitude: 43.3198,
     longitude: 5.2407,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Niolon est une calanque compacte, encaissée sous la voie ferrée. Son intérêt tient au port, au viaduc et à l’arrivée spectaculaire par le train de la Côte Bleue, pas à une longue boucle roulée sur le rivage.',
+        'L’Office de tourisme de Marseille recommande le train et signale un stationnement routier difficile et limité, avec accès motorisé réglementé en été. Depuis Aix, la combinaison ferroviaire passe par Marseille ; elle doit être préparée avec les horaires et les règles de bagage du service choisi.',
+        'Le sentier des Douaniers entre Niolon et La Redonne est un itinéraire pédestre rocheux, parfois escarpé, annoncé autour de trois heures avec des passages difficiles. Il ne doit jamais être présenté comme un parcours de trottinette.',
+      ],
+      profile: {
+        environment: 'Calanque habitée, petit port, falaises calcaires et viaducs de la ligne de la Côte Bleue.',
+        terrain: 'Forte déclivité entre gare et port, rues étroites puis sentier côtier exclusivement pédestre.',
+        travelStyle: 'Arrivée ferroviaire, descente locale très prudente si autorisée, pause au port et retour par la même gare.',
+        bestFor: 'Voir une calanque depuis un point d’accès compact sans engager le grand sentier littoral.',
+      },
+      routeSections: [
+        {
+          title: 'Gare de Niolon',
+          text: 'Utilise la gare comme origine et point de retour. Avant de descendre, confirme l’horaire du train suivant et la capacité à remonter avec la batterie restante.',
+        },
+        {
+          title: 'Descente vers le port',
+          text: 'La route est étroite et pentue. Adapte l’allure, laisse la priorité aux riverains et marche si la circulation ou la pente rend la descente inconfortable.',
+        },
+        {
+          title: 'Sentier des Douaniers',
+          text: 'Laisse la trottinette en dehors du sentier et ne la transporte pas sur les passages rocheux. Une randonnée vers l’Erevine ou La Redonne constitue une activité distincte.',
+        },
+      ],
+      access: [
+        'Le train de la Côte Bleue dessert Niolon ; vérifie les correspondances depuis Aix et les dimensions admises pour la trottinette pliée.',
+        'En voiture, l’accès est susceptible d’être réglementé en été et le stationnement est annoncé comme difficile : ne pars pas sans solution confirmée.',
+      ],
+      watchOutFor: [
+        'Pente, route étroite et croisement avec les véhicules des riverains entre la gare et le port.',
+        'Sentier rocheux parfois escarpé, sans eau disponible selon l’Office de tourisme.',
+        'Risque incendie, accès saisonnier et absence de recharge 220 V confirmée.',
+      ],
+      verificationNote:
+        'Les accès, le stationnement et la difficulté du sentier proviennent de l’Office de tourisme de Marseille. Horaires ferroviaires, réglementation estivale et conditions locales doivent être confirmés avant le départ.',
+      sources: [
+        {
+          label: 'Office de tourisme de Marseille — Calanque de Niolon',
+          url: 'https://www.marseille-tourisme.com/decouvrez-marseille/calanques-plages-et-nature/les-calanques-de-marseille/quelles-calanques-decouvrir/les-calanques-de-la-cote-bleue/la-calanque-de-niolon/',
+        },
+        {
+          label: 'Office de tourisme de Marseille — Randonnée sur la Côte Bleue',
+          url: 'https://www.marseille-tourisme.com/decouvrez-marseille/calanques-plages-et-nature/randonnees/randonnees-autour-de-marseille/randonnee-cote-bleue/',
+        },
+        {
+          label: 'TER Sud — Transport des vélos et engins à bord',
+          url: 'https://www.ter.sncf.com/sud-provence-alpes-cote-d-azur/services-contacts/voyager-avec-velo/a-bord',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Arrivée recommandée à la gare de Niolon, éventuelle liaison très courte vers le port, puis retour par la gare ; sentier littoral strictement séparé et pédestre.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Route locale étroite, sentier pédestre',
+          notes:
+            'Aucune piste continue n’est documentée entre la gare et le port ; le sentier vers La Redonne est un itinéraire de randonnée.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'La pente, l’étroitesse et les accès riverains imposent de pouvoir marcher et de conserver assez de batterie pour remonter.',
+        },
+        parkingAdvice:
+          'Privilégie le train ; si tu viens en voiture, utilise seulement un emplacement autorisé confirmé et n’encombre jamais les voies d’accès au port.',
+        bestTime: 'Matin hors haute saison, après vérification du train, du vent et de l’accès estival',
+      },
+    },
   },
   {
     id: 'ensues-la-redonne',
@@ -1863,11 +2805,85 @@ const rawSpots: SpotInput[] = [
     duration: '4 h à 7 h',
     moods: ['mer', 'nature', 'village'],
     description:
-      'Village littoral pratique pour une sortie de bord de mer, avec un trajet à garder indicatif et les vents à anticiper.',
-    tips: ['Partir tôt reste la meilleure option.', 'Le stationnement côtier peut être limité.'],
+      'Une sortie locale autour de la petite calanque de La Redonne, avec gare côtière, accès saisonniers sensibles et exploration à pied des ruelles et du rivage.',
+    tips: [
+      'Vise la gare de La Redonne si tu veux le littoral : la gare d’Ensuès se situe dans un autre secteur.',
+      'Les plages sont petites et les accès peuvent être contrôlés en été ; pars sans dépendre d’un stationnement côtier.',
+      'Les liaisons vers Méjean, les Anthénors ou Niolon relèvent de la randonnée pédestre.',
+    ],
     latitude: 43.3319,
     longitude: 5.1926,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'Ensuès-la-Redonne couvre plusieurs noyaux entre l’intérieur et les calanques. Pour cette fiche, la destination utile est La Redonne : une petite crique desservie par sa propre gare, avec peu d’espace, des ruelles résidentielles et un accès routier sensible en été.',
+        'Contrairement à Niolon, l’intention n’est pas la descente vers un port encaissé, mais une arrivée à La Redonne suivie d’une découverte très locale. La plage est réduite et les sentiers vers Méjean ou les Anthénors sont des parcours pédestres sur la Côte Bleue.',
+        'Le train limite la pression du stationnement, sans garantir pour autant l’embarquement de toutes les trottinettes. Vérifie le service, le pliage et les dimensions admises, puis conserve l’engin avec toi ou sur un point d’attache autorisé.',
+      ],
+      profile: {
+        environment: 'Petite calanque résidentielle, gare en balcon, crique étroite et sentiers rocheux de la Côte Bleue.',
+        terrain: 'Ruelles pentues et étroites autour de La Redonne ; rivage et GR à parcourir à pied.',
+        travelStyle: 'Arrivée ferroviaire ciblée à La Redonne, courte exploration locale et retour sans chercher une liaison entre toutes les calanques.',
+        bestFor: 'Une pause littorale compacte lorsque le train et les accès saisonniers sont confirmés.',
+      },
+      routeSections: [
+        {
+          title: 'Gare de La Redonne',
+          text: 'Ne la confonds pas avec la gare d’Ensuès-la-Redonne située plus à l’intérieur. Vérifie précisément l’arrêt retenu et l’horaire de retour.',
+        },
+        {
+          title: 'Ruelles et crique',
+          text: 'Descends à allure très basse et respecte les riverains. La faible largeur de la plage et des accès rend la marche préférable dès l’arrivée au bord de l’eau.',
+        },
+        {
+          title: 'Départs de randonnée',
+          text: 'Les chemins vers les Anthénors, Méjean et Niolon sont des itinéraires pédestres. Ne les utilise pas comme prolongement roulé et prévois un équipement de marche si tu les empruntes.',
+        },
+      ],
+      access: [
+        'Le train de la Côte Bleue dessert plusieurs gares proches mais non interchangeables ; sélectionne La Redonne pour cette crique.',
+        'Les accès routiers et le stationnement côtier peuvent être restreints en saison : consulte la mairie avant un déplacement en voiture.',
+      ],
+      watchOutFor: [
+        'Confusion possible entre la commune, le village d’Ensuès, la gare d’Ensuès et la gare de La Redonne.',
+        'Ruelles étroites, pentes, riverains et espace réduit autour de la plage.',
+        'Sentiers rocheux, risque incendie et réglementation estivale des accès aux calanques.',
+      ],
+      verificationNote:
+        'La description de la crique et du grand sentier provient de l’Office de tourisme de Marseille. Les restrictions d’accès, le stationnement et les horaires de train doivent être contrôlés auprès des services compétents.',
+      sources: [
+        {
+          label: 'Office de tourisme de Marseille — Calanque de La Redonne',
+          url: 'https://www.marseille-tourisme.com/decouvrez-marseille/calanques-plages-et-nature/les-calanques-de-marseille/quelles-calanques-decouvrir/les-calanques-de-la-cote-bleue/la-calanque-de-la-redonne/',
+        },
+        {
+          label: 'Office de tourisme de Marseille — La Côte Bleue',
+          url: 'https://www.marseille-tourisme.com/decouvrez-marseille/autour-de-marseille/la-cote-bleue/',
+        },
+        {
+          label: 'TER Sud — Transport des vélos et engins à bord',
+          url: 'https://www.ter.sncf.com/sud-provence-alpes-cote-d-azur/services-contacts/voyager-avec-velo/a-bord',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Arrivée ciblée à la gare de La Redonne, descente locale prudente vers la crique et retour par le même arrêt ; les sentiers côtiers restent pédestres.',
+        cyclingInfrastructure: {
+          status: 'limited',
+          label: 'Ruelles locales, aucune continuité littorale',
+          notes:
+            'Les itinéraires reliant les calanques sont présentés comme des sentiers de randonnée, pas comme des voies pour trottinettes.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'Pente, rues résidentielles étroites et fréquentation saisonnière imposent des passages à pied et un parcours très court.',
+        },
+        parkingAdvice:
+          'Privilégie le train ; ne compte pas sur une place près de la crique et ne bloque aucun accès riverain ou de secours.',
+        bestTime: 'Matin hors haute saison, après confirmation des accès et du train retour',
+      },
+    },
   },
   {
     id: 'la-ciotat',
@@ -1880,11 +2896,85 @@ const rawSpots: SpotInput[] = [
     duration: '4 h à 7 h',
     moods: ['mer', 'patrimoine', 'nature'],
     description:
-      'Sortie méditerranéenne plus ambitieuse, intéressante pour le bord de mer mais à aborder comme une vraie journée.',
-    tips: ['Le littoral impose de la marge.', 'Le retour doit être anticipé.'],
+      'Une journée multimodale à La Ciotat, avec arrivée locale, promenade entre port et littoral, puis retour planifié sans tenter l’aller-retour depuis Aix en trottinette.',
+    tips: [
+      'La gare La Ciotat–Ceyreste n’est pas dans le centre : intègre la liaison finale à ton plan.',
+      'Réserve ou vérifie le retour avant de rejoindre le port et limite la boucle à l’autonomie disponible.',
+      'Les promenades littorales et le centre peuvent être très fréquentés ; passe à pied dans les secteurs denses.',
+    ],
     latitude: 43.1731,
     longitude: 5.6028,
     rechargeStatus: 'verify',
+    editorial: {
+      introduction: [
+        'La Ciotat est une destination méditerranéenne complète, mais trop éloignée pour être présentée comme une sortie simple depuis Aix. Le trajet ferroviaire passe généralement par Marseille et la gare La Ciotat–Ceyreste se situe à distance du port : la liaison finale fait partie intégrante de la préparation.',
+        'Une fois sur place, le guide officiel distingue plusieurs séquences entre gare, centre, port et promenade littorale. Pour une trottinette, mieux vaut sélectionner une portion courte plutôt que reproduire une grande boucle cyclable dont le revêtement et la continuité ne sont pas garantis.',
+        'La Ciotat n’est ni Cassis ni Marseille : le parcours peut rester centré sur le Vieux-Port, les chantiers navals visibles depuis l’espace public et une portion de front de mer, avec retour vers la gare ou le stationnement avant que la batterie ne devienne critique.',
+      ],
+      profile: {
+        environment: 'Ville portuaire méditerranéenne, vieux port, patrimoine industriel naval et longue façade littorale.',
+        terrain: 'Parcours urbain et côtier, avec distance notable entre la gare et le centre et aménagements variables selon les secteurs.',
+        travelStyle: 'Train ou voiture jusqu’à La Ciotat, boucle locale calibrée, pause au port puis retour au point d’arrivée.',
+        bestFor: 'Une vraie journée de bord de mer avec logistique assumée et choix d’un seul secteur littoral.',
+      },
+      routeSections: [
+        {
+          title: 'Gare La Ciotat–Ceyreste',
+          text: 'La gare est un point de départ extérieur au centre. Vérifie la liaison locale, l’autonomie nécessaire et l’horaire de retour avant de descendre vers le littoral.',
+        },
+        {
+          title: 'Vieux-Port et centre',
+          text: 'Le port concentre piétons, terrasses et événements. Garde une allure très basse et marche dans les passages les plus chargés.',
+        },
+        {
+          title: 'Promenade littorale',
+          text: 'Choisis une portion adaptée à la batterie et au vent, puis fais demi-tour. Ne suppose pas une piste protégée continue jusqu’aux calanques ou aux communes voisines.',
+        },
+      ],
+      access: [
+        'SNCF Connect recense des trajets avec correspondance entre Aix et La Ciotat–Ceyreste ; les horaires et la durée varient selon le service.',
+        'Pour emporter la trottinette, vérifie les règles du train choisi ; en voiture, sélectionne un parking avant l’arrivée et contrôle ses conditions.',
+      ],
+      watchOutFor: [
+        'Distance entre gare et centre, à compter dans l’aller-retour local et non comme un détail de correspondance.',
+        'Affluence, carrefours, terrasses et événements autour du Vieux-Port et des plages.',
+        'Vent littoral, chaleur et absence de recharge 220 V confirmée pour le retour.',
+      ],
+      verificationNote:
+        'La structure des itinéraires locaux provient du guide vélo de l’office de tourisme, et les correspondances de SNCF Connect. Travaux, circulation, stationnement et règles de transport doivent être vérifiés avant le départ.',
+      sources: [
+        {
+          label: 'Destination La Ciotat — Guide randonnée et vélo',
+          url: 'https://www.destinationlaciotat.com/app/uploads/laciotat/2023/07/guide_rando_velo_la_ciotat.pdf',
+        },
+        {
+          label: 'SNCF Connect — Horaires Aix-en-Provence–La Ciotat',
+          url: 'https://www.sncf-connect.com/train/horaires/aix-en-provence/la-ciotat',
+        },
+        {
+          label: 'TER Sud — Transport des vélos et engins à bord',
+          url: 'https://www.ter.sncf.com/sud-provence-alpes-cote-d-azur/services-contacts/voyager-avec-velo/a-bord',
+        },
+      ],
+      detailOverrides: {
+        routeNotes:
+          'Transport jusqu’à La Ciotat, liaison locale depuis la gare ou un parking, puis boucle limitée au Vieux-Port et à une portion de promenade littorale.',
+        cyclingInfrastructure: {
+          status: 'partial',
+          label: 'Itinéraires locaux et aménagements partiels',
+          notes:
+            'Le guide officiel présente des parcours vélo, sans établir une piste protégée continue entre la gare, le port et tout le littoral.',
+        },
+        roadSafety: {
+          level: 'caution',
+          notes:
+            'La liaison gare-centre, la circulation urbaine et l’affluence du front de mer exigent une boucle courte et des passages à pied.',
+        },
+        parkingAdvice:
+          'Choisis la gare ou un parking officiel comme point de retour, puis évite de laisser l’engin sans surveillance sur le port ou les plages.',
+        bestTime: 'Matin hors haute saison, avec train ou retour routier confirmé',
+      },
+    },
   },
   {
     id: 'le-tholonet-lac-zola',
