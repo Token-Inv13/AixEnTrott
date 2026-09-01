@@ -9,7 +9,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 const publicSitemapPath = path.join(projectRoot, 'public', 'sitemap.xml');
 
-const staticRoutes = ['/', '/planner', '/sorties', '/carte', '/recharge', '/conseils', '/guides', '/a-propos'];
+const staticRoutes = [
+  '/',
+  '/planner',
+  '/sorties',
+  '/carte',
+  '/recharge',
+  '/conseils',
+  '/guides',
+  '/a-propos',
+  '/contact',
+  '/mentions-legales',
+  '/confidentialite',
+];
 
 function buildUrlEntry(route) {
   return `  <url><loc>${buildSiteUrl(route)}</loc></url>`;

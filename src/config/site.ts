@@ -8,8 +8,7 @@ const importMetaEnv = (import.meta as ImportMeta & { env?: Record<string, string
 export const SITE_GOOGLE_VERIFICATION =
   importMetaEnv?.VITE_GOOGLE_SITE_VERIFICATION || 'vKJnekj9NI1OX40vKYcNXFT6S8lSfqrYhDMiHDc-P3w';
 
-// TODO: replace with the definitive support address when it is ready.
-export const SITE_CONTACT_EMAIL = 'devande-service@tasknote.io';
+export const SITE_CONTACT_EMAIL = 'aixentrott@tokenbuilds.site';
 
 export function buildReportIssueMailto(placeName: string, pageUrl: string) {
   const subject = `Erreur Aix en trott - ${placeName}`;

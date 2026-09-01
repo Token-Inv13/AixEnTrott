@@ -2,98 +2,88 @@ import { Link } from 'react-router-dom';
 import { SectionKicker, SectionTitle } from '../components/Badges';
 import { PageSeo } from '../components/PageSeo';
 import { PwaInstallCard } from '../components/PwaInstallCard';
-import { editorialGuides, getEditorialGuidePath } from '../data/editorialPages';
+import { EDITORIAL_METHOD } from '../data/institutional';
 import { buildBreadcrumbNode, buildSeoGraph, buildWebPageNode, buildWebsiteNodes } from '../lib/seo';
 
-export function AboutPage() {
-  const guideLinks = editorialGuides.filter((guide) =>
-    ['sortie-trottinette-aix-centre', 'recharge-trottinette-aix', 'balade-trottinette-sainte-victoire'].includes(guide.slug),
-  );
+const description =
+  "Decouvrez la mission, la methode editoriale et les limites des distances, itineraires, estimations batterie et recharges d'Aix en trott.";
 
+export function AboutPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageSeo
-        title="A propos de Aix en trott"
-        description="Comprenez l'objectif de Aix en trott, les limites des distances indicatives, la recharge a verifier et la logique du guide autour d'Aix-en-Provence."
+        title="A propos"
+        description={description}
         path="/a-propos"
         jsonLd={buildSeoGraph([
           ...buildWebsiteNodes(),
-          buildWebPageNode({
-            path: '/a-propos',
-            title: 'A propos de Aix en trott',
-            description:
-              "Comprenez l'objectif de Aix en trott, les limites des distances indicatives, la recharge a verifier et la logique du guide autour d'Aix-en-Provence.",
-            pageType: 'AboutPage',
-          }),
-          buildBreadcrumbNode([
-            { name: 'Accueil', path: '/' },
-            { name: 'A propos', path: '/a-propos' },
-          ]),
+          buildWebPageNode({ path: '/a-propos', title: 'A propos', description, pageType: 'AboutPage' }),
+          buildBreadcrumbNode([{ name: 'Accueil', path: '/' }, { name: 'A propos', path: '/a-propos' }]),
         ])}
       />
-      <SectionTitle description="Ce que le site aide a preparer, et ce qu'il faut toujours verifier avant de partir.">
+
+      <SectionTitle description="La mission du site, sa methode et les points a verifier avant chaque sortie.">
         A propos
       </SectionTitle>
 
-      <section className="mt-6 grid gap-4 lg:grid-cols-[1fr_0.9fr]">
+      <section className="mt-6 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
-          <SectionKicker>Objectif</SectionKicker>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Aider a choisir une sortie realiste</h2>
-          <p className="mt-4 text-sm leading-6 text-slate-600">Aix en trott aide a comparer des sorties autour d'Aix avec une lecture simple de la distance, de l'autonomie et de la recharge.</p>
-          <p className="mt-4 text-sm leading-6 text-slate-600">Distances indicatives, coordonnees a verifier, pistes cyclables a confirmer, recharge susceptible d'evoluer.</p>
-          <p className="mt-4 text-sm leading-6 text-slate-600">Le site aide a decider. Le trajet, l'equipement et la securite restent de ta responsabilite.</p>
-          <div className="mt-6">
-            <Link to="/conseils" className="inline-flex rounded-full bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky">
-              Lire les conseils
-            </Link>
-          </div>
+          <SectionKicker>Le projet</SectionKicker>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Un guide independant et pratique</h2>
+          <p className="mt-4 text-sm leading-6 text-slate-600">
+            Aix en trott est un site independant consacre aux sorties et aux outils pratiques pour les deplacements et balades en trottinette autour d'Aix-en-Provence et dans les destinations proposees.
+          </p>
+          <p className="mt-4 text-sm leading-6 text-slate-600">
+            Son objectif est d'aider a comparer une destination, une autonomie et une solution de retour sans masquer les limites du trajet.
+          </p>
         </div>
 
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
-          <SectionKicker>Sources & limites</SectionKicker>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">A garder en tete</h2>
-          <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
-            <li>Donnees issues de recherches locales, cartes publiques et verifications manuelles.</li>
-            <li>Une verification sur place reste necessaire.</li>
-            <li>Les itineraires velo restent indicatifs.</li>
-            <li>Une borne voiture n'est pas automatiquement compatible.</li>
-          </ul>
-          <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
-            Un point faux ou date ? Utilise le signalement depuis une fiche ou la page recharge.
-          </div>
+          <SectionKicker>Methode editoriale</SectionKicker>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Des informations utiles, avec leurs limites</h2>
+          <p className="mt-4 text-sm leading-6 text-slate-600">{EDITORIAL_METHOD}</p>
         </div>
       </section>
 
-      <div className="mt-6">
-        <PwaInstallCard className="max-w-3xl" />
-      </div>
+      <section className="mt-4 grid gap-4 lg:grid-cols-3">
+        <article className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+          <h2 className="text-xl font-semibold text-slate-950">Distances et itineraires</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            Les valeurs initiales sont indicatives. Les outils cartographiques peuvent recalculer un trajet depuis votre point de depart, mais le resultat peut varier selon le service et les conditions locales.
+          </p>
+        </article>
+        <article className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+          <h2 className="text-xl font-semibold text-slate-950">Batterie et autonomie</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            Les estimations aident a decider, sans garantir l'autonomie reelle. Batterie, relief, vitesse, temperature, vent, charge et style de conduite modifient la consommation.
+          </p>
+        </article>
+        <article className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+          <h2 className="text-xl font-semibold text-slate-950">Recharge</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            Les prises, horaires et conditions d'acces peuvent evoluer. Verifiez la compatibilite locale avant de vous deplacer et ne supposez pas qu'une borne voiture convient a une trottinette.
+          </p>
+        </article>
+      </section>
 
-      <section className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
-        <div className="flex items-end justify-between gap-4">
+      <section className="mt-4 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <SectionKicker>Guides</SectionKicker>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Exemples concrets de lecture du site</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              Si tu veux voir comment ces limites s appliquent en pratique, ouvre une page ciblee puis reviens sur le planner ou le catalogue.
+            <SectionKicker>Corrections</SectionKicker>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Une information a actualiser ?</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+              Signalez une distance, un acces, une recharge ou une condition locale incorrecte afin que l'information puisse etre revue.
             </p>
           </div>
-          <Link to="/guides" className="text-sm font-semibold text-sky">
-            Tous les guides
+          <Link to="/contact" className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky">
+            Contacter Aix en trott
           </Link>
         </div>
-        <div className="mt-4 grid gap-4 lg:grid-cols-3">
-          {guideLinks.map((guide) => (
-            <Link
-              key={guide.slug}
-              to={getEditorialGuidePath(guide.slug)}
-              className="rounded-[1.5rem] bg-slate-50 p-4 transition hover:bg-sky-50/60"
-            >
-              <p className="font-semibold text-slate-950">{guide.shortTitle}</p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
-            </Link>
-          ))}
-        </div>
       </section>
+
+      <div className="mt-4">
+        <PwaInstallCard className="max-w-3xl" />
+      </div>
     </div>
   );
 }

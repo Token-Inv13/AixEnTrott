@@ -13,6 +13,9 @@ const ConseilsPage = lazy(() => import('./pages/ConseilsPage').then((module) => 
 const AboutPage = lazy(() => import('./pages/AboutPage').then((module) => ({ default: module.AboutPage })));
 const GuideHubPage = lazy(() => import('./pages/GuideHubPage').then((module) => ({ default: module.GuideHubPage })));
 const GuideDetailPage = lazy(() => import('./pages/GuideDetailPage').then((module) => ({ default: module.GuideDetailPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then((module) => ({ default: module.ContactPage })));
+const LegalNoticePage = lazy(() => import('./pages/LegalNoticePage').then((module) => ({ default: module.LegalNoticePage })));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage').then((module) => ({ default: module.PrivacyPage })));
 
 function PageFallback() {
   return (
@@ -40,6 +43,9 @@ export default function App() {
             <Route path="/a-propos" element={<AboutPage />} />
             <Route path="/guides" element={<GuideHubPage />} />
             <Route path="/guides/:slug" element={<GuideDetailPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/mentions-legales" element={<LegalNoticePage />} />
+            <Route path="/confidentialite" element={<PrivacyPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

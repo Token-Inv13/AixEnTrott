@@ -5,6 +5,12 @@ import { chargingPoints, compatibilityLabels } from '../src/data/chargingPoints.
 import { editorialGuides, getEditorialGuidePath } from '../src/data/editorialPages.ts';
 import { spots } from '../src/data/spots.ts';
 import {
+  CONTACT_REASONS,
+  EDITORIAL_METHOD,
+  LEGAL_PUBLISHER,
+  TECHNICAL_HOST,
+} from '../src/data/institutional.ts';
+import {
   SITE_DEFAULT_DESCRIPTION,
   SITE_DEFAULT_OG_IMAGE,
   SITE_DEFAULT_TITLE,
@@ -58,11 +64,10 @@ function buildSeoGraph(nodes) {
 function buildWebsiteNodes() {
   return [
     {
-      '@type': 'Organization',
-      '@id': `${SITE_URL}#organization`,
-      name: SITE_NAME,
+      '@type': 'Person',
+      '@id': `${SITE_URL}#publisher`,
+      name: LEGAL_PUBLISHER.name,
       url: SITE_URL,
-      logo: SITE_DEFAULT_OG_IMAGE,
     },
     {
       '@type': 'WebSite',
@@ -71,7 +76,7 @@ function buildWebsiteNodes() {
       url: SITE_URL,
       inLanguage: 'fr-FR',
       publisher: {
-        '@id': `${SITE_URL}#organization`,
+        '@id': `${SITE_URL}#publisher`,
       },
     },
     buildSiteNavigationNode([
@@ -304,6 +309,12 @@ const footerItems = [
   { path: '/a-propos', label: 'A propos' },
 ];
 
+const institutionalFooterItems = [
+  { path: '/contact', label: 'Contact' },
+  { path: '/mentions-legales', label: 'Mentions legales' },
+  { path: '/confidentialite', label: 'Confidentialite' },
+];
+
 function isActiveRoute(currentPath, itemPath) {
   if (itemPath === '/') {
     return currentPath === '/';
@@ -341,14 +352,16 @@ function renderStaticShell(currentPath, content) {
     <main>${content}</main>
     <footer class="border-t border-slate-200/70 bg-white/75">
       <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div class="grid gap-4 border-t border-slate-200/60 pt-6 text-sm text-slate-500 md:grid-cols-[1fr_auto] md:items-end">
-          <p>Site independant. Distances, autonomie, pistes cyclables et recharge a verifier avant depart.</p>
-          <nav class="flex flex-wrap gap-x-4 gap-y-2" aria-label="Navigation de pied de page">${footerItems
-            .map(
-              (item) =>
-                `<a href="${escapeHtml(item.path)}" class="font-medium text-slate-600 transition hover:text-slate-950">${escapeHtml(item.label)}</a>`,
-            )
-            .join('')}</nav>
+        <div class="grid gap-5 border-t border-slate-200/60 pt-6 text-sm text-slate-500 lg:grid-cols-[minmax(16rem,1fr)_auto] lg:items-end">
+          <p class="max-w-xl">Site independant. Distances, autonomie, pistes cyclables et recharge a verifier avant depart.</p>
+          <div class="grid gap-3">
+            <nav class="flex flex-wrap gap-x-4 gap-y-2" aria-label="Navigation de pied de page">${footerItems
+              .map((item) => `<a href="${escapeHtml(item.path)}" class="font-medium text-slate-600">${escapeHtml(item.label)}</a>`)
+              .join('')}</nav>
+            <nav class="flex flex-wrap gap-x-4 gap-y-2 border-t border-slate-200/70 pt-3" aria-label="Informations legales et confidentialite">${institutionalFooterItems
+              .map((item) => `<a href="${escapeHtml(item.path)}" class="font-medium text-slate-600">${escapeHtml(item.label)}</a>`)
+              .join('')}<button type="button" class="font-medium text-slate-600">Parametres de confidentialite</button></nav>
+          </div>
         </div>
       </div>
     </footer>
@@ -488,8 +501,43 @@ function buildConseilsStaticContent() {
 
 function buildAboutStaticContent() {
   return renderPageContainer(
-    renderHeading('A propos', "Ce que le site aide a preparer, et ce qu'il faut toujours verifier avant de partir."),
-    `<section class="mt-6 grid gap-4 lg:grid-cols-2"><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Aider a choisir une sortie realiste</h2><p class="mt-4 text-sm leading-6 text-slate-600">Aix en trott aide a comparer des sorties autour d'Aix avec une lecture simple de la distance, de l'autonomie et de la recharge.</p><p class="mt-4 text-sm leading-6 text-slate-600">Distances indicatives, coordonnees a verifier, pistes cyclables a confirmer, recharge susceptible d'evoluer.</p><p class="mt-4 text-sm leading-6 text-slate-600">Le site aide a decider. Le trajet, l'equipement et la securite restent de ta responsabilite.</p><a href="/conseils" class="mt-5 inline-flex font-semibold text-sky">Lire les conseils</a></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Sources et limites</h2><ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600"><li>Donnees issues de recherches locales, cartes publiques et verifications manuelles.</li><li>Une verification sur place reste necessaire.</li><li>Les itineraires velo restent indicatifs.</li><li>Une borne voiture n'est pas automatiquement compatible.</li></ul></article></section>`,
+    renderHeading('A propos', 'La mission du site, sa methode et les points a verifier avant chaque sortie.'),
+    `<section class="mt-6 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]"><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Un guide independant et pratique</h2><p class="mt-4 text-sm leading-6 text-slate-600">Aix en trott est un site independant consacre aux sorties et aux outils pratiques pour les deplacements et balades en trottinette autour d'Aix-en-Provence et dans les destinations proposees.</p><p class="mt-4 text-sm leading-6 text-slate-600">Son objectif est d'aider a comparer une destination, une autonomie et une solution de retour sans masquer les limites du trajet.</p></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Des informations utiles, avec leurs limites</h2><p class="mt-4 text-sm leading-6 text-slate-600">${escapeHtml(EDITORIAL_METHOD)}</p></article></section>
+    <section class="mt-4 grid gap-4 lg:grid-cols-3"><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Distances et itineraires</h2><p class="mt-3 text-sm leading-6 text-slate-600">Les valeurs initiales sont indicatives. Les outils cartographiques peuvent recalculer un trajet depuis votre point de depart, mais le resultat peut varier selon le service et les conditions locales.</p></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Batterie et autonomie</h2><p class="mt-3 text-sm leading-6 text-slate-600">Les estimations aident a decider, sans garantir l'autonomie reelle. Batterie, relief, vitesse, temperature, vent, charge et style de conduite modifient la consommation.</p></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Recharge</h2><p class="mt-3 text-sm leading-6 text-slate-600">Les prises, horaires et conditions d'acces peuvent evoluer. Verifiez la compatibilite locale avant de vous deplacer et ne supposez pas qu'une borne voiture convient a une trottinette.</p></article></section>
+    <section class="mt-4 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Une information a actualiser ?</h2><p class="mt-3 text-sm leading-6 text-slate-600">Signalez une distance, un acces, une recharge ou une condition locale incorrecte afin que l'information puisse etre revue.</p><a href="/contact" class="mt-5 inline-flex font-semibold text-sky">Contacter Aix en trott</a></section>`,
+  );
+}
+
+function buildContactStaticContent() {
+  return renderPageContainer(
+    renderHeading('Contact', 'Un point de contact direct, sans formulaire ni compte utilisateur.'),
+    `<section class="mt-6 grid gap-4 lg:grid-cols-[0.85fr_1.15fr]"><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Nous joindre</h2><p class="mt-4 text-sm leading-6 text-slate-600"><strong>E-mail :</strong> <a href="mailto:${escapeHtml(LEGAL_PUBLISHER.email)}" class="font-semibold text-sky">${escapeHtml(LEGAL_PUBLISHER.email)}</a></p><p class="mt-3 text-sm leading-6 text-slate-600"><strong>Telephone :</strong> <a href="tel:${escapeHtml(LEGAL_PUBLISHER.phoneHref)}" class="font-semibold text-sky">${escapeHtml(LEGAL_PUBLISHER.phoneDisplay)}</a></p><a href="mailto:${escapeHtml(LEGAL_PUBLISHER.email)}" class="mt-5 inline-flex font-semibold text-sky">Envoyer un e-mail</a></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Motifs de contact</h2><ul class="mt-4 grid gap-3 sm:grid-cols-2">${CONTACT_REASONS.map((reason) => `<li class="rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-600">${escapeHtml(reason)}</li>`).join('')}</ul><p class="mt-4 text-sm leading-6 text-slate-600">Les messages sont conserves au maximum 12 mois apres le dernier echange utile, sauf obligation legale contraire.</p></article></section>
+    <section class="mt-4 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Informations utiles</h2><div class="mt-4 flex flex-wrap gap-4"><a href="/a-propos" class="font-semibold text-sky">A propos</a><a href="/confidentialite" class="font-semibold text-sky">Confidentialite</a><a href="/mentions-legales" class="font-semibold text-sky">Mentions legales</a></div></section>`,
+  );
+}
+
+function buildLegalNoticeStaticContent() {
+  return renderPageContainer(
+    renderHeading('Mentions legales', "Identite de l'editeur, hebergement et cadre d'utilisation du site."),
+    `<section class="mt-6 grid gap-4 lg:grid-cols-2"><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Editeur du site</h2><p class="mt-4 text-sm leading-6 text-slate-600">${escapeHtml(LEGAL_PUBLISHER.name)}<br>${escapeHtml(LEGAL_PUBLISHER.status)}<br>${LEGAL_PUBLISHER.addressLines.map(escapeHtml).join('<br>')}<br>SIREN : ${escapeHtml(LEGAL_PUBLISHER.siren)}<br>Telephone : <a href="tel:${escapeHtml(LEGAL_PUBLISHER.phoneHref)}">${escapeHtml(LEGAL_PUBLISHER.phoneDisplay)}</a><br>E-mail : <a href="mailto:${escapeHtml(LEGAL_PUBLISHER.email)}">${escapeHtml(LEGAL_PUBLISHER.email)}</a></p><p class="mt-4 text-sm leading-6 text-slate-600">Directeur de la publication : ${escapeHtml(LEGAL_PUBLISHER.publicationDirector)}.</p></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Hebergeur technique</h2><p class="mt-4 text-sm leading-6 text-slate-600">${escapeHtml(TECHNICAL_HOST.name)}<br>${TECHNICAL_HOST.addressLines.map(escapeHtml).join('<br>')}<br>Contact confidentialite : <a href="mailto:${escapeHtml(TECHNICAL_HOST.privacyEmail)}">${escapeHtml(TECHNICAL_HOST.privacyEmail)}</a><br>Numero officiellement publie pour l'agent DMCA : ${escapeHtml(TECHNICAL_HOST.dmcaPhoneDisplay)}.</p><div class="mt-4 flex gap-4"><a href="${escapeHtml(TECHNICAL_HOST.privacyNoticeUrl)}" class="font-semibold text-sky">Politique Vercel</a><a href="${escapeHtml(TECHNICAL_HOST.dmcaPolicyUrl)}" class="font-semibold text-sky">Coordonnees officielles</a></div></article></section>
+    <section class="mt-4 grid gap-4 lg:grid-cols-3"><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Propriete intellectuelle</h2><p class="mt-3 text-sm leading-6 text-slate-600">Les textes, la structure, l'identite visuelle et les contenus propres a Aix en trott sont proteges par le droit applicable. Les contenus tiers restent la propriete de leurs titulaires.</p></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Informations et responsabilite</h2><p class="mt-3 text-sm leading-6 text-slate-600">Distances, autonomie, recharge, circulation, itineraires et conditions locales sont indicatifs et peuvent evoluer. Verifiez les conditions reelles avant de partir.</p></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Liens externes</h2><p class="mt-3 text-sm leading-6 text-slate-600">Les services cartographiques et sites tiers restent sous la responsabilite de leurs editeurs.</p></article></section>
+    <section class="mt-4 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Contact</h2><p class="mt-3 text-sm leading-6 text-slate-600">Pour toute question, consultez la <a href="/contact" class="font-semibold text-sky">page de contact</a> ou ecrivez a <a href="mailto:${escapeHtml(LEGAL_PUBLISHER.email)}" class="font-semibold text-sky">${escapeHtml(LEGAL_PUBLISHER.email)}</a>.</p></section>`,
+  );
+}
+
+function buildPrivacyStaticContent() {
+  const treatments = [
+    ['Google Analytics 4', "G-7CQKVX43X0 mesure l'audience uniquement apres votre consentement Analytics, qui peut etre refuse ou retire."],
+    ['Google AdSense', 'Google AdSense et Funding Choices gerent la diffusion publicitaire et les preferences publicitaires.'],
+    ['Cartographie et itineraires', 'Google Maps, Places et Routes peuvent recevoir les coordonnees necessaires lorsque vous lancez une recherche, une localisation ou un calcul de trajet.'],
+    ['Stockages locaux', "localStorage conserve le consentement Analytics et un cache de distances d'environ sept jours ; sessionStorage conserve le point de depart pendant la session ; Cache Storage conserve les ressources PWA."],
+  ];
+  return renderPageContainer(
+    renderHeading('Politique de confidentialite', 'Les donnees traitees, leur utilite et les choix disponibles sur Aix en trott.'),
+    `<section class="mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-2xl font-semibold text-slate-950">Responsable du traitement</h2><p class="mt-3 text-sm leading-6 text-slate-600">${escapeHtml(LEGAL_PUBLISHER.name)}, ${escapeHtml(LEGAL_PUBLISHER.status)}, ${LEGAL_PUBLISHER.addressLines.map(escapeHtml).join(', ')}. Pour exercer vos droits : <a href="mailto:${escapeHtml(LEGAL_PUBLISHER.email)}" class="font-semibold text-sky">${escapeHtml(LEGAL_PUBLISHER.email)}</a>. Aucun DPO n'est designe.</p></section>
+    <section class="mt-4 grid gap-4 lg:grid-cols-2">${treatments.map(([title, text]) => `<article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">${escapeHtml(title)}</h2><p class="mt-3 text-sm leading-6 text-slate-600">${escapeHtml(text)}</p></article>`).join('')}</section>
+    <section class="mt-4 grid gap-4 lg:grid-cols-2"><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">E-mails et conservation</h2><p class="mt-3 text-sm leading-6 text-slate-600">Les e-mails volontaires sont utilises pour repondre ou traiter un signalement et conserves 12 mois maximum apres le dernier echange utile, sauf obligation legale contraire.</p></article><article class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Destinataires</h2><p class="mt-3 text-sm leading-6 text-slate-600">Google, Vercel et le service de messagerie utilise peuvent traiter les donnees necessaires a leur service.</p></article></section>
+    <section class="mt-4 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft"><h2 class="text-xl font-semibold text-slate-950">Vos droits</h2><p class="mt-3 text-sm leading-6 text-slate-600">Selon le traitement, vous pouvez demander l'acces, la rectification, l'effacement, la limitation, vous opposer ou retirer votre consentement. Vous pouvez aussi saisir la <a href="https://www.cnil.fr/fr/plaintes" class="font-semibold text-sky">CNIL</a>.</p><a href="/contact" class="mt-4 inline-flex font-semibold text-sky">Nous contacter</a></section>`,
   );
 }
 
@@ -538,6 +586,9 @@ function buildStaticContentForRoute(routePath) {
     '/conseils': buildConseilsStaticContent,
     '/guides': buildGuidesStaticContent,
     '/a-propos': buildAboutStaticContent,
+    '/contact': buildContactStaticContent,
+    '/mentions-legales': buildLegalNoticeStaticContent,
+    '/confidentialite': buildPrivacyStaticContent,
   };
   const staticPage = staticPages[routePath];
   if (staticPage) {
@@ -818,22 +869,89 @@ function buildRouteConfigs() {
     {
       path: '/a-propos',
       seo: buildPageSeo({
-        title: 'A propos de Aix en trott',
+        title: 'A propos',
         description:
-          "Comprenez l'objectif du site, les limites des donnees et ce qu'il faut verifier avant une sortie en trottinette autour d'Aix-en-Provence.",
+          "Decouvrez la mission, la methode editoriale et les limites des distances, itineraires, estimations batterie et recharges d'Aix en trott.",
         path: '/a-propos',
         jsonLd: buildSeoGraph([
           ...buildWebsiteNodes(),
           buildWebPageNode({
             path: '/a-propos',
-            title: 'A propos de Aix en trott',
+            title: 'A propos',
             description:
-              "Comprenez l'objectif du site, les limites des donnees et ce qu'il faut verifier avant une sortie en trottinette autour d'Aix-en-Provence.",
+              "Decouvrez la mission, la methode editoriale et les limites des distances, itineraires, estimations batterie et recharges d'Aix en trott.",
             pageType: 'AboutPage',
           }),
           buildBreadcrumbNode([
             { name: 'Accueil', path: '/' },
             { name: 'A propos', path: '/a-propos' },
+          ]),
+        ]),
+      }),
+    },
+    {
+      path: '/contact',
+      seo: buildPageSeo({
+        title: 'Contact',
+        description:
+          "Contactez Aix en trott pour signaler une information, suggerer une sortie ou poser une question sur le site.",
+        path: '/contact',
+        jsonLd: buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/contact',
+            title: 'Contact',
+            description:
+              "Contactez Aix en trott pour signaler une information, suggerer une sortie ou poser une question sur le site.",
+            pageType: 'ContactPage',
+          }),
+          buildBreadcrumbNode([
+            { name: 'Accueil', path: '/' },
+            { name: 'Contact', path: '/contact' },
+          ]),
+        ]),
+      }),
+    },
+    {
+      path: '/mentions-legales',
+      seo: buildPageSeo({
+        title: 'Mentions legales',
+        description:
+          "Consultez les informations legales de l'editeur et de l'hebergeur du site Aix en trott.",
+        path: '/mentions-legales',
+        jsonLd: buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/mentions-legales',
+            title: 'Mentions legales',
+            description:
+              "Consultez les informations legales de l'editeur et de l'hebergeur du site Aix en trott.",
+          }),
+          buildBreadcrumbNode([
+            { name: 'Accueil', path: '/' },
+            { name: 'Mentions legales', path: '/mentions-legales' },
+          ]),
+        ]),
+      }),
+    },
+    {
+      path: '/confidentialite',
+      seo: buildPageSeo({
+        title: 'Politique de confidentialite',
+        description:
+          "Politique de confidentialite d'Aix en trott : mesure d'audience, publicite, cartographie, stockages locaux et droits.",
+        path: '/confidentialite',
+        jsonLd: buildSeoGraph([
+          ...buildWebsiteNodes(),
+          buildWebPageNode({
+            path: '/confidentialite',
+            title: 'Politique de confidentialite',
+            description:
+              "Politique de confidentialite d'Aix en trott : mesure d'audience, publicite, cartographie, stockages locaux et droits.",
+          }),
+          buildBreadcrumbNode([
+            { name: 'Accueil', path: '/' },
+            { name: 'Politique de confidentialite', path: '/confidentialite' },
           ]),
         ]),
       }),

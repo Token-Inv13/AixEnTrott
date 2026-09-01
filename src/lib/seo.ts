@@ -7,6 +7,7 @@ import {
   SITE_URL,
   buildSiteUrl,
 } from '../config/site';
+import { LEGAL_PUBLISHER } from '../data/institutional';
 
 type BreadcrumbItem = {
   name: string;
@@ -88,11 +89,10 @@ export function buildSeoGraph(nodes: Record<string, unknown>[]) {
 export function buildWebsiteNodes() {
   return [
     {
-      '@type': 'Organization',
-      '@id': `${SITE_URL}#organization`,
-      name: SITE_NAME,
+      '@type': 'Person',
+      '@id': `${SITE_URL}#publisher`,
+      name: LEGAL_PUBLISHER.name,
       url: SITE_URL,
-      logo: SITE_DEFAULT_OG_IMAGE,
     },
     {
       '@type': 'WebSite',
@@ -101,7 +101,7 @@ export function buildWebsiteNodes() {
       url: SITE_URL,
       inLanguage: 'fr-FR',
       publisher: {
-        '@id': `${SITE_URL}#organization`,
+        '@id': `${SITE_URL}#publisher`,
       },
     },
     buildSiteNavigationNode([
@@ -134,7 +134,7 @@ export function buildWebPageNode({
   path: string;
   title: string;
   description: string;
-  pageType?: 'WebPage' | 'CollectionPage' | 'AboutPage';
+  pageType?: 'WebPage' | 'CollectionPage' | 'AboutPage' | 'ContactPage';
 }) {
   return {
     '@type': pageType,

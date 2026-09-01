@@ -30,6 +30,11 @@ export function Layout({ children }: { children: ReactNode }) {
     { to: '/conseils', label: 'Conseils' },
     { to: '/a-propos', label: 'A propos' },
   ];
+  const institutionalLinks = [
+    { to: '/contact', label: 'Contact' },
+    { to: '/mentions-legales', label: 'Mentions legales' },
+    { to: '/confidentialite', label: 'Confidentialite' },
+  ];
 
   return (
     <div className="app-shell min-h-screen">
@@ -64,22 +69,31 @@ export function Layout({ children }: { children: ReactNode }) {
       <main>{children}</main>
       <footer className="border-t border-slate-200/70 bg-white/75">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="grid gap-4 border-t border-slate-200/60 pt-6 text-sm text-slate-500 md:grid-cols-[1fr_auto] md:items-end">
-            <p>Site independant. Distances, autonomie, pistes cyclables et recharge a verifier avant depart.</p>
-            <nav className="flex flex-wrap gap-x-4 gap-y-2">
-              {footerLinks.map((item) => (
-                <Link key={item.to} to={item.to} className="font-medium text-slate-600 transition hover:text-slate-950">
-                  {item.label}
-                </Link>
-              ))}
-              <button
-                type="button"
-                onClick={openPrivacySettings}
-                className="font-medium text-slate-600 transition hover:text-slate-950"
-              >
-                Parametres de confidentialite
-              </button>
-            </nav>
+          <div className="grid gap-5 border-t border-slate-200/60 pt-6 text-sm text-slate-500 lg:grid-cols-[minmax(16rem,1fr)_auto] lg:items-end">
+            <p className="max-w-xl">Site independant. Distances, autonomie, pistes cyclables et recharge a verifier avant depart.</p>
+            <div className="grid gap-3">
+              <nav className="flex flex-wrap gap-x-4 gap-y-2" aria-label="Navigation du pied de page">
+                {footerLinks.map((item) => (
+                  <Link key={item.to} to={item.to} className="font-medium text-slate-600 transition hover:text-slate-950">
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+              <nav className="flex flex-wrap gap-x-4 gap-y-2 border-t border-slate-200/70 pt-3" aria-label="Informations legales et confidentialite">
+                {institutionalLinks.map((item) => (
+                  <Link key={item.to} to={item.to} className="font-medium text-slate-600 transition hover:text-slate-950">
+                    {item.label}
+                  </Link>
+                ))}
+                <button
+                  type="button"
+                  onClick={openPrivacySettings}
+                  className="font-medium text-slate-600 transition hover:text-slate-950"
+                >
+                  Parametres de confidentialite
+                </button>
+              </nav>
+            </div>
           </div>
         </div>
       </footer>

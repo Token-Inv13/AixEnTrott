@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aix-en-trott-v5';
+const CACHE_NAME = 'aix-en-trott-v6';
 const APP_SHELL = [
   '/',
   '/planner',
@@ -7,6 +7,9 @@ const APP_SHELL = [
   '/recharge',
   '/conseils',
   '/a-propos',
+  '/contact',
+  '/mentions-legales',
+  '/confidentialite',
   '/offline.html',
   '/manifest.webmanifest',
   '/favicon-32.png',
